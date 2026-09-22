@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پروفایل من | سامانه آموزشی</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070b14;--bg2:#0b1120;
+  --card:rgba(255,255,255,.03);--card2:rgba(255,255,255,.06);
+  --glass:rgba(10,14,26,.75);
+  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.14);
+  --pri:#8b5cf6;--pri2:#c084fc;--priSoft:rgba(139,92,246,.14);
+  --green:#2fd48c;--blue:#4d9fff;--yellow:#ffc94d;--purple:#a78bfa;--cyan:#22d3ee;--red:#ff6b81;
+  --text:#eef2f8;--muted:#8b94a7;--muted2:#59627a;
+  --r:18px;--shadow:0 14px 44px rgba(0,0,0,.45);
+  --grad:linear-gradient(135deg,var(--pri),var(--pri2));
+}
+[data-theme=light]{
+  --bg:#f2f5fb;--bg2:#ffffff;
+  --card:rgba(255,255,255,.75);--card2:rgba(255,255,255,.95);
+  --glass:rgba(255,255,255,.8);
+  --bd:rgba(15,23,42,.08);--bd2:rgba(15,23,42,.16);
+  --text:#0f172a;--muted:#5b6478;--muted2:#8b94a7;
+  --shadow:0 14px 40px rgba(30,41,80,.12);
+}
+body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);direction:rtl;min-height:100vh;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:8px}
+.bgfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.18}
+.blob.b1{width:480px;height:480px;background:var(--pri);top:-150px;right:-120px;animation:fl 15s ease-in-out infinite}
+.blob.b2{width:400px;height:400px;background:var(--cyan);bottom:-130px;left:-100px;opacity:.1;animation:fl 19s ease-in-out infinite reverse}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.12)}}
+
+/* تاپ‌بار */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:14px 26px;background:var(--glass);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd)}
+.back-btn{width:42px;height:42px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:1.1rem;transition:.2s;display:flex;align-items:center;justify-content:center}
+.back-btn:hover{border-color:var(--pri);color:var(--pri);transform:translateY(-2px)}
+.topbar h1{font-size:1.05rem;flex:1}
+.tb-btn{width:42px;height:42px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:1.05rem;transition:.2s}
+.tb-btn:hover{border-color:var(--bd2);color:var(--text)}
+
+.cont{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:30px 22px 60px}
+
+/* ═══ کارت پروفایل ═══ */
+.pcard{position:relative;border-radius:26px;padding:36px 34px;overflow:hidden;border:1px solid var(--bd2);background:linear-gradient(120deg,var(--priSoft),transparent 60%);margin-bottom:22px}
+.pcard::before{content:'';position:absolute;top:-80px;left:-50px;width:300px;height:300px;border-radius:50%;background:var(--pri);filter:blur(100px);opacity:.22}
+.pcard>*{position:relative;z-index:1}
+.prow{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.big-av{width:104px;height:104px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:2.6rem;font-weight:900;color:#fff;flex-shrink:0;box-shadow:0 0 0 5px var(--bg),0 0 0 8px var(--priSoft),0 16px 40px -8px var(--pri);animation:avIn .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes avIn{from{transform:scale(.4);opacity:0}}
+.pinfo{flex:1;min-width:220px}
+.pinfo h2{font-size:1.6rem;font-weight:900}
+.pmail{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.88rem;margin-top:7px;direction:ltr;justify-content:flex-end}
+.role-badge{display:inline-flex;align-items:center;gap:7px;margin-top:12px;background:var(--grad);color:#fff;border-radius:20px;padding:7px 18px;font-size:.82rem;font-weight:700;box-shadow:0 6px 18px -4px var(--pri)}
+.pmeta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.mchip{display:inline-flex;align-items:center;gap:7px;background:var(--glass);border:1px solid var(--bd2);border-radius:12px;padding:7px 14px;font-size:.76rem;backdrop-filter:blur(8px)}
+.mchip b{color:var(--pri2)}
+
+/* ═══ آمار ═══ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+.stat{position:relative;padding:20px;border-radius:var(--r);background:var(--card);border:1px solid var(--bd);backdrop-filter:blur(10px);overflow:hidden;transition:.25s}
+.stat:hover{transform:translateY(-4px);border-color:var(--bd2);box-shadow:var(--shadow)}
+.stat::after{content:'';position:absolute;top:-55%;left:-25%;width:170px;height:170px;border-radius:50%;background:var(--c,var(--pri));filter:blur(60px);opacity:.15}
+.stat-ic{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;background:var(--c,var(--pri));box-shadow:0 8px 20px -6px var(--c,var(--pri));margin-bottom:12px}
+.stat-n{font-size:1.7rem;font-weight:900;font-variant-numeric:tabular-nums;position:relative}
+.stat-l{font-size:.74rem;color:var(--muted);margin-top:4px;position:relative}
+
+/* ═══ کارت‌ها ═══ */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:24px;backdrop-filter:blur(10px)}
+.card:hover{border-color:var(--bd2)}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.ch .ic{width:38px;height:38px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.05rem;box-shadow:0 6px 16px -4px var(--pri)}
+.ch h2{font-size:.98rem;font-weight:800}
+
+/* فرم */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.76rem;color:var(--muted);margin-bottom:7px;font-weight:600}
+.fg input{width:100%;background:var(--bg2);border:1px solid var(--bd2);border-radius:12px;color:var(--text);font-size:.9rem;padding:12px 15px;font-family:inherit;direction:rtl;transition:.2s}
+.fg input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px var(--priSoft)}
+.fg input:disabled{opacity:.6;cursor:not-allowed}
+.btn{padding:11px 20px;border-radius:12px;border:none;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.btn:active{transform:scale(.96)}
+.btn-pri{background:var(--grad);color:#fff;box-shadow:0 6px 20px -5px var(--pri)}
+.btn-pri:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent;border:1px solid var(--bd2);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--pri);color:var(--pri)}
+.msg{padding:11px 15px;border-radius:12px;font-size:.82rem;margin-bottom:14px;display:none}
+.msg.ok{display:block;background:rgba(47,212,140,.1);border:1px solid rgba(47,212,140,.35);color:var(--green)}
+.msg.err{display:block;background:rgba(255,107,129,.1);border:1px solid rgba(255,107,129,.35);color:var(--red)}
+
+/* کارت امنیت */
+.sec-tip{display:flex;gap:12px;padding:13px;border-radius:13px;background:var(--card2);border:1px solid var(--bd);margin-bottom:10px;font-size:.8rem;color:var(--muted);line-height:1.7}
+.sec-tip .si{font-size:1.2rem;flex-shrink:0}
+.skel{border-radius:12px;background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:shim 1.3s infinite}
+@keyframes shim{to{background-position:-200% 0}}
+</style>
+</head>
+<body>
+
+<div class="bgfx"><div class="blob b1"></div><div class="blob b2"></div></div>
+
+<div class="topbar">
+  <button class="back-btn" onclick="goBack()" title="بازگشت به پنل">→</button>
+  <h1>👤 پروفایل من</h1>
+  <button class="tb-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+</div>
+
+<div class="cont">
+
+  <!-- ═══ کارت پروفایل ═══ -->
+  <div class="pcard">
+    <div class="prow">
+      <div class="big-av" id="bigAv">؟</div>
+      <div class="pinfo">
+        <h2 id="pName">...</h2>
+        <div class="pmail">📧 <span id="pEmail">...</span></div>
+        <div class="role-badge" id="pRole">...</div>
+      </div>
+    </div>
+    <div class="pmeta">
+      <span class="mchip">📅 عضو از <b id="pJoined">—</b></span>
+      <span class="mchip">🟢 وضعیت: <b id="pActive">فعال</b></span>
+      <span class="mchip">🆔 شناسه: <b id="pId" style="direction:ltr">—</b></span>
+    </div>
+  </div>
+
+  <!-- ═══ آمار ═══ -->
+  <div class="stats" id="statsGrid">
+    <div class="skel" style="height:110px"></div><div class="skel" style="height:110px"></div>
+    <div class="skel" style="height:110px"></div><div class="skel" style="height:110px"></div>
+  </div>
+
+  <div class="grid2">
+    <!-- ═══ ویرایش پروفایل ═══ -->
+    <div class="card">
+      <div class="ch"><span class="ic">✏️</span><h2>ویرایش اطلاعات</h2></div>
+      <div class="msg" id="nameMsg"></div>
+      <div class="fg"><label>نام نمایشی</label><input type="text" id="inpName" placeholder="نام و نام خانوادگی"/></div>
+      <div class="fg"><label>ایمیل (قابل تغییر نیست)</label><input type="email" id="inpEmail" disabled/></div>
+      <button class="btn btn-pri" id="saveNameBtn" onclick="saveName()">💾 ذخیره تغییرات</button>
+    </div>
+
+    <!-- ═══ تغییر رمز ═══ -->
+    <div class="card">
+      <div class="ch"><span class="ic">🔒</span><h2>تغییر رمز عبور</h2></div>
+      <div class="msg" id="pwMsg"></div>
+      <div class="fg"><label>رمز فعلی</label><input type="password" id="pwCur" placeholder="••••••••" autocomplete="current-password"/></div>
+      <div class="fg"><label>رمز جدید (حداقل ۶ کاراکتر)</label><input type="password" id="pwNew" placeholder="••••••••" autocomplete="new-password"/></div>
+      <div class="fg"><label>تکرار رمز جدید</label><input type="password" id="pwNew2" placeholder="••••••••" autocomplete="new-password"/></div>
+      <button class="btn btn-pri" id="pwBtn" onclick="changePassword()">🔑 تغییر رمز</button>
+    </div>
+  </div>
+
+  <!-- ═══ امنیت ═══ -->
+  <div class="card" style="margin-top:16px">
+    <div class="ch"><span class="ic">🛡️</span><h2>نکات امنیتی</h2></div>
+    <div class="sec-tip"><span class="si">🔐</span><span>رمز عبور خود را با هیچ‌کس به اشتراک نگذارید — حتی پشتیبانی هرگز رمز شما را نمی‌پرسد.</span></div>
+    <div class="sec-tip"><span class="si">🔢</span><span>از ترکیب حروف، اعداد و علامت‌ها استفاده کنید؛ رمز قوی حداقل ۸ کاراکتر است.</span></div>
+    <div class="sec-tip"><span class="si">🚪</span><span>در دستگاه‌های عمومی حتماً از حساب خود خارج شوید.</span></div>
+  </div>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const token=localStorage.getItem('token');
+const user=JSON.parse(localStorage.getItem('user')||'null');
+if(!token||!user)location.href='/login';
+
+/* ═══ تم رنگی بر اساس نقش ═══ */
+const ROLE_THEME={
+  admin:{pri:'#ff4d6d',pri2:'#ff8fa3',soft:'rgba(255,77,109,.14)'},
+  teacher:{pri:'#4d9fff',pri2:'#7cc0ff',soft:'rgba(77,159,255,.14)'},
+  student:{pri:'#2fd48c',pri2:'#7ce7b4',soft:'rgba(47,212,140,.14)'}
+};
+const rt=ROLE_THEME[user.role]||ROLE_THEME.student;
+document.documentElement.style.setProperty('--pri',rt.pri);
+document.documentElement.style.setProperty('--pri2',rt.pri2);
+document.documentElement.style.setProperty('--priSoft',rt.soft);
+document.documentElement.style.setProperty('--grad',`linear-gradient(135deg,${rt.pri},${rt.pri2})`);
+
+/* ─── تم روشن/تاریک ─── */
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);$('themeBtn').textContent=t==='light'?'☀️':'🌙';localStorage.setItem('theme',t)}
+function toggleTheme(){applyTheme(document.documentElement.getAttribute('data-theme')==='light'?'dark':'light')}
+applyTheme(localStorage.getItem('theme')||'dark');
+
+/* ─── بازگشت ─── */
+function goBack(){location.href=({admin:'/admin',teacher:'/teacher',student:'/student'})[user.role]||'/'}
+
+/* ═══ بارگذاری پروفایل ═══ */
+const faNum=n=>Number(n||0).toLocaleString('fa-IR');
+const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const ROLE_LABEL={admin:'👑 مدیر سامانه',teacher:'👨‍🏫 معلم',student:'👨‍🎓 دانش‌آموز'};
+const STAT_DEFS={
+  student:[
+    ['totalXP','⚡','کل XP','var(--yellow)'],
+    ['streak','🔥','روز پیوسته','var(--red)'],
+    ['avgScore','📈','میانگین نمرات','var(--green)'],
+    ['quizzesTaken','📋','آزمون داده‌شده','var(--blue)'],
+    ['badges','🏅','نشان کسب‌شده','var(--purple)'],
+    ['classesCount','🏫','کلاس من','var(--cyan)'],
+    ['assignmentsSubmitted','📝','تکلیف ارسالی','var(--green)'],
+  ],
+  teacher:[
+    ['classesCount','🏫','کلاس من','var(--blue)'],
+    ['studentsCount','👨‍🎓','دانش‌آموزان','var(--green)'],
+    ['lessonsCount','📚','درس منتشرشده','var(--purple)'],
+    ['quizzesCount','📋','آزمون ساخته‌شده','var(--yellow)'],
+    ['sessionsCount','🎥','جلسات برگزارشده','var(--red)'],
+  ],
+  admin:[
+    ['usersCount','👥','کل کاربران','var(--pri)'],
+    ['teachersCount','👨‍🏫','معلمان','var(--blue)'],
+    ['studentsCount','👨‍🎓','دانش‌آموزان','var(--green)'],
+    ['classesCount','🏫','کلاس‌ها','var(--purple)'],
+    ['lessonsCount','📚','درس‌ها','var(--yellow)'],
+    ['quizzesCount','📋','آزمون‌ها','var(--cyan)'],
+  ],
+};
+
+async function loadProfile(){
+  const p=await fetch('/api/profile',{headers:{'Authorization':'Bearer '+token}});
+  if(p.status===401){localStorage.clear();location.href='/login';return}
+  const d=await p.json();
+  if(d.error)return;
+  // کارت
+  $('bigAv').textContent=(d.name||'؟')[0];
+  $('pName').textContent=d.name;
+  $('pEmail').textContent=d.email;
+  $('pRole').textContent=ROLE_LABEL[d.role]||d.role;
+  $('pJoined').textContent=d.createdAt?new Date(d.createdAt).toLocaleDateString('fa-IR',{month:'long',year:'numeric'}):'—';
+  $('pActive').textContent=d.active?'فعال':'غیرفعال';
+  $('pId').textContent=d.id;
+  $('inpName').value=d.name;
+  $('inpEmail').value=d.email;
+  // آمار
+  const defs=STAT_DEFS[d.role]||[];
+  $('statsGrid').innerHTML=defs.map(([key,ic,label,color])=>{
+    const v=d.stats?.[key];
+    const show=v===null||v===undefined?'—':(key==='avgScore'?faNum(v)+'٪':faNum(v));
+    return `<div class="stat" style="--c:${color}"><div class="stat-ic">${ic}</div><div class="stat-n">${show}</div><div class="stat-l">${label}</div></div>`;
+  }).join('');
+}
+loadProfile();
+
+/* ═══ ویرایش نام ═══ */
+async function saveName(){
+  const name=$('inpName').value.trim();
+  if(!name||name.length<3){showMsg('nameMsg','err','نام باید حداقل ۳ کاراکتر باشد');return}
+  const btn=$('saveNameBtn');btn.disabled=true;btn.textContent='⏳ در حال ذخیره...';
+  try{
+    const r=await fetch('/api/profile',{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({name})});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'خطا');
+    // بروزرسانی localStorage تا پنل‌ها نام جدید را ببینند
+    user.name=name;
+    localStorage.setItem('user',JSON.stringify(user));
+    $('pName').textContent=name;
+    $('bigAv').textContent=name[0];
+    showMsg('nameMsg','ok','✅ نام شما بروزرسانی شد');
+  }catch(e){showMsg('nameMsg','err',e.message)}
+  finally{btn.disabled=false;btn.textContent='💾 ذخیره تغییرات'}
+}
+
+/* ═══ تغییر رمز ═══ */
+async function changePassword(){
+  const cur=$('pwCur').value,nw=$('pwNew').value,nw2=$('pwNew2').value;
+  if(!cur||!nw||!nw2)return showMsg('pwMsg','err','هر سه فیلد را پر کنید');
+  if(nw.length<6)return showMsg('pwMsg','err','رمز جدید باید حداقل ۶ کاراکتر باشد');
+  if(nw!==nw2)return showMsg('pwMsg','err','تکرار رمز با رمز جدید یکسان نیست');
+  const btn=$('pwBtn');btn.disabled=true;btn.textContent='⏳ در حال تغییر...';
+  try{
+    const r=await fetch('/api/profile/password',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({currentPassword:cur,newPassword:nw})});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'خطا');
+    ['pwCur','pwNew','pwNew2'].forEach(id=>$(id).value='');
+    showMsg('pwMsg','ok','✅ رمز عبور با موفقیت تغییر کرد');
+  }catch(e){showMsg('pwMsg','err',e.message)}
+  finally{btn.disabled=false;btn.textContent='🔑 تغییر رمز'}
+}
+
+function showMsg(id,type,text){
+  const el=$(id);
+  el.className='msg '+type;
+  el.textContent=text;
+  setTimeout(()=>el.className='msg',4000);
+}
+</script>
+<script src="/ai-widget.js" defer></script>
+</body>
+</html>

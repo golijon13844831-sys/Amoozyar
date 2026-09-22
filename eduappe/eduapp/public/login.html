@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ورود و ثبت‌نام | سامانه آموزشی</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070b14;--bg2:#0b1120;
+  --card:rgba(255,255,255,.03);--card2:rgba(255,255,255,.06);
+  --glass:rgba(10,14,26,.75);
+  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.14);
+  --pri:#8b5cf6;--pri2:#c084fc;--priSoft:rgba(139,92,246,.14);
+  --green:#2fd48c;--blue:#4d9fff;--red:#ff6b81;--yellow:#ffc94d;
+  --text:#eef2f8;--muted:#8b94a7;--muted2:#59627a;
+  --grad:linear-gradient(135deg,#8b5cf6,#c084fc);
+}
+body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);direction:rtl;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:8px}
+
+/* پس‌زمینه */
+.bgfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.2}
+.blob.b1{width:500px;height:500px;background:var(--pri);top:-160px;right:-120px;animation:fl 14s ease-in-out infinite}
+.blob.b2{width:420px;height:420px;background:var(--blue);bottom:-140px;left:-100px;opacity:.14;animation:fl 18s ease-in-out infinite reverse}
+.blob.b3{width:300px;height:300px;background:#ff6b81;top:40%;left:35%;opacity:.1;animation:fl 22s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.12)}}
+.grid-fx{position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
+
+/* چیدمان دو ستونه */
+.split{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1.05fr;min-height:100vh}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+
+/* ═══ پنل برندینگ (راست) ═══ */
+.brand{padding:52px 48px;display:flex;flex-direction:column;justify-content:center;gap:26px;position:relative;overflow:hidden;border-left:1px solid var(--bd)}
+.brand::before{content:'';position:absolute;top:-80px;left:-60px;width:340px;height:340px;border-radius:50%;background:var(--pri);filter:blur(100px);opacity:.22}
+.brand>*{position:relative;z-index:1}
+.brand-logo{display:flex;align-items:center;gap:13px}
+.brand-logo .lb{width:52px;height:52px;border-radius:16px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 10px 30px -6px rgba(139,92,246,.5)}
+.brand-logo h1{font-size:1.25rem;font-weight:800}
+.brand-logo small{display:block;font-size:.72rem;color:var(--muted);font-weight:400}
+.brand h2{font-size:2rem;font-weight:800;line-height:1.5}
+.brand h2 b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand p{color:var(--muted);font-size:.92rem;line-height:1.9;max-width:400px}
+.feat-list{display:flex;flex-direction:column;gap:13px;margin-top:6px}
+.feat{display:flex;align-items:center;gap:13px;padding:13px 16px;border-radius:14px;background:var(--card);border:1px solid var(--bd);backdrop-filter:blur(8px);transition:.2s}
+.feat:hover{border-color:var(--bd2);transform:translateX(-4px)}
+.feat .fi{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;background:var(--card2);flex-shrink:0}
+.feat b{font-size:.86rem;display:block}
+.feat small{font-size:.72rem;color:var(--muted)}
+.brand-foot{font-size:.72rem;color:var(--muted2)}
+
+/* ═══ پنل فرم (چپ) ═══ */
+.form-side{display:flex;align-items:center;justify-content:center;padding:40px 24px}
+.fcard{width:100%;max-width:440px;background:var(--glass);backdrop-filter:blur(18px);border:1px solid var(--bd2);border-radius:26px;padding:34px 32px;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:up .5s cubic-bezier(.2,.8,.3,1)}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.fcard .mini-logo{display:none;text-align:center;margin-bottom:20px}
+@media(max-width:900px){.fcard .mini-logo{display:block}.brand{display:none}}
+
+/* تب‌ها */
+.tabs{position:relative;display:flex;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:5px;margin-bottom:26px}
+.tab{flex:1;padding:11px;border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:.2s;position:relative;z-index:1;border-radius:10px}
+.tab.active{color:#fff}
+.tab-ind{position:absolute;top:5px;bottom:5px;width:calc(50% - 5px);background:var(--grad);border-radius:10px;transition:right .3s cubic-bezier(.4,0,.2,1),left .3s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 16px -3px rgba(139,92,246,.5)}
+.tabs[data-active="register"] .tab-ind{right:5px}
+.tabs[data-active="login"] .tab-ind{right:calc(50% + 0px)}
+
+/* فرم */
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:7px;font-weight:600}
+.inp{position:relative}
+.inp input{width:100%;background:var(--bg2);border:1px solid var(--bd2);border-radius:13px;color:var(--text);font-size:.92rem;padding:13px 15px;font-family:inherit;direction:ltr;text-align:left;transition:.2s}
+.inp input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px var(--priSoft)}
+.inp .eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem}
+.inp .eye:hover{color:var(--text)}
+.inp .pre{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted2);font-size:.85rem;pointer-events:none}
+
+/* انتخاب نقش */
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:16px}
+.role-card{position:relative;padding:18px 12px;border:2px solid var(--bd2);border-radius:16px;background:var(--bg2);cursor:pointer;text-align:center;transition:.2s;overflow:hidden}
+.role-card:hover{border-color:var(--bd2);transform:translateY(-2px)}
+.role-card.sel{border-color:var(--pri);background:var(--priSoft)}
+.role-card .ri{font-size:2rem;display:block;margin-bottom:8px}
+.role-card b{font-size:.88rem;display:block}
+.role-card small{font-size:.68rem;color:var(--muted)}
+.role-card .chk{position:absolute;top:9px;left:9px;width:22px;height:22px;border-radius:50%;background:var(--grad);color:#fff;display:none;align-items:center;justify-content:center;font-size:.7rem}
+.role-card.sel .chk{display:flex;animation:pop .25s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{from{transform:scale(.3)}to{transform:scale(1)}}
+
+/* قدرت رمز */
+.pw-strength{display:flex;gap:5px;margin-top:9px}
+.pw-strength i{flex:1;height:4px;border-radius:3px;background:var(--card2);transition:.25s}
+.pw-strength.s1 i:nth-child(1){background:var(--red)}
+.pw-strength.s2 i:nth-child(-n+2){background:var(--yellow)}
+.pw-strength.s3 i:nth-child(-n+3){background:var(--green)}
+.pw-label{font-size:.68rem;color:var(--muted2);margin-top:5px}
+
+/* دکمه */
+.btn-main{width:100%;padding:15px;border:none;border-radius:14px;background:var(--grad);color:#fff;font-family:inherit;font-size:.98rem;font-weight:800;cursor:pointer;transition:.2s;box-shadow:0 8px 26px -6px rgba(139,92,246,.55);margin-top:6px}
+.btn-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 34px -6px rgba(139,92,246,.65)}
+.btn-main:disabled{opacity:.55;cursor:not-allowed}
+
+/* خطا */
+.err{display:none;align-items:center;gap:10px;background:rgba(255,107,129,.1);border:1px solid rgba(255,107,129,.35);color:var(--red);border-radius:13px;padding:12px 15px;font-size:.84rem;margin-bottom:16px}
+.err.show{display:flex;animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(6px)}75%{transform:translateX(-6px)}}
+
+/* سوییچ فرم */
+.switch-hint{text-align:center;margin-top:20px;font-size:.82rem;color:var(--muted)}
+.switch-hint a{color:var(--pri2);cursor:pointer;font-weight:700}
+.switch-hint a:hover{text-decoration:underline}
+
+/* هشدار ادمین */
+.admin-hint{margin-top:20px;padding:14px;background:rgba(77,159,255,.07);border:1px solid rgba(77,159,255,.2);border-radius:13px;font-size:.76rem;color:var(--muted);text-align:center;line-height:1.9}
+.admin-hint b{color:var(--blue)}
+.admin-hint code{background:var(--card2);border-radius:6px;padding:2px 8px;font-family:inherit;font-size:.72rem;direction:ltr;display:inline-block}
+
+/* اوورلی موفقیت */
+.success-ov{position:fixed;inset:0;background:rgba(7,11,20,.9);backdrop-filter:blur(8px);z-index:100;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.success-ov.show{display:flex}
+.check-ring{width:90px;height:90px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:2.6rem;color:#fff;animation:checkPop .5s cubic-bezier(.2,1.6,.4,1);box-shadow:0 0 0 12px var(--priSoft),0 0 60px rgba(139,92,246,.5)}
+@keyframes checkPop{from{transform:scale(.3);opacity:0}}
+.success-ov h2{font-size:1.4rem;font-weight:800}
+.success-ov p{color:var(--muted);font-size:.88rem}
+.load-bar{width:180px;height:4px;background:var(--card2);border-radius:3px;overflow:hidden;margin-top:6px}
+.load-bar::after{content:'';display:block;height:100%;width:40%;background:var(--grad);border-radius:3px;animation:slide 1s infinite}
+@keyframes slide{from{transform:translateX(220%)}to{transform:translateX(-220%)}}
+</style>
+</head>
+<body>
+
+<div class="bgfx"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-fx"></div>
+
+<div class="split">
+  <!-- ═══ برندینگ ═══ -->
+  <div class="brand">
+    <div class="brand-logo">
+      <div class="lb">🎓</div>
+      <div><h1>سامانه آموزشی</h1><small>پلتفرم جامع آموزش آنلاین</small></div>
+    </div>
+    <h2>یادگیری را <b>متحول</b> کنید</h2>
+    <p>کلاس مجازی زنده، آزمون‌ساز هوشمند، پیام‌رسان درون‌سازمانی و تحلیل پیشرفت — همه در یک سامانه فارسی.</p>
+    <div class="feat-list">
+      <div class="feat"><span class="fi">🎥</span><div><b>کلاس مجازی ادوبی‌کانکتی</b><small>تخته هوشمند، اتاق گروهی، نظرسنجی زنده</small></div></div>
+      <div class="feat"><span class="fi">💬</span><div><b>پیام‌رسان تلگرامی</b><small>ریپلای، واکنش، پیام صوتی و استیکر</small></div></div>
+      <div class="feat"><span class="fi">🎮</span><div><b>گیمیفیکیشن کامل</b><small>XP، سطح، استریک روزانه و نشان</small></div></div>
+      <div class="feat"><span class="fi">📈</span><div><b>تحلیل هوشمند</b><small>روند نمرات، نقاط ضعف و هشدار افت</small></div></div>
+    </div>
+    <div class="brand-foot">🔒 داده‌های شما امن است · © سامانه آموزشی</div>
+  </div>
+
+  <!-- ═══ فرم ═══ -->
+  <div class="form-side">
+    <div class="fcard">
+      <div class="mini-logo"><div style="font-size:2.6rem">🎓</div><h1 style="font-size:1.15rem;margin-top:6px">سامانه آموزشی</h1></div>
+
+      <div class="tabs" data-active="login" id="tabs">
+        <div class="tab-ind"></div>
+        <button class="tab active" onclick="switchTab('login')">ورود</button>
+        <button class="tab" onclick="switchTab('register')">ثبت‌نام</button>
+      </div>
+
+      <!-- ═══ فرم ورود ═══ -->
+      <form id="loginForm" onsubmit="return false">
+        <div class="err" id="loginErr"></div>
+        <div class="fg">
+          <label>ایمیل</label>
+          <div class="inp"><span class="pre">📧</span><input type="email" id="loginEmail" placeholder="example@school.ir" autocomplete="email"/></div>
+        </div>
+        <div class="fg">
+          <label>رمز عبور</label>
+          <div class="inp"><span class="pre">🔒</span><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"/><button type="button" class="eye" onclick="togglePw('loginPass',this)">👁</button></div>
+        </div>
+        <button class="btn-main" id="loginBtn" onclick="doLogin()">🚀 ورود به سامانه</button>
+        <div class="switch-hint">حساب ندارید؟ <a onclick="switchTab('register')">ثبت‌نام رایگان</a></div>
+        <div class="admin-hint">
+          <b>حساب مدیر پیش‌فرض:</b><br>
+          <code>admin@school.ir</code> · <code>admin123</code>
+        </div>
+      </form>
+
+      <!-- ═══ فرم ثبت‌نام ═══ -->
+      <form id="regForm" style="display:none" onsubmit="return false">
+        <div class="err" id="regErr"></div>
+        <div class="fg">
+          <label>من می‌خواهم به‌عنوان...</label>
+          <div class="roles">
+            <div class="role-card sel" id="roleStudent" onclick="pickRole('student')">
+              <span class="chk">✓</span><span class="ri">👨‍🎓</span>
+              <b>دانش‌آموز</b><small>آزمون بده، XP بگیر</small>
+            </div>
+            <div class="role-card" id="roleTeacher" onclick="pickRole('teacher')">
+              <span class="chk">✓</span><span class="ri">👨‍🏫</span>
+              <b>معلم</b><small>کلاس و آزمون بساز</small>
+            </div>
+          </div>
+        </div>
+        <div class="fg">
+          <label>نام کامل</label>
+          <div class="inp"><span class="pre">👤</span><input type="text" id="regName" placeholder="نام و نام خانوادگی" autocomplete="name" style="direction:rtl;text-align:right"/></div>
+        </div>
+        <div class="fg">
+          <label>ایمیل</label>
+          <div class="inp"><span class="pre">📧</span><input type="email" id="regEmail" placeholder="example@school.ir" autocomplete="email"/></div>
+        </div>
+        <div class="fg">
+          <label>رمز عبور</label>
+          <div class="inp"><span class="pre">🔒</span><input type="password" id="regPass" placeholder="حداقل ۶ کاراکتر" autocomplete="new-password" oninput="pwStrength()"/><button type="button" class="eye" onclick="togglePw('regPass',this)">👁</button></div>
+          <div class="pw-strength" id="pwBar"><i></i><i></i><i></i></div>
+          <div class="pw-label" id="pwLabel"></div>
+        </div>
+        <div class="fg">
+          <label>تکرار رمز عبور</label>
+          <div class="inp"><span class="pre">🔁</span><input type="password" id="regPass2" placeholder="تکرار رمز" autocomplete="new-password"/></div>
+        </div>
+        <button class="btn-main" id="regBtn" onclick="doRegister()">✨ ساخت حساب من</button>
+        <div class="switch-hint">قبلاً ثبت‌نام کرده‌اید؟ <a onclick="switchTab('login')">ورود</a></div>
+        <div class="admin-hint">👑 حساب <b>مدیر</b> فقط توسط مدیر سیستم ساخته می‌شود</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- اوورلی موفقیت -->
+<div class="success-ov" id="successOv">
+  <div class="check-ring">✓</div>
+  <h2 id="sucTitle">خوش آمدید!</h2>
+  <p id="sucSub">در حال انتقال به پنل شما...</p>
+  <div class="load-bar"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let regRole='student';
+
+/* اگر لاگین است → هدایت */
+const savedUser=JSON.parse(localStorage.getItem('user')||'null');
+const savedToken=localStorage.getItem('token');
+if(savedUser&&savedToken){
+  const dest={admin:'/admin',teacher:'/teacher',student:'/student'};
+  if(dest[savedUser.role])location.replace(dest[savedUser.role]);
+}
+
+/* تب از URL (?tab=register) */
+const params=new URLSearchParams(location.search);
+if(params.get('tab')==='register')switchTab('register');
+
+function switchTab(t){
+  const tabs=$('tabs');
+  tabs.dataset.active=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.textContent.includes(t==='login'?'ورود':'ثبت‌نام')));
+  $('loginForm').style.display=t==='login'?'':'none';
+  $('regForm').style.display=t==='register'?'':'none';
+  hideErr('loginErr');hideErr('regErr');
+}
+
+function togglePw(id,btn){
+  const inp=$(id);
+  inp.type=inp.type==='password'?'text':'password';
+  btn.textContent=inp.type==='password'?'👁':'🙈';
+}
+
+function pickRole(r){
+  regRole=r;
+  $('roleStudent').classList.toggle('sel',r==='student');
+  $('roleTeacher').classList.toggle('sel',r==='teacher');
+}
+
+function pwStrength(){
+  const v=$('regPass').value;
+  let s=0;
+  if(v.length>=6)s++;
+  if(v.length>=9&&/[A-Za-z]/.test(v)&&/[0-9]/.test(v))s++;
+  if(v.length>=12||(/[^A-Za-z0-9]/.test(v)&&s>=2))s++;
+  const bar=$('pwBar');
+  bar.className='pw-strength '+(s?'s'+s:'');
+  $('pwLabel').textContent=v?(s===1?'ضعیف — کمی قوی‌تر کن':s===2?'متوسط — خوبه!':'قوی — عالی 💪'):'';
+}
+
+function showErr(id,msg){const e=$(id);e.innerHTML='<span>⚠️</span><span>'+msg+'</span>';e.classList.remove('show');void e.offsetWidth;e.classList.add('show')}
+function hideErr(id){$(id).classList.remove('show')}
+
+function redirectByRole(role){
+  const dest={admin:'/admin',teacher:'/teacher',student:'/student'};
+  setTimeout(()=>location.href=dest[role]||'/',1400);
+}
+
+/* ═══ ورود ═══ */
+async function doLogin(){
+  const email=$('loginEmail').value.trim();
+  const pass=$('loginPass').value;
+  if(!email||!pass)return showErr('loginErr','ایمیل و رمز عبور را وارد کنید');
+  const btn=$('loginBtn');btn.disabled=true;btn.textContent='⏳ در حال ورود...';
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'خطا در ورود');
+    localStorage.setItem('token',d.token);
+    localStorage.setItem('user',JSON.stringify(d.user));
+    showSuccess('خوش برگشتی، '+d.user.name+'!','در حال انتقال به پنل '+({admin:'مدیریت',teacher:'معلم',student:'دانش‌آموز'})[d.user.role]+'...');
+    redirectByRole(d.user.role);
+  }catch(e){showErr('loginErr',e.message)}
+  finally{btn.disabled=false;btn.textContent='🚀 ورود به سامانه'}
+}
+
+/* ═══ ثبت‌نام ═══ */
+async function doRegister(){
+  const name=$('regName').value.trim();
+  const email=$('regEmail').value.trim();
+  const pass=$('regPass').value;
+  const pass2=$('regPass2').value;
+  if(!name||name.length<3)return showErr('regErr','نام کامل را وارد کنید (حداقل ۳ حرف)');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return showErr('regErr','ایمیل معتبر وارد کنید');
+  if(pass.length<6)return showErr('regErr','رمز عبور باید حداقل ۶ کاراکتر باشد');
+  if(pass!==pass2)return showErr('regErr','تکرار رمز با رمز عبور یکسان نیست');
+  const btn=$('regBtn');btn.disabled=true;btn.textContent='⏳ در حال ساخت حساب...';
+  try{
+    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password:pass,role:regRole})});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'خطا در ثبت‌نام');
+    localStorage.setItem('token',d.token);
+    localStorage.setItem('user',JSON.stringify(d.user));
+    showSuccess('حساب شما ساخته شد! 🎉','خوش آمدی '+d.user.name+' — در حال انتقال...');
+    redirectByRole(d.user.role);
+  }catch(e){showErr('regErr',e.message)}
+  finally{btn.disabled=false;btn.textContent='✨ ساخت حساب من'}
+}
+
+function showSuccess(title,sub){
+  $('sucTitle').textContent=title;
+  $('sucSub').textContent=sub;
+  $('successOv').classList.add('show');
+}
+
+/* Enter برای ارسال */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    if($('loginForm').style.display!=='none')doLogin();
+    else doRegister();
+  }
+});
+</script>
+<script src="/ai-widget.js" defer></script>
+</body>
+</html>

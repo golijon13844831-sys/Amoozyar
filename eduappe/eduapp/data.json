@@ -1,0 +1,640 @@
+{
+  "users": [
+    {
+      "id": "mub7qvfpnqyt",
+      "name": "مدیر سیستم",
+      "email": "admin@school.ir",
+      "password": "37acb2397b865c962fdd0dc3541834034decefc768bb216864416ab392ca15f3",
+      "role": "admin",
+      "active": true,
+      "createdAt": "2026-09-21T12:20:19.239Z"
+    },
+    {
+      "id": "mub7udjlptxa",
+      "name": "علی",
+      "email": "1384",
+      "password": "4838ed084d1d287f80c52bfd51eca8fc2cbda981d44c28cbe8bb1a7c7a4393e8",
+      "role": "teacher",
+      "classIds": [
+        "muc8z8khyo80"
+      ],
+      "active": true,
+      "createdAt": "2026-09-21T12:23:02.673Z"
+    },
+    {
+      "id": "mub8av1i3yhr",
+      "name": "محمد",
+      "email": "1392",
+      "password": "f57f3d1e8fe57cb02c0851a03ba6f8a8b1e1d7bcc0fe42d231f8d653bd4247cd",
+      "role": "student",
+      "classIds": [
+        "muc8z8khyo80"
+      ],
+      "active": true,
+      "createdAt": "2026-09-21T12:35:51.846Z"
+    },
+    {
+      "id": "muc90ihjfz3c",
+      "name": "محمد طاها گل افروز",
+      "email": "1353",
+      "password": "f2e4fb8c4285931f593b228fa10313c40cacc8f6cbfcd207ec54fbba7d120ace",
+      "role": "student",
+      "classIds": [
+        "muc8z8khyo80"
+      ],
+      "active": true,
+      "createdAt": "2026-09-22T05:43:34.807Z"
+    }
+  ],
+  "classes": [
+    {
+      "id": "muc8z8khyo80",
+      "name": "801",
+      "subject": "ریاضی",
+      "teacherId": "mub7udjlptxa",
+      "teacherName": "علی",
+      "studentIds": [
+        "mub8av1i3yhr",
+        "muc90ihjfz3c"
+      ],
+      "createdAt": "2026-09-22T05:42:35.297Z"
+    }
+  ],
+  "lessons": [],
+  "assignments": [],
+  "submissions": [],
+  "quizzes": [],
+  "quizSubmissions": [],
+  "attendance": [
+    {
+      "id": "muc979hna4n1",
+      "classId": "muc8z8khyo80",
+      "date": "2026-09-22",
+      "records": [
+        {
+          "studentId": "mub8av1i3yhr",
+          "status": "present"
+        },
+        {
+          "studentId": "muc90ihjfz3c",
+          "status": "present"
+        }
+      ]
+    }
+  ],
+  "polls": [],
+  "pollVotes": [],
+  "chatRooms": [
+    {
+      "id": "room_muc8z8khyo80",
+      "classId": "muc8z8khyo80",
+      "name": "گروه 801",
+      "type": "class",
+      "members": [
+        "mub7udjlptxa",
+        "mub8av1i3yhr",
+        "muc90ihjfz3c"
+      ],
+      "createdAt": "2026-09-22T05:42:35.297Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "muc94xeyghwj",
+      "roomId": "room_muc8z8khyo80",
+      "senderId": "muc90ihjfz3c",
+      "senderName": "محمد طاها گل افروز",
+      "text": "",
+      "replyToId": null,
+      "forwardedFrom": null,
+      "fileUrl": "/uploads/muc94vwjwkr5.octet",
+      "fileName": "README.md",
+      "fileType": "document",
+      "fileSize": 3822,
+      "voiceUrl": null,
+      "voiceDuration": null,
+      "deleted": false,
+      "edited": false,
+      "pinned": false,
+      "reactions": {},
+      "readBy": [
+        "muc90ihjfz3c"
+      ],
+      "createdAt": "2026-09-22T05:47:00.778Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "muc97k8ch6fe",
+      "userId": "mub8av1i3yhr",
+      "text": "🔴 کلاس زنده شروع شد: 1384",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-09-22T05:49:03.660Z"
+    },
+    {
+      "id": "muc97k8ci99u",
+      "userId": "muc90ihjfz3c",
+      "text": "🔴 کلاس زنده شروع شد: 1384",
+      "type": "class",
+      "read": false,
+      "createdAt": "2026-09-22T05:49:03.660Z"
+    }
+  ],
+  "classSessions": [
+    {
+      "id": "muc97k8cy5v8",
+      "classId": "muc8z8khyo80",
+      "title": "1384",
+      "meetLink": "",
+      "teacherId": "mub7udjlptxa",
+      "teacherName": "علی",
+      "students": [
+        "mub8av1i3yhr",
+        "muc90ihjfz3c"
+      ],
+      "active": true,
+      "startedAt": "2026-09-22T05:49:03.660Z",
+      "currentLayout": "sharing",
+      "notes": "",
+      "whiteboard": [
+        [
+          {
+            "tool": "pencil",
+            "x1": 347.994389973728,
+            "y1": 38.399993896484375,
+            "x2": 347.994389973728,
+            "y2": 40.399993896484375,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 347.994389973728,
+            "y1": 40.399993896484375,
+            "x2": 347.994389973728,
+            "y2": 41.399993896484375,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 347.994389973728,
+            "y1": 41.399993896484375,
+            "x2": 347.994389973728,
+            "y2": 44.399993896484375,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 347.994389973728,
+            "y1": 44.399993896484375,
+            "x2": 347.994389973728,
+            "y2": 50.399993896484375,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 347.994389973728,
+            "y1": 50.399993896484375,
+            "x2": 363.9849415084279,
+            "y2": 70.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 363.9849415084279,
+            "y1": 70.39999389648438,
+            "x2": 379.9754930431277,
+            "y2": 86.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 379.9754930431277,
+            "y1": 86.39999389648438,
+            "x2": 403.96132034517746,
+            "y2": 106.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 403.96132034517746,
+            "y1": 106.39999389648438,
+            "x2": 448.9347465365208,
+            "y2": 131.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 448.9347465365208,
+            "y1": 131.39999389648438,
+            "x2": 471.92116436765184,
+            "y2": 145.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 471.92116436765184,
+            "y1": 145.39999389648438,
+            "x2": 478.91703066408303,
+            "y2": 148.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 52.169186581780885,
+            "y1": 92.39999389648438,
+            "x2": 55.16741499453711,
+            "y2": 93.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 55.16741499453711,
+            "y1": 93.39999389648438,
+            "x2": 62.16328129096829,
+            "y2": 95.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 62.16328129096829,
+            "y1": 95.39999389648438,
+            "x2": 77.1544233547494,
+            "y2": 98.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 77.1544233547494,
+            "y1": 98.39999389648438,
+            "x2": 118.13021166241775,
+            "y2": 103.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 118.13021166241775,
+            "y1": 103.39999389648438,
+            "x2": 178.09477991754218,
+            "y2": 111.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 178.09477991754218,
+            "y1": 111.39999389648438,
+            "x2": 285.03159330584737,
+            "y2": 113.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 285.03159330584737,
+            "y1": 113.39999389648438,
+            "x2": 338.9997047354594,
+            "y2": 113.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 338.9997047354594,
+            "y1": 113.39999389648438,
+            "x2": 365.9837604502654,
+            "y2": 111.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 365.9837604502654,
+            "y1": 111.39999389648438,
+            "x2": 376.9772646303715,
+            "y2": 107.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          },
+          {
+            "tool": "pencil",
+            "x1": 376.9772646303715,
+            "y1": 107.39999389648438,
+            "x2": 379.9754930431277,
+            "y2": 106.39999389648438,
+            "color": "#e6edf3",
+            "size": 3,
+            "layer": 0
+          }
+        ],
+        [],
+        []
+      ],
+      "messages": [],
+      "qna": [],
+      "files": [
+        {
+          "id": "muc99y1fzzjr",
+          "name": "ضبط-۱۴۰۵/۶/۳۱.webm",
+          "url": "/uploads/muc99xrnzvow.webm",
+          "by": "علی",
+          "at": "2026-09-22T05:50:54.867Z"
+        }
+      ],
+      "userStatuses": {}
+    }
+  ],
+  "classMessages": [],
+  "uploads": [],
+  "questionBank": [],
+  "studentNotes": [],
+  "badges": [],
+  "studentBadges": [],
+  "assignmentTemplates": [],
+  "quizTemplates": [],
+  "studentXP": [
+    {
+      "studentId": "mub8av1i3yhr",
+      "totalXP": 2,
+      "history": [
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-21T15:15:38.300Z"
+        }
+      ]
+    },
+    {
+      "studentId": "muc90ihjfz3c",
+      "totalXP": 16,
+      "history": [
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-22T05:44:23.022Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-22T05:44:46.422Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-22T05:45:00.840Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-22T05:46:27.404Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-22T05:47:37.948Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-22T06:46:41.310Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-22T06:58:14.719Z"
+        },
+        {
+          "amount": 2,
+          "reason": "daily_activity",
+          "at": "2026-09-22T07:45:26.298Z"
+        }
+      ]
+    }
+  ],
+  "studentStreaks": [
+    {
+      "studentId": "mub8av1i3yhr",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "lastActiveDate": "2026-09-21"
+    },
+    {
+      "studentId": "muc90ihjfz3c",
+      "currentStreak": 1,
+      "longestStreak": 1,
+      "lastActiveDate": "2026-09-22"
+    }
+  ],
+  "flashcardReviews": [],
+  "messageReactions": [],
+  "pinnedMessages": [],
+  "userPresence": [],
+  "roomUserPrefs": [
+    {
+      "roomId": "room_muc8z8khyo80",
+      "userId": "muc90ihjfz3c",
+      "lastReadAt": "2026-09-22T05:47:25.990Z"
+    }
+  ],
+  "announcements": [],
+  "faqs": [],
+  "contactMessages": [],
+  "activityLog": [
+    {
+      "id": "mub7tsul9r5r",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-21T12:22:35.853Z"
+    },
+    {
+      "id": "mub7udjlqdnk",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_user",
+      "details": "کاربر جدید: علی (teacher)",
+      "createdAt": "2026-09-21T12:23:02.673Z"
+    },
+    {
+      "id": "mub7us9v0mrw",
+      "userId": "mub7udjlptxa",
+      "userName": "علی",
+      "userRole": "teacher",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-21T12:23:21.763Z"
+    },
+    {
+      "id": "mub89jwr5o6z",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-21T12:34:50.763Z"
+    },
+    {
+      "id": "mub8av1iae6w",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_user",
+      "details": "کاربر جدید: محمد (student)",
+      "createdAt": "2026-09-21T12:35:51.846Z"
+    },
+    {
+      "id": "mube1dgnso5u",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-21T15:16:26.855Z"
+    },
+    {
+      "id": "mube22aawcyc",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "backup_export",
+      "details": "دانلود پشتیبان دیتابیس",
+      "createdAt": "2026-09-21T15:16:59.026Z"
+    },
+    {
+      "id": "muc8vacv9b46",
+      "userId": "mub7udjlptxa",
+      "userName": "علی",
+      "userRole": "teacher",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T05:39:30.991Z"
+    },
+    {
+      "id": "muc8ytw4raz5",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T05:42:16.277Z"
+    },
+    {
+      "id": "muc8z8khk130",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_class",
+      "details": "کلاس جدید: 801 (معلم: علی)",
+      "createdAt": "2026-09-22T05:42:35.297Z"
+    },
+    {
+      "id": "muc90ihjv47k",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "create_user",
+      "details": "کاربر جدید: محمد طاها گل افروز (student)",
+      "createdAt": "2026-09-22T05:43:34.807Z"
+    },
+    {
+      "id": "muc91ihorgs8",
+      "userId": "muc90ihjfz3c",
+      "userName": "محمد طاها گل افروز",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T05:44:21.468Z"
+    },
+    {
+      "id": "muc93132xccb",
+      "userId": "mub7qvfpnqyt",
+      "userName": "مدیر سیستم",
+      "userRole": "admin",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T05:45:32.222Z"
+    },
+    {
+      "id": "muc946cdl75u",
+      "userId": "muc90ihjfz3c",
+      "userName": "محمد طاها گل افروز",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T05:46:25.693Z"
+    },
+    {
+      "id": "muc966jcw8t5",
+      "userId": "mub7udjlptxa",
+      "userName": "علی",
+      "userRole": "teacher",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T05:47:59.256Z"
+    },
+    {
+      "id": "mucax5001l4x",
+      "userId": "mub7udjlptxa",
+      "userName": "علی",
+      "userRole": "teacher",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T06:36:56.592Z"
+    },
+    {
+      "id": "mucb9moonhlw",
+      "userId": "muc90ihjfz3c",
+      "userName": "محمد طاها گل افروز",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T06:46:39.384Z"
+    },
+    {
+      "id": "mucdd6wffb9z",
+      "userId": "muc90ihjfz3c",
+      "userName": "محمد طاها گل افروز",
+      "userRole": "student",
+      "action": "login",
+      "details": "ورود به سامانه",
+      "createdAt": "2026-09-22T07:45:24.783Z"
+    }
+  ],
+  "settings": {}
+}
