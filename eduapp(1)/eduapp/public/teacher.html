@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل معلم | سامانه آموزشی</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070b14;--bg2:#0b1120;
+  --card:rgba(255,255,255,.03);--card2:rgba(255,255,255,.06);
+  --glass:rgba(10,14,26,.75);
+  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.14);
+  --pri:#4d9fff;--pri2:#7cc0ff;--priSoft:rgba(77,159,255,.14);
+  --green:#2fd48c;--yellow:#ffc94d;--purple:#a78bfa;--cyan:#22d3ee;--red:#ff6b81;
+  --text:#eef2f8;--muted:#8b94a7;--muted2:#59627a;
+  --r:18px;--shadow:0 14px 44px rgba(0,0,0,.45);
+  --grad:linear-gradient(135deg,#4d9fff,#7cc0ff);
+}
+[data-theme=light]{
+  --bg:#f2f5fb;--bg2:#ffffff;
+  --card:rgba(255,255,255,.75);--card2:rgba(255,255,255,.95);
+  --glass:rgba(255,255,255,.8);
+  --bd:rgba(15,23,42,.08);--bd2:rgba(15,23,42,.16);
+  --text:#0f172a;--muted:#5b6478;--muted2:#8b94a7;
+  --priSoft:rgba(77,159,255,.1);--shadow:0 14px 40px rgba(30,41,80,.12);
+}
+body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);direction:rtl;display:flex;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:8px}
+::selection{background:var(--priSoft)}
+
+/* ═══ پس‌زمینه ═══ */
+.bgfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.16}
+.blob.b1{width:480px;height:480px;background:var(--pri);top:-140px;right:-100px;animation:fl 14s ease-in-out infinite}
+.blob.b2{width:420px;height:420px;background:var(--purple);bottom:-120px;left:-80px;opacity:.12;animation:fl 18s ease-in-out infinite reverse}
+.blob.b3{width:300px;height:300px;background:var(--cyan);top:38%;left:32%;opacity:.08;animation:fl 22s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.12)}}
+
+/* ═══ سایدبار ═══ */
+.sb{width:266px;position:fixed;right:0;top:0;bottom:0;z-index:60;display:flex;flex-direction:column;background:var(--glass);backdrop-filter:blur(18px);border-left:1px solid var(--bd);transition:width .28s cubic-bezier(.4,0,.2,1),transform .3s}
+body.sb-min .sb{width:82px}
+.sb-logo{display:flex;align-items:center;gap:12px;padding:20px 20px 16px;cursor:pointer}
+.logo-badge{width:44px;height:44px;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;box-shadow:0 8px 22px rgba(77,159,255,.35)}
+.sb-logo h1{font-size:1.02rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.sb-logo small{display:block;font-size:.68rem;color:var(--muted);font-weight:400}
+body.sb-min .sb-logo h1,body.sb-min .sb-logo small,body.sb-min .ni-label,body.sb-min .sb-sec,body.sb-min .sb-user-info,body.sb-min .sb-min-btn span{opacity:0;pointer-events:none}
+.sb-nav{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.sb-sec{font-size:.64rem;font-weight:700;color:var(--muted2);letter-spacing:.14em;padding:14px 12px 5px;white-space:nowrap}
+.ni{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:13px;color:var(--muted);cursor:pointer;transition:.18s;position:relative;white-space:nowrap;font-size:.88rem}
+.ni:hover{color:var(--text);background:var(--card2)}
+.ni .ic{width:36px;height:36px;border-radius:11px;background:var(--card);display:flex;align-items:center;justify-content:center;font-size:1.02rem;flex-shrink:0;transition:.2s;border:1px solid transparent}
+.ni:hover .ic{border-color:var(--bd2);transform:translateY(-1px)}
+.ni.active{color:var(--text);background:var(--priSoft)}
+.ni.active .ic{background:var(--grad);box-shadow:0 6px 18px rgba(77,159,255,.4);border-color:transparent}
+.ni.active::after{content:'';position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:4px;height:26px;background:var(--grad);border-radius:4px;box-shadow:0 0 12px rgba(77,159,255,.6)}
+.sb-user{margin:12px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--bd);display:flex;align-items:center;gap:11px}
+.sb-user .av{width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--priSoft)}
+.sb-user-info{min-width:0;flex:1}
+.sb-user-info b{display:block;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-user-info span{font-size:.68rem;color:var(--muted)}
+.logout{margin-top:10px;width:100%;padding:9px;border-radius:11px;border:1px solid var(--bd2);background:transparent;color:var(--muted);font-family:inherit;font-size:.8rem;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px;justify-content:center}
+.logout:hover{border-color:var(--red);color:var(--red);background:rgba(255,107,129,.08)}
+.sb-min-btn{margin:8px auto;padding:7px;border-radius:10px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:6px;font-family:inherit;font-size:.72rem}
+.sb-min-btn:hover{color:var(--text);background:var(--card2)}
+
+/* ═══ اصلی ═══ */
+.main{margin-right:266px;flex:1;position:relative;z-index:1;min-width:0;transition:margin .28s cubic-bezier(.4,0,.2,1)}
+body.sb-min .main{margin-right:82px}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:13px 26px;background:var(--glass);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd)}
+.pg-crumb{min-width:0;flex:1}
+.pg-crumb h2{font-size:1.05rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg-crumb span{font-size:.7rem;color:var(--muted)}
+.tb-btn{width:42px;height:42px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:1.05rem;display:flex;align-items:center;justify-content:center;transition:.2s;position:relative;flex-shrink:0}
+.tb-btn:hover{border-color:var(--bd2);color:var(--text);transform:translateY(-2px)}
+.tb-btn .dot{position:absolute;top:9px;right:9px;width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px var(--bg);animation:pd 2s infinite}
+@keyframes pd{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.search-pill{display:flex;align-items:center;gap:9px;padding:9px 15px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);font-size:.82rem;cursor:pointer;transition:.2s;min-width:190px}
+.search-pill:hover{border-color:var(--bd2);color:var(--text)}
+.search-pill kbd{margin-right:auto;background:var(--card2);border:1px solid var(--bd2);border-radius:6px;padding:2px 7px;font-size:.66rem;font-family:inherit}
+.tb-av{width:42px;height:42px;border-radius:13px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;cursor:pointer;box-shadow:0 4px 14px rgba(77,159,255,.3)}
+.ndd{position:absolute;top:56px;left:26px;width:min(360px,90vw);background:var(--bg2);border:1px solid var(--bd2);border-radius:16px;box-shadow:var(--shadow);display:none;z-index:100;overflow:hidden;animation:ddIn .18s}
+.ndd.open{display:block}
+@keyframes ddIn{from{opacity:0;transform:translateY(-8px) scale(.98)}}
+.ndd-h{padding:13px 16px;font-size:.85rem;font-weight:700;border-bottom:1px solid var(--bd)}
+.ndd-list{max-height:330px;overflow-y:auto}
+.ndd-item{display:flex;gap:11px;padding:11px 15px;border-bottom:1px solid var(--bd);font-size:.8rem}
+.ndd-item .ic{width:32px;height:32px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+.ndd-item small{display:block;color:var(--muted2);font-size:.66rem;margin-top:2px}
+
+/* ═══ محتوا ═══ */
+.cont{padding:26px;max-width:1280px;margin:0 auto}
+.sec{display:none}
+.sec.active{display:block;animation:fadeUp .4s cubic-bezier(.2,.8,.3,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.ph{margin-bottom:22px}
+.ph h1{font-size:1.5rem;font-weight:800}
+.ph h1 i{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ph p{color:var(--muted);font-size:.86rem;margin-top:4px}
+
+/* ═══ هیرو ═══ */
+.hero{position:relative;border-radius:24px;padding:30px 32px;overflow:hidden;border:1px solid var(--bd);background:linear-gradient(120deg,rgba(77,159,255,.16),rgba(167,139,250,.1) 55%,rgba(34,211,238,.12));margin-bottom:22px}
+.hero::before{content:'';position:absolute;top:-70px;left:-40px;width:280px;height:280px;border-radius:50%;background:var(--pri);filter:blur(90px);opacity:.25}
+.hero::after{content:'';position:absolute;bottom:-90px;right:20%;width:240px;height:240px;border-radius:50%;background:var(--purple);filter:blur(90px);opacity:.16}
+.hero>*{position:relative;z-index:1}
+.hero .hi{font-size:2.3rem;display:inline-block;animation:wave 2.4s ease-in-out infinite;transform-origin:70% 70%}
+@keyframes wave{0%,55%,100%{transform:rotate(0)}20%{transform:rotate(16deg)}35%{transform:rotate(-8deg)}}
+.hero h2{font-size:1.5rem;font-weight:800;margin-top:6px}
+.hero h2 b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);font-size:.86rem;margin-top:8px;max-width:520px;line-height:1.8}
+.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.hchip{display:inline-flex;align-items:center;gap:7px;background:var(--glass);border:1px solid var(--bd2);border-radius:12px;padding:7px 13px;font-size:.76rem;backdrop-filter:blur(8px)}
+.hchip .ok{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+
+/* ═══ آمار ═══ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:22px}
+.stat{position:relative;padding:20px;border-radius:var(--r);background:var(--card);border:1px solid var(--bd);backdrop-filter:blur(10px);overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s}
+.stat:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--bd2)}
+.stat::after{content:'';position:absolute;top:-55%;left:-25%;width:190px;height:190px;border-radius:50%;background:var(--c,var(--pri));filter:blur(70px);opacity:.17;transition:.3s}
+.stat:hover::after{opacity:.28}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;position:relative}
+.stat-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;background:var(--c,var(--pri));box-shadow:0 8px 22px -6px var(--c,var(--pri))}
+.stat-n{font-size:1.9rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;position:relative}
+.stat-l{font-size:.74rem;color:var(--muted);margin-top:6px;position:relative}
+
+/* ═══ کارت ═══ */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:22px;backdrop-filter:blur(10px);transition:border-color .25s}
+.card:hover{border-color:var(--bd2)}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+.ch h2{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:9px}
+.ch h2 .ic{width:34px;height:34px;border-radius:10px;background:var(--card2);display:inline-flex;align-items:center;justify-content:center;font-size:.95rem}
+.grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+@media(max-width:1000px){.grid2{grid-template-columns:1fr}}
+
+/* ═══ دکمه ═══ */
+.btn{padding:10px 18px;border-radius:12px;border:none;font-family:inherit;font-size:.84rem;font-weight:600;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn:active{transform:scale(.96)}
+.btn-pri{background:var(--grad);color:#fff;box-shadow:0 6px 20px -4px rgba(77,159,255,.45)}
+.btn-pri:hover{transform:translateY(-2px);box-shadow:0 10px 28px -4px rgba(77,159,255,.55)}
+.btn-green{background:linear-gradient(135deg,var(--green),#7ce7b4);color:#05261a;box-shadow:0 6px 18px -4px rgba(47,212,140,.4)}
+.btn-green:hover{transform:translateY(-2px)}
+.btn-purple{background:linear-gradient(135deg,var(--purple),#c4b0ff);color:#fff;box-shadow:0 6px 18px -4px rgba(167,139,250,.4)}
+.btn-red{background:linear-gradient(135deg,var(--red),#ff9aa8);color:#fff;box-shadow:0 6px 18px -4px rgba(255,107,129,.4)}
+.btn-red:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent;border:1px solid var(--bd2);color:var(--muted)}
+.btn-ghost:hover{border-color:var(--pri);color:var(--pri)}
+.btn-danger{background:rgba(255,107,129,.12);color:var(--red);border:1px solid rgba(255,107,129,.3)}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-sm{padding:7px 12px;font-size:.74rem;border-radius:10px}
+.ibtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:.85rem;display:inline-flex;align-items:center;justify-content:center;transition:.18s}
+.ibtn:hover{border-color:var(--pri);color:var(--pri);background:var(--priSoft);transform:translateY(-2px)}
+.ibtn.warn:hover{border-color:var(--red);color:var(--red);background:rgba(255,107,129,.08)}
+
+/* ═══ فرم ═══ */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.76rem;color:var(--muted);margin-bottom:7px;font-weight:600}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=date],input[type=file],select,textarea{width:100%;background:var(--bg2);border:1px solid var(--bd2);border-radius:12px;color:var(--text);font-size:.88rem;padding:11px 14px;font-family:inherit;direction:rtl;transition:.2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px var(--priSoft)}
+textarea{min-height:90px;resize:vertical;line-height:1.7}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b94a7' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 14px center}
+select option{background:var(--bg2);color:var(--text)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.row2{grid-template-columns:1fr}}
+input[type=radio],input[type=checkbox]{accent-color:var(--pri);cursor:pointer}
+
+/* ═══ چیپ کلاس ═══ */
+.cls-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;align-items:center}
+.cls-tab{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:20px;border:1px solid var(--bd2);background:var(--card);color:var(--muted);font-family:inherit;font-size:.82rem;cursor:pointer;transition:.18s;font-weight:600}
+.cls-tab:hover{color:var(--text);border-color:var(--bd2);transform:translateY(-1px)}
+.cls-tab.on{background:var(--priSoft);border-color:var(--pri);color:var(--pri);font-weight:700;box-shadow:0 4px 14px -4px rgba(77,159,255,.3)}
+.cls-tab .mini-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.6}
+
+/* ═══ آیتم ═══ */
+.item{display:flex;gap:14px;padding:17px;border-radius:15px;background:var(--card);border:1px solid var(--bd);margin-bottom:12px;transition:.2s;align-items:flex-start}
+.item:hover{border-color:var(--bd2);transform:translateX(-3px)}
+.item .ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.item .bd{flex:1;min-width:0}
+.item .bd b{font-size:.94rem}
+.item .bd p{font-size:.8rem;color:var(--muted);margin-top:5px;line-height:1.7}
+.item .ft{display:flex;gap:9px;align-items:center;margin-top:10px;font-size:.68rem;color:var(--muted2);flex-wrap:wrap}
+.item .acts{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap}
+
+/* ═══ جدول ═══ */
+.tblwrap{overflow-x:auto;border-radius:14px;border:1px solid var(--bd)}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th{padding:12px 14px;text-align:right;font-size:.7rem;color:var(--muted);font-weight:700;background:var(--card2);white-space:nowrap}
+td{padding:12px 14px;border-top:1px solid var(--bd);font-size:.84rem;vertical-align:middle}
+tbody tr{transition:.15s}
+tbody tr:hover{background:var(--card2)}
+.av{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.82rem;flex-shrink:0}
+.ucell{display:flex;align-items:center;gap:11px}
+.ucell b{display:block;font-size:.86rem}
+.ucell small{display:block;color:var(--muted2);font-size:.68rem}
+
+/* ═══ بج ═══ */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:.7rem;font-weight:700}
+.b-on{background:rgba(47,212,140,.13);color:var(--green);border:1px solid rgba(47,212,140,.32)}
+.b-off{background:var(--card2);color:var(--muted);border:1px solid var(--bd2)}
+.b-blue{background:var(--priSoft);color:var(--pri);border:1px solid rgba(77,159,255,.32)}
+.b-yel{background:rgba(255,201,77,.13);color:var(--yellow);border:1px solid rgba(255,201,77,.32)}
+.b-red{background:rgba(255,107,129,.13);color:var(--red);border:1px solid rgba(255,107,129,.32)}
+.b-pur{background:rgba(167,139,250,.13);color:var(--purple);border:1px solid rgba(167,139,250,.32)}
+
+/* ═══ سوییچ ═══ */
+.sw{position:relative;display:inline-block;width:48px;height:27px;flex-shrink:0}
+.sw input{opacity:0;width:0;height:0}
+.sw .tr{position:absolute;inset:0;background:var(--card2);border:1px solid var(--bd2);border-radius:20px;cursor:pointer;transition:.25s}
+.sw .tr::before{content:'';position:absolute;width:19px;height:19px;border-radius:50%;background:#fff;top:3px;right:3px;transition:.25s cubic-bezier(.4,0,.2,1);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.sw input:checked+.tr{background:var(--grad);border-color:transparent;box-shadow:0 4px 14px rgba(77,159,255,.35)}
+.sw input:checked+.tr::before{transform:translateX(-21px)}
+
+/* ═══ مودال ═══ */
+.mo{position:fixed;inset:0;background:rgba(3,6,14,.68);backdrop-filter:blur(7px);z-index:300;display:none;align-items:center;justify-content:center;padding:18px}
+.mo.open{display:flex}
+.md{width:min(620px,94vw);max-height:88vh;overflow-y:auto;background:var(--bg2);border:1px solid var(--bd2);border-radius:22px;padding:26px;animation:pop .3s cubic-bezier(.2,1.35,.4,1);box-shadow:var(--shadow)}
+.md.wide{width:min(760px,94vw)}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(18px)}to{opacity:1;transform:none}}
+.mdh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.mdh h2{font-size:1.05rem;font-weight:800;display:flex;gap:10px;align-items:center}
+.mdh .ic{width:40px;height:40px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:0 6px 18px -3px rgba(77,159,255,.4)}
+.mc{background:var(--card);border:1px solid var(--bd);width:36px;height:36px;border-radius:11px;color:var(--muted);font-size:1.1rem;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
+.mc:hover{color:var(--red);border-color:var(--red);transform:rotate(90deg)}
+.err{background:rgba(255,107,129,.1);border:1px solid rgba(255,107,129,.35);color:var(--red);border-radius:12px;padding:11px 14px;font-size:.82rem;margin-bottom:14px;display:none}
+
+/* ═══ کامند پالت ═══ */
+.cmdk{position:fixed;inset:0;background:rgba(3,6,14,.62);backdrop-filter:blur(7px);z-index:400;display:none;align-items:flex-start;justify-content:center;padding-top:11vh}
+.cmdk.open{display:flex}
+.cmd-box{width:min(580px,93vw);background:var(--bg2);border:1px solid var(--bd2);border-radius:20px;overflow:hidden;animation:pop .25s cubic-bezier(.2,1.3,.4,1);box-shadow:var(--shadow)}
+.cmd-in{display:flex;align-items:center;gap:11px;padding:16px 18px;border-bottom:1px solid var(--bd)}
+.cmd-in input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:inherit;font-size:.95rem;direction:rtl}
+.cmd-list{max-height:340px;overflow-y:auto;padding:8px}
+.cmd-item{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:12px;cursor:pointer;font-size:.86rem;transition:.12s}
+.cmd-item .ic{width:34px;height:34px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.cmd-item:hover,.cmd-item.sel{background:var(--priSoft)}
+.cmd-item.sel .ic{background:var(--grad)}
+.cmd-empty{padding:26px;text-align:center;color:var(--muted);font-size:.82rem}
+
+/* ═══ توست ═══ */
+.toasts{position:fixed;bottom:22px;left:22px;display:flex;flex-direction:column;gap:10px;z-index:500}
+.toast{display:flex;align-items:center;gap:11px;background:var(--bg2);border:1px solid var(--bd2);border-radius:15px;padding:13px 17px;font-size:.84rem;box-shadow:var(--shadow);animation:tin .3s cubic-bezier(.2,1.2,.4,1);max-width:340px}
+@keyframes tin{from{opacity:0;transform:translateX(-24px) scale(.95)}}
+.toast.out{animation:tout .25s forwards}
+@keyframes tout{to{opacity:0;transform:translateX(-24px)}}
+.toast .tic{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem}
+.toast.ok .tic{background:rgba(47,212,140,.15);color:var(--green)}
+.toast.err .tic{background:rgba(255,107,129,.15);color:var(--red)}
+.toast.info .tic{background:var(--priSoft);color:var(--pri)}
+
+/* ═══ فایل ═══ */
+.file-drop{position:relative;display:block;padding:22px;border:2px dashed var(--bd2);border-radius:14px;text-align:center;color:var(--muted);font-size:.86rem;cursor:pointer;transition:.2s;background:var(--card)}
+.file-drop:hover{border-color:var(--pri);color:var(--pri);background:var(--priSoft)}
+.file-drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.flist{margin-top:10px;display:flex;flex-direction:column;gap:7px}
+.fitem{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--card);border:1px solid var(--bd2);border-radius:11px;font-size:.8rem}
+.fitem .rm{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;margin-right:auto}
+.fitem .rm:hover{color:var(--red)}
+.fstat{font-size:.68rem;margin-right:auto}
+.fstat.ok{color:var(--green)}.fstat.err{color:var(--red)}.fstat.wait{color:var(--yellow)}
+
+/* ═══ سازنده آزمون ═══ */
+.type-tabs{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap}
+.tt{padding:8px 15px;border-radius:11px;border:1px solid var(--bd2);background:var(--card);color:var(--muted);font-family:inherit;font-size:.78rem;cursor:pointer;transition:.18s;font-weight:600}
+.tt:hover{color:var(--text)}
+.tt.on{background:var(--priSoft);border-color:var(--pri);color:var(--pri)}
+.qcard{background:var(--card);border:1px solid var(--bd);border-radius:15px;padding:16px;margin-bottom:12px;position:relative}
+.qcard-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.qnum{font-size:.74rem;color:var(--muted);font-weight:700;background:var(--card2);border-radius:9px;padding:4px 11px}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+@media(max-width:560px){.opts-grid{grid-template-columns:1fr}}
+.tb{display:inline-block;font-size:.66rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.tb-mc{background:var(--priSoft);color:var(--pri);border:1px solid rgba(77,159,255,.3)}
+.tb-tf{background:rgba(47,212,140,.13);color:var(--green);border:1px solid rgba(47,212,140,.3)}
+.tb-fill{background:rgba(255,201,77,.13);color:var(--yellow);border:1px solid rgba(255,201,77,.3)}
+.tb-essay{background:rgba(167,139,250,.13);color:var(--purple);border:1px solid rgba(167,139,250,.3)}
+
+/* ═══ حضور و غیاب ═══ */
+.att-row{display:flex;align-items:center;gap:11px;padding:11px 14px;background:var(--card);border:1px solid var(--bd);border-radius:13px;margin-bottom:8px}
+.att-opts{display:flex;gap:6px;margin-right:auto}
+.att-opt{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:10px;border:1px solid var(--bd2);background:var(--bg2);font-size:.74rem;cursor:pointer;transition:.15s;color:var(--muted)}
+.att-opt:hover{border-color:var(--bd2);color:var(--text)}
+.att-opt.sel-p{border-color:var(--green);color:var(--green);background:rgba(47,212,140,.09)}
+.att-opt.sel-a{border-color:var(--red);color:var(--red);background:rgba(255,107,129,.09)}
+.att-opt.sel-l{border-color:var(--yellow);color:var(--yellow);background:rgba(255,201,77,.09)}
+
+/* ═══ نظرسنجی ═══ */
+.poll-opt{display:flex;align-items:center;gap:10px;padding:10px 13px;background:var(--card);border:1px solid var(--bd);border-radius:12px;margin-bottom:7px}
+.poll-opt .lb{flex:1;font-size:.86rem}
+.pbar{flex:2;height:8px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden}
+.pfill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--pri),var(--cyan));transition:width .4s}
+.pcnt{font-size:.76rem;color:var(--muted);min-width:62px;text-align:left}
+
+/* ═══ رتبه‌بندی ═══ */
+.rank-row{display:flex;align-items:center;gap:13px;padding:13px 16px;border-radius:14px;background:var(--card);border:1px solid var(--bd);margin-bottom:9px;transition:.2s}
+.rank-row:hover{border-color:var(--bd2);transform:translateX(-3px)}
+.rank-row.top1{background:linear-gradient(90deg,rgba(255,201,77,.1),transparent);border-color:rgba(255,201,77,.35)}
+.rank-row.top2{background:linear-gradient(90deg,rgba(139,148,167,.08),transparent)}
+.rank-row.top3{background:linear-gradient(90deg,rgba(205,127,50,.08),transparent);border-color:rgba(205,127,50,.3)}
+.medal{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;background:var(--card2)}
+.rank-num{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0;background:var(--card2);color:var(--muted)}
+.xp-bar{flex:1;max-width:150px;height:6px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--pri),var(--cyan));border-radius:4px}
+
+/* ═══ تقویم ═══ */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.cal-dow{text-align:center;font-size:.7rem;color:var(--muted);padding:6px 0;font-weight:700}
+.cal-cell{border:1px solid var(--bd);border-radius:12px;padding:7px;min-height:74px;font-size:.68rem;background:var(--card);transition:.15s}
+.cal-cell:hover{border-color:var(--bd2)}
+.cal-cell.today{border-color:var(--pri);background:var(--priSoft)}
+.cal-cell.other{opacity:.3}
+.cal-n{color:var(--muted);font-size:.74rem;font-weight:700}
+.cal-ev{border-radius:6px;padding:2px 6px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:default}
+.cal-ev.a{background:rgba(255,201,77,.14);color:var(--yellow)}
+.cal-ev.q{background:rgba(167,139,250,.14);color:var(--purple)}
+.cal-ev.s{background:rgba(47,212,140,.14);color:var(--green)}
+
+/* ═══ تحلیل ═══ */
+.chart-wrap{position:relative;height:220px}
+.risk-item{display:flex;align-items:center;gap:12px;padding:12px 15px;border-radius:13px;background:rgba(255,107,129,.05);border:1px solid rgba(255,107,129,.25);margin-bottom:9px}
+.cmp-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dashed var(--bd)}
+.cmp-row:last-child{border:none}
+.ia-row{padding:12px;border-radius:12px;background:var(--card);border:1px solid var(--bd);margin-bottom:9px}
+.ia-bar{height:7px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden;display:flex}
+.ia-seg{height:100%}
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty .e-ic{font-size:2.8rem;display:block;margin-bottom:12px;opacity:.7;animation:floaty 3s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.skel{border-radius:12px;background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:shim 1.3s infinite}
+@keyframes shim{to{background-position:-200% 0}}
+
+/* ═══ پروفایل دانش‌آموز ═══ */
+.sp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.sp-stat{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:center}
+.sp-stat b{font-size:1.3rem;display:block}
+.sp-stat span{font-size:.66rem;color:var(--muted)}
+.note-item{display:flex;gap:10px;align-items:flex-start;padding:10px 13px;background:var(--card);border:1px solid var(--bd);border-radius:11px;margin-bottom:8px;font-size:.8rem}
+.note-item .rm{background:none;border:none;color:var(--muted);cursor:pointer;margin-right:auto;font-size:.85rem}
+.note-item .rm:hover{color:var(--red)}
+
+.burger{display:none}
+@media(max-width:940px){
+  .sb{transform:translateX(100%);width:266px!important}
+  body.sb-open .sb{transform:none;box-shadow:var(--shadow)}
+  .main{margin-right:0!important}
+  .burger{display:flex}
+  .cont{padding:16px}
+  .search-pill{min-width:0}
+  .search-pill span,.search-pill kbd{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="bgfx"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<!-- ═══ سایدبار ═══ -->
+<aside class="sb">
+  <div class="sb-logo" onclick="show('dash')">
+    <div class="logo-badge">🎓</div>
+    <div><h1>سامانه آموزشی</h1><small>پنل معلم</small></div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-sec">اصلی</div>
+    <div class="ni active" data-sec="dash"><span class="ic">📊</span><span class="ni-label">داشبورد</span></div>
+    <div class="sb-sec">آموزش</div>
+    <div class="ni" data-sec="lessons"><span class="ic">📚</span><span class="ni-label">درس‌ها</span></div>
+    <div class="ni" data-sec="assignments"><span class="ic">📝</span><span class="ni-label">تکالیف</span></div>
+    <div class="ni" data-sec="quizzes"><span class="ic">📋</span><span class="ni-label">آزمون‌ها</span></div>
+    <div class="sb-sec">کلاس</div>
+    <div class="ni" data-sec="attendance"><span class="ic">✅</span><span class="ni-label">حضور و غیاب</span></div>
+    <div class="ni" data-sec="polls"><span class="ic">📊</span><span class="ni-label">نظرسنجی</span></div>
+    <div class="ni" data-sec="sessions"><span class="ic">🎥</span><span class="ni-label">کلاس مجازی</span></div>
+    <div class="sb-sec">تحلیل</div>
+    <div class="ni" data-sec="analytics"><span class="ic">📈</span><span class="ni-label">تحلیل و آمار</span></div>
+    <div class="ni" data-sec="leaderboard"><span class="ic">🏆</span><span class="ni-label">رتبه‌بندی</span></div>
+    <div class="ni" data-sec="bank"><span class="ic">🗂️</span><span class="ni-label">بانک سوال</span></div>
+    <div class="ni" data-sec="calendar"><span class="ic">📅</span><span class="ni-label">تقویم</span></div>
+    <div class="ni" data-sec="students"><span class="ic">👤</span><span class="ni-label">دانش‌آموزان</span></div>
+    <div class="sb-sec">ارتباط</div>
+    <div class="ni" onclick="goChat()"><span class="ic">💬</span><span class="ni-label">پیام‌رسان</span></div>
+  </nav>
+  <button class="sb-min-btn" onclick="document.body.classList.toggle('sb-min')"><span>«</span><span>جمع کردن</span></button>
+  <div class="sb-user">
+    <div class="av" id="sbAv">م</div>
+    <div class="sb-user-info"><b id="sbName">معلم</b><span>دبیر محترم</span></div>
+  </div>
+  <div style="padding:0 12px 14px"><button class="logout" onclick="logout()">🚪 <span>خروج از حساب</span></button></div>
+</aside>
+
+<!-- ═══ اصلی ═══ -->
+<div class="main">
+  <div class="topbar">
+    <button class="tb-btn burger" onclick="document.body.classList.toggle('sb-open')">☰</button>
+    <div class="pg-crumb"><h2 id="pgTitle">داشبورد</h2><span id="pgSub">نمای کلی کلاس‌های شما</span></div>
+    <div class="search-pill" onclick="openCmdk()">🔍 <span>جستجو و فرمان...</span> <kbd>Ctrl K</kbd></div>
+    <button class="tb-btn" onclick="toggleTheme()" id="themeBtn" title="تم">🌙</button>
+    <button class="tb-btn" onclick="toggleNotif(event)" title="اعلان‌ها">🔔<span class="dot" id="notifDot" style="display:none"></span></button>
+    <div class="tb-av" onclick="show('students')" title="دانش‌آموزان">م</div>
+  </div>
+  <div class="ndd" id="notifDd">
+    <div class="ndd-h">🔔 اعلان‌ها</div>
+    <div class="ndd-list" id="notifList"><div class="ndd-item"><span class="ic">📭</span><div>اعلانی ندارید</div></div></div>
+  </div>
+
+  <div class="cont">
+
+    <!-- ═══ داشبورد ═══ -->
+    <div class="sec active" id="sec-dash">
+      <div class="hero">
+        <span class="hi">👋</span>
+        <h2>سلام <b id="heroName">معلم</b>، آماده‌ی یک روز عالی هستی؟</h2>
+        <p id="heroSub">بررسی سریع کلاس‌ها، تکالیف در انتظار نمره‌دهی و جلسات فعال</p>
+        <div class="hero-meta">
+          <span class="hchip"><span class="ok"></span> در حال تدریس</span>
+          <span class="hchip">📅 <span id="heroDate"></span></span>
+          <span class="hchip">🕐 <span id="heroClock"></span></span>
+        </div>
+      </div>
+      <div class="stats" id="dashStats">
+        <div class="stat" style="--c:var(--pri)"><div class="stat-top"><div class="stat-ic">🏫</div></div><div class="stat-n" id="dCls">۰</div><div class="stat-l">کلاس‌های من</div></div>
+        <div class="stat" style="--c:var(--green)"><div class="stat-top"><div class="stat-ic">👨‍🎓</div></div><div class="stat-n" id="dStu">۰</div><div class="stat-l">دانش‌آموزان</div></div>
+        <div class="stat" style="--c:var(--purple)"><div class="stat-top"><div class="stat-ic">📚</div></div><div class="stat-n" id="dLes">۰</div><div class="stat-l">درس منتشرشده</div></div>
+        <div class="stat" style="--c:var(--yellow)"><div class="stat-top"><div class="stat-ic">📋</div></div><div class="stat-n" id="dQz">۰</div><div class="stat-l">آزمون ساخته‌شده</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="ch"><h2><span class="ic">🔥</span>جلسات فعال کلاس</h2></div>
+          <div id="dashSessions"><div class="skel" style="height:64px;margin-bottom:10px"></div><div class="skel" style="height:64px"></div></div>
+        </div>
+        <div class="card">
+          <div class="ch"><h2><span class="ic">⚡</span>میان‌برهای سریع</h2></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+            <button class="btn btn-red" onclick="show('sessions')">🔴 شروع کلاس زنده</button>
+            <button class="btn btn-pri" onclick="show('lessons')">📚 درس جدید</button>
+            <button class="btn btn-purple" onclick="show('quizzes')">📋 آزمون جدید</button>
+            <button class="btn btn-green" onclick="show('attendance')">✅ حضور و غیاب</button>
+            <button class="btn btn-ghost" onclick="show('bank')">🗂️ بانک سوال</button>
+            <button class="btn btn-ghost" onclick="goChat()">💬 پیام‌رسان</button>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="ch"><h2><span class="ic">🗓️</span>نزدیک‌ترین مهلت‌های تکلیف</h2><button class="btn btn-sm btn-ghost" onclick="show('assignments')">همه تکالیف ←</button></div>
+        <div id="dashDeadlines"><div class="skel" style="height:52px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ درس‌ها ═══ -->
+    <div class="sec" id="sec-lessons">
+      <div class="ph"><h1>مدیریت <i>درس‌ها</i> 📚</h1><p>محتوای آموزشی کلاس‌های خود را بسازید و مدیریت کنید</p></div>
+      <div class="cls-tabs" id="lessonTabs"></div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">📚</span>لیست درس‌ها</h2><button class="btn btn-pri" onclick="openAddLesson()">＋ درس جدید</button></div>
+        <div id="lessonList"><div class="skel" style="height:80px;margin-bottom:11px"></div><div class="skel" style="height:80px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ تکالیف ═══ -->
+    <div class="sec" id="sec-assignments">
+      <div class="ph"><h1>مدیریت <i>تکالیف</i> 📝</h1><p>تکلیف بدهید، پاسخ‌ها را ببینید و نمره‌دهی کنید</p></div>
+      <div class="cls-tabs" id="asgTabs"></div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">📝</span>تکالیف کلاس</h2><button class="btn btn-pri" onclick="openAddAsg()">＋ تکلیف جدید</button></div>
+        <div id="asgList"><div class="skel" style="height:80px;margin-bottom:11px"></div><div class="skel" style="height:80px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ آزمون‌ها ═══ -->
+    <div class="sec" id="sec-quizzes">
+      <div class="ph"><h1>سازنده <i>آزمون</i> 📋</h1><p>آزمون بسازید — دستی یا از بانک سوال</p></div>
+      <div class="cls-tabs" id="qzTabs"></div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">📋</span>آزمون‌های کلاس</h2><button class="btn btn-pri" onclick="openAddQuiz()">＋ آزمون جدید</button></div>
+        <div id="qzList"><div class="skel" style="height:80px;margin-bottom:11px"></div><div class="skel" style="height:80px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ حضور و غیاب ═══ -->
+    <div class="sec" id="sec-attendance">
+      <div class="ph"><h1>حضور و <i>غیاب</i> ✅</h1><p>ثبت حضور دانش‌آموزان و مشاهده سابقه</p></div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">🗓️</span>ثبت حضور و غیاب</h2><span style="font-size:.72rem;color:var(--muted)" id="attCount"></span></div>
+        <div class="row2" style="margin-bottom:16px">
+          <div class="fg"><label>کلاس</label><select id="attClass" onchange="loadAttStudents()"></select></div>
+          <div class="fg"><label>تاریخ</label><input type="date" id="attDate"/></div>
+        </div>
+        <div id="attStudents"><div class="skel" style="height:56px;margin-bottom:8px"></div><div class="skel" style="height:56px"></div></div>
+        <button class="btn btn-green" style="width:100%;margin-top:14px;padding:13px" onclick="saveAttendance()">💾 ذخیره حضور و غیاب</button>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="ch"><h2><span class="ic">📜</span>سابقه حضور و غیاب</h2></div>
+        <div class="tblwrap" id="attHistory"><div class="skel" style="height:50px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ نظرسنجی ═══ -->
+    <div class="sec" id="sec-polls">
+      <div class="ph"><h1><i>نظرسنجی</i> 📊</h1><p>نظرسنجی زنده از دانش‌آموزان</p></div>
+      <div class="cls-tabs" id="pollTabs"></div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">📊</span>نظرسنجی‌ها</h2><button class="btn btn-pri" onclick="openAddPoll()">＋ نظرسنجی جدید</button></div>
+        <div id="pollList"><div class="skel" style="height:100px;margin-bottom:11px"></div><div class="skel" style="height:100px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ کلاس مجازی ═══ -->
+    <div class="sec" id="sec-sessions">
+      <div class="ph"><h1>کلاس <i>مجازی</i> 🎥</h1><p>جلسات آنلاین برگزار کنید — تخته هوشمند، چت زنده و اتاق گروهی</p></div>
+      <div class="cls-tabs" id="sessTabs"></div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">🎥</span>جلسات کلاس</h2><button class="btn btn-red" onclick="openStartSession()">🔴 شروع کلاس زنده</button></div>
+        <div id="sessList"><div class="skel" style="height:80px;margin-bottom:11px"></div><div class="skel" style="height:80px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ تحلیل ═══ -->
+    <div class="sec" id="sec-analytics">
+      <div class="ph"><h1>تحلیل و <i>آمار پیشرفته</i> 📈</h1><p>روند نمرات، مقایسه دانش‌آموزان و تحلیل سوالات</p></div>
+      <div class="cls-tabs" id="anTabs"></div>
+      <div class="card" id="riskCard" style="display:none;border-color:rgba(255,107,129,.35);margin-bottom:16px">
+        <div class="ch"><h2><span class="ic" style="background:rgba(255,107,129,.15)">⚠️</span><span style="color:var(--red)">هشدار افت تحصیلی</span></h2></div>
+        <div id="riskList"></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="ch"><h2><span class="ic">📈</span>روند نمرات کلاس</h2><span style="font-size:.7rem;color:var(--muted)" id="trendAvg"></span></div>
+          <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="ch"><h2><span class="ic">⚖️</span>مقایسه دانش‌آموزان</h2></div>
+          <div id="cmpList" style="max-height:260px;overflow-y:auto"><div class="skel" style="height:38px;margin-bottom:8px"></div><div class="skel" style="height:38px"></div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="ch"><h2><span class="ic">🔬</span>تحلیل سوالات آزمون</h2><select id="iaQuiz" onchange="loadItemAnalysis()" style="width:220px"></select></div>
+        <div id="iaResult"><div class="empty" style="padding:24px"><span class="e-ic">🔬</span>یک آزمون انتخاب کنید</div></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="ch"><h2><span class="ic">🖨️</span>گزارش کامل کلاس</h2><button class="btn btn-green" onclick="downloadReport()">🖨️ چاپ / خروجی PDF</button></div>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.8">گزارش شامل نمرات، وضعیت تکالیف و حضور و غیاب همه دانش‌آموزان کلاس انتخابی است.</p>
+      </div>
+    </div>
+
+    <!-- ═══ رتبه‌بندی ═══ -->
+    <div class="sec" id="sec-leaderboard">
+      <div class="ph"><h1>رتبه‌بندی و <i>نشان‌ها</i> 🏆</h1><p>امتیازدهی بر اساس مشارکت و عملکرد دانش‌آموزان</p></div>
+      <div class="cls-tabs" id="lbTabs"></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="ch"><h2><span class="ic">🏆</span>جدول رتبه‌بندی</h2></div>
+        <div id="lbList"><div class="skel" style="height:56px;margin-bottom:9px"></div><div class="skel" style="height:56px"></div></div>
+      </div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">🎖️</span>تعریف نشان‌ها</h2></div>
+        <div id="badgeDefs"><div class="skel" style="height:48px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ بانک سوال ═══ -->
+    <div class="sec" id="sec-bank">
+      <div class="ph"><h1>بانک سوال <i>مرکزی</i> 🗂️</h1><p>سوالات را یک‌بار بسازید، در آزمون‌های مختلف استفاده کنید</p></div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="ch"><h2><span class="ic">✨</span>افزودن سوال جدید</h2></div>
+        <div class="type-tabs">
+          <button class="tt on" id="btt-mc" onclick="setBankType('mc')">🔘 چهارگزینه‌ای</button>
+          <button class="tt" id="btt-tf" onclick="setBankType('tf')">✅ درست/غلط</button>
+          <button class="tt" id="btt-fill" onclick="setBankType('fill')">✏️ جای خالی</button>
+          <button class="tt" id="btt-essay" onclick="setBankType('essay')">📝 تشریحی</button>
+        </div>
+        <div class="fg"><label>متن سوال</label><textarea id="bankText" placeholder="سوال..."></textarea></div>
+        <div id="bankMcFields">
+          <div class="fg"><label>گزینه‌ها</label>
+            <div class="opts-grid">
+              <input type="text" id="bop1" placeholder="گزینه ۱"/><input type="text" id="bop2" placeholder="گزینه ۲"/>
+              <input type="text" id="bop3" placeholder="گزینه ۳"/><input type="text" id="bop4" placeholder="گزینه ۴"/>
+            </div>
+          </div>
+          <div class="fg"><label>پاسخ صحیح</label><select id="bankMcAns"><option value="">انتخاب...</option><option value="1">گزینه ۱</option><option value="2">گزینه ۲</option><option value="3">گزینه ۳</option><option value="4">گزینه ۴</option></select></div>
+        </div>
+        <div class="fg" id="bankSimpleAns" style="display:none"><label>پاسخ صحیح</label><input type="text" id="bankAns" placeholder="پاسخ..."/></div>
+        <div class="fg"><label>برچسب‌ها (با کاما جدا کنید)</label><input type="text" id="bankTags" placeholder="مثال: فصل۱, جبر, آسان"/></div>
+        <button class="btn btn-pri" onclick="addToBank()">➕ افزودن به بانک</button>
+      </div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">🗂️</span>سوالات بانک <span class="badge b-blue" id="bankCount">۰</span></h2>
+          <select id="bankTagFilter" onchange="renderBank()" style="width:180px"><option value="">همه برچسب‌ها</option></select>
+        </div>
+        <div id="bankList"><div class="skel" style="height:70px;margin-bottom:10px"></div><div class="skel" style="height:70px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ تقویم ═══ -->
+    <div class="sec" id="sec-calendar">
+      <div class="ph"><h1>تقویم <i>کلاسی</i> 📅</h1><p>تکالیف، آزمون‌ها و جلسات پیش‌رو در یک نگاه</p></div>
+      <div class="card">
+        <div class="ch">
+          <h2><span class="ic">🗓️</span><span id="calLabel">این ماه</span></h2>
+          <div style="display:flex;gap:7px">
+            <button class="btn btn-sm btn-ghost" onclick="calShift(-1)">→ قبلی</button>
+            <button class="btn btn-sm btn-ghost" onclick="calToday()">امروز</button>
+            <button class="btn btn-sm btn-ghost" onclick="calShift(1)">بعدی ←</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"><div class="skel" style="height:74px"></div></div>
+        <div style="display:flex;gap:16px;margin-top:14px;font-size:.68rem;color:var(--muted);flex-wrap:wrap">
+          <span><i class="cal-ev a" style="display:inline-block;width:10px;height:10px"></i> تکلیف</span>
+          <span><i class="cal-ev q" style="display:inline-block;width:10px;height:10px"></i> آزمون</span>
+          <span><i class="cal-ev s" style="display:inline-block;width:10px;height:10px"></i> جلسه زنده</span>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="ch"><h2><span class="ic">⏭️</span>رویدادهای پیش‌رو</h2></div>
+        <div id="upcoming"><div class="skel" style="height:56px"></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ دانش‌آموزان ═══ -->
+    <div class="sec" id="sec-students">
+      <div class="ph"><h1>مدیریت <i>دانش‌آموزان</i> 👤</h1><p>پروفایل، آمار و یادداشت خصوصی هر دانش‌آموز</p></div>
+      <div class="cls-tabs" id="stuTabs"></div>
+      <div class="card">
+        <div class="ch"><h2><span class="ic">👥</span>لیست دانش‌آموزان</h2></div>
+        <div id="stuList"><div class="skel" style="height:56px;margin-bottom:9px"></div><div class="skel" style="height:56px"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ مودال درس ═══ -->
+<div class="mo" id="moLesson">
+  <div class="md">
+    <div class="mdh"><h2><span class="ic">📚</span><span id="lMoTitle">درس جدید</span></h2><button class="mc" onclick="closeMo('moLesson')">✕</button></div>
+    <div class="err" id="lErr"></div>
+    <div class="fg"><label>عنوان درس *</label><input type="text" id="lTitle" placeholder="مثال: معادله درجه دوم"/></div>
+    <div class="fg"><label>محتوا</label><textarea id="lContent" placeholder="توضیحات، نکات و محتوای درس..."></textarea></div>
+    <div class="fg">
+      <label>فایل‌های پیوست</label>
+      <div class="file-drop">📎 کلیک کنید یا فایل را رها کنید (PDF، تصویر، ویدیو)<input type="file" multiple onchange="handleFiles(this)"/></div>
+      <div class="flist" id="lFiles"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+      <button class="btn btn-ghost" onclick="closeMo('moLesson')">انصراف</button>
+      <button class="btn btn-pri" onclick="saveLesson()">💾 ذخیره درس</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ مودال کپی درس ═══ -->
+<div class="mo" id="moCopy">
+  <div class="md" style="max-width:400px">
+    <div class="mdh"><h2><span class="ic">📋</span>کپی به کلاس دیگر</h2><button class="mc" onclick="closeMo('moCopy')">✕</button></div>
+    <div class="fg"><label>کلاس مقصد</label><select id="copyTarget"></select></div>
+    <button class="btn btn-purple" style="width:100%" onclick="confirmCopy()">📋 کپی کن</button>
+  </div>
+</div>
+
+<!-- ═══ مودال تکلیف ═══ -->
+<div class="mo" id="moAsg">
+  <div class="md">
+    <div class="mdh"><h2><span class="ic">📝</span>تکلیف جدید</h2><button class="mc" onclick="closeMo('moAsg')">✕</button></div>
+    <div class="err" id="aErr"></div>
+    <div class="fg"><label>بارگذاری از الگو (اختیاری)</label><select id="asgTpl"></select></div>
+    <div class="fg"><label>عنوان تکلیف *</label><input type="text" id="aTitle" placeholder="عنوان تکلیف"/></div>
+    <div class="fg"><label>توضیحات</label><textarea id="aDesc" placeholder="شرح تکلیف..."></textarea></div>
+    <div class="fg"><label>مهلت تحویل</label><input type="date" id="aDue"/></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="closeMo('moAsg')">انصراف</button>
+      <button class="btn btn-purple" onclick="saveAsgTpl()">💾 ذخیره به‌عنوان الگو</button>
+      <button class="btn btn-pri" onclick="saveAsg()">💾 ذخیره تکلیف</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ مودال پاسخ‌ها ═══ -->
+<div class="mo" id="moSubs">
+  <div class="md">
+    <div class="mdh"><h2><span class="ic">📥</span><span id="subsTitle">پاسخ‌ها</span></h2><button class="mc" onclick="closeMo('moSubs')">✕</button></div>
+    <div id="subsList"><div class="skel" style="height:80px"></div></div>
+  </div>
+</div>
+
+<!-- ═══ مودال نمره‌دهی ═══ -->
+<div class="mo" id="moGrade">
+  <div class="md" style="max-width:460px">
+    <div class="mdh"><h2><span class="ic">⭐</span><span id="grTitle">نمره‌دهی</span></h2><button class="mc" onclick="closeMo('moGrade')">✕</button></div>
+    <div class="fg"><label>پاسخ دانش‌آموز</label><div id="grText" style="padding:14px;background:var(--card);border:1px solid var(--bd);border-radius:12px;font-size:.86rem;line-height:1.8;color:var(--muted);max-height:180px;overflow-y:auto;white-space:pre-wrap"></div></div>
+    <div class="row2">
+      <div class="fg"><label>نمره (۰ تا ۲۰)</label><input type="number" id="grVal" min="0" max="20" step="0.25" placeholder="نمره"/></div>
+      <div class="fg"><label>بازخورد</label><input type="text" id="grFb" placeholder="نظر شما..."/></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap">
+      <span></span>
+      <button class="btn btn-ghost" onclick="closeMo('moGrade')">بعداً</button>
+      <button class="btn btn-green" onclick="saveGrade()">💾 ثبت نمره</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ مودال نظرسنجی ═══ -->
+<div class="mo" id="moPoll">
+  <div class="md">
+    <div class="mdh"><h2><span class="ic">📊</span>نظرسنجی جدید</h2><button class="mc" onclick="closeMo('moPoll')">✕</button></div>
+    <div class="err" id="pErr"></div>
+    <div class="fg"><label>سوال *</label><input type="text" id="pollQ" placeholder="سوال نظرسنجی..."/></div>
+    <div class="fg"><label>گزینه‌ها (هر خط یک گزینه)</label><textarea id="pollOpts" placeholder="گزینه اول&#10;گزینه دوم&#10;گزینه سوم" style="min-height:110px"></textarea></div>
+    <button class="btn btn-pri" style="width:100%" onclick="savePoll()">💾 ذخیره نظرسنجی</button>
+  </div>
+</div>
+
+<!-- ═══ مودال سازنده آزمون ═══ -->
+<div class="mo" id="moQuiz">
+  <div class="md wide">
+    <div class="mdh"><h2><span class="ic">📋</span><span id="qzMoTitle">آزمون جدید</span></h2><button class="mc" onclick="closeMo('moQuiz')">✕</button></div>
+    <div class="fg"><label>بارگذاری از الگو (اختیاری)</label><select id="qzTpl"></select></div>
+    <div class="fg"><label>عنوان آزمون *</label><input type="text" id="qzTitle" placeholder="مثال: آزمون فصل ۲"/></div>
+    <hr style="border:none;border-top:1px dashed var(--bd2);margin:16px 0">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="font-size:.88rem;color:var(--muted)">سوالات آزمون</h3>
+      <span class="badge b-blue" id="qzCount">۰ سوال</span>
+    </div>
+    <div id="qzQuestions"></div>
+    <div style="display:flex;gap:9px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn btn-ghost" style="flex:1" onclick="addQ()">＋ سوال دستی</button>
+      <button class="btn btn-purple" style="flex:1" onclick="openBankPicker()">🗂️ از بانک سوال</button>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+      <button class="btn btn-ghost" onclick="closeMo('moQuiz')">انصراف</button>
+      <button class="btn btn-purple" onclick="saveQzTpl()">💾 ذخیره الگو</button>
+      <button class="btn btn-pri" onclick="saveQuiz()">💾 ذخیره آزمون</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ مودال انتخاب از بانک ═══ -->
+<div class="mo" id="moBankPick">
+  <div class="md">
+    <div class="mdh"><h2><span class="ic">🗂️</span>انتخاب از بانک سوال</h2><button class="mc" onclick="closeMo('moBankPick')">✕</button></div>
+    <div id="bankPickList" style="max-height:420px;overflow-y:auto"><div class="skel" style="height:70px"></div></div>
+  </div>
+</div>
+
+<!-- ═══ مودال جلسه ═══ -->
+<div class="mo" id="moSession">
+  <div class="md" style="max-width:440px">
+    <div class="mdh"><h2><span class="ic">🔴</span>شروع کلاس زنده</h2><button class="mc" onclick="closeMo('moSession')">✕</button></div>
+    <div class="fg"><label>عنوان جلسه</label><input type="text" id="sessTitle" placeholder="مثال: جلسه پنجم — فصل دو"/></div>
+    <div class="fg"><label>لینک ویدیو (اختیاری — Zoom/Meet)</label><input type="text" id="sessLink" placeholder="https://zoom.us/j/..." style="direction:ltr"/></div>
+    <button class="btn btn-red" style="width:100%;padding:13px" onclick="startSession()">🔴 شروع کلاس زنده</button>
+    <p style="font-size:.74rem;color:var(--muted);text-align:center;margin-top:12px">تخته هوشمند، چت زنده و اتاق‌های گروهی در سامانه موجود است</p>
+  </div>
+</div>
+
+<!-- ═══ مودال پروفایل دانش‌آموز ═══ -->
+<div class="mo" id="moStudent">
+  <div class="md wide">
+    <div class="mdh"><h2><span class="ic">👤</span><span id="spTitle">پروفایل دانش‌آموز</span></h2><button class="mc" onclick="closeMo('moStudent')">✕</button></div>
+    <div class="sp-stats" id="spStats"></div>
+    <div id="spBadges" style="margin-bottom:16px"></div>
+    <hr style="border:none;border-top:1px dashed var(--bd2);margin-bottom:14px">
+    <h3 style="font-size:.86rem;color:var(--muted);margin-bottom:12px">📝 یادداشت‌های خصوصی <small style="color:var(--muted2)">(فقط شما می‌بینید)</small></h3>
+    <div id="spNotes" style="margin-bottom:14px;max-height:220px;overflow-y:auto"></div>
+    <div style="display:flex;gap:9px">
+      <input type="text" id="spNewNote" placeholder="یادداشت جدید..." style="flex:1"/>
+      <button class="btn btn-pri" onclick="addNote()">افزودن</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ مودال تایید ═══ -->
+<div class="mo" id="moAsk">
+  <div class="md" style="max-width:380px;text-align:center">
+    <div class="mdh" style="justify-content:center"><h2 style="justify-content:center">🤔</h2></div>
+    <p id="askMsg" style="font-size:.92rem;line-height:1.9;margin-bottom:22px">مطمئنی؟</p>
+    <div style="display:flex;gap:10px"><button class="btn btn-ghost" style="flex:1" id="askNo">انصراف</button><button class="btn btn-danger" style="flex:1" id="askOk">بله</button></div>
+  </div>
+</div>
+
+<!-- ═══ کامند پالت ═══ -->
+<div class="cmdk" id="cmdk">
+  <div class="cmd-box">
+    <div class="cmd-in"><span>🔍</span><input type="text" id="cmdInput" placeholder="جستجوی فرمان یا صفحه... (Esc برای بستن)"/></div>
+    <div class="cmd-list" id="cmdList"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+/* ═════════════════════════════════════
+   پنل معلم — نسخه ۲.۰ لوکس
+   ═════════════════════════════════════ */
+const $=id=>document.getElementById(id);
+const token=localStorage.getItem('token');
+const user=JSON.parse(localStorage.getItem('user')||'null');
+if(!token||!user||user.role!=='teacher')location.href='/';
+
+let myClasses=[],activeCls={},lessons=[],asgs=[],qzs=[],polls=[];
+let editLessonId=null,curAsgId=null,curAsgTitle=null,gradeSubId=null;
+let qzQuestions=[],curQuizCls=null,bankType='mc',bankCache=[];
+let calDate=new Date(),calEvents=[],copyLessonId=null,spStudent=null;
+let asgTpls=[],qzTpls=[];
+
+/* ─── helpers ─── */
+const faNum=n=>Number(n||0).toLocaleString('fa-IR');
+const escHtml=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function avColor(name){const cs=['#ff6b81','#4d9fff','#2fd48c','#a78bfa','#ffc94d','#22d3ee','#ff8fa3','#7ce7b4'];let h=0;for(const c of(name||'؟'))h=(h*31+c.charCodeAt(0))>>>0;return cs[h%cs.length]}
+async function api(m,p,b){
+  const r=await fetch(p,{method:m,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:b?JSON.stringify(b):undefined});
+  if(r.status===401){localStorage.clear();location.href='/';return null}
+  return r.json();
+}
+function toast(msg,type='ok'){
+  const t=document.createElement('div');t.className='toast '+type;
+  const ic=type==='ok'?'✅':type==='err'?'⚠️':'ℹ️';
+  t.innerHTML=`<span class="tic">${ic}</span><span>${msg}</span>`;
+  $('toasts').appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),260)},3400);
+}
+function ask(msg,ok='بله'){
+  return new Promise(res=>{
+    $('askMsg').textContent=msg;$('askOk').textContent=ok;
+    $('moAsk').classList.add('open');
+    $('askOk').onclick=()=>{$('moAsk').classList.remove('open');res(true)};
+    $('askNo').onclick=()=>{$('moAsk').classList.remove('open');res(false)};
+  });
+}
+function closeMo(id){$(id).classList.remove('open')}
+function logout(){localStorage.clear();location.href='/'}
+function goChat(){location.href='/chat'}
+function showErr(id,msg){const el=$(id);el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',4000)}
+
+/* ─── تم ─── */
+function applyTheme(t){document.documentElement.setAttribute('data-theme',t);$('themeBtn').textContent=t==='light'?'☀️':'🌙';localStorage.setItem('theme',t)}
+function toggleTheme(){applyTheme(document.documentElement.getAttribute('data-theme')==='light'?'dark':'light')}
+applyTheme(localStorage.getItem('theme')||'dark');
+
+/* ─── ساعت ─── */
+function tick(){
+  const n=new Date();
+  $('heroClock')&&($('heroClock').textContent=n.toLocaleTimeString('fa-IR'));
+  $('heroDate')&&($('heroDate').textContent=n.toLocaleDateString('fa-IR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
+}
+setInterval(tick,1000);tick();
+ $('heroName').textContent=user.name;$('sbName').textContent=user.name;
+ $('sbAv').textContent=user.name[0];document.querySelector('.tb-av').textContent=user.name[0];
+
+/* ─── ناوبری ─── */
+const SEC_META={dash:['داشبورد','نمای کلی'],lessons:['درس‌ها','مدیریت محتوای آموزشی'],assignments:['تکالیف','ایجاد و نمره‌دهی'],quizzes:['آزمون‌ها','سازنده آزمون'],attendance:['حضور و غیاب','ثبت و سابقه'],polls:['نظرسنجی','نظرسنجی زنده'],sessions:['کلاس مجازی','جلسات آنلاین'],analytics:['تحلیل و آمار','آمار پیشرفته'],leaderboard:['رتبه‌بندی','نشان‌ها و امتیاز'],bank:['بانک سوال','سوالات مرکزی'],calendar:['تقویم','برنامه کلاسی'],students:['دانش‌آموزان','پروفایل و یادداشت']};
+document.querySelectorAll('.ni[data-sec]').forEach(ni=>ni.addEventListener('click',()=>show(ni.dataset.sec)));
+function show(name){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  $('sec-'+name)?.classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('active',n.dataset.sec===name));
+  const m=SEC_META[name]||['',''];$('pgTitle').textContent=m[0];$('pgSub').textContent=m[1];
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(innerWidth<940)document.body.classList.remove('sb-open');
+  const loaders={dash:loadDash,lessons:initLessons,assignments:initAsg,quizzes:initQz,attendance:initAtt,polls:initPolls,sessions:initSess,analytics:initAnalytics,leaderboard:initLb,bank:initBank,calendar:initCal,students:initStu};
+  loaders[name]?.();
+}
+
+/* ─── کلاس‌ها ─── */
+async function loadClasses(){
+  if(myClasses.length)return myClasses;
+  myClasses=await api('GET','/api/classes')||[];
+  return myClasses;
+}
+function renderTabs(tabsId,key,loader){
+  const el=$(tabsId);
+  if(!myClasses.length){el.innerHTML='<span style="color:var(--muted);font-size:.82rem">هنوز کلاسی به شما اختصاص داده نشده 😔</span>';return}
+  if(!activeCls[key])activeCls[key]=myClasses[0].id;
+  el.innerHTML=myClasses.map(c=>`<button class="cls-tab ${activeCls[key]===c.id?'on':''}" data-id="${c.id}" data-key="${key}" data-loader="${loader}"><span class="mini-dot"></span>${escHtml(c.name)}</button>`).join('');
+  window[loader]();
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.cls-tab');if(!t)return;
+  activeCls[t.dataset.key]=t.dataset.id;
+  renderTabs(t.parentElement.id,t.dataset.key,t.dataset.loader);
+});
+function countUp(el,target){
+  let cur=0;const steps=36,inc=target/steps;
+  const t=setInterval(()=>{cur+=inc;if(cur>=target){cur=target;clearInterval(t)}el.textContent=faNum(Math.round(cur))},26);
+}
+
+/* ═══ داشبورد ═══ */
+async function loadDash(){
+  await loadClasses();
+  const students=await api('GET','/api/teacher/students')||[];
+  const [allLessons,allAsgs,allQzs,allSess]=await Promise.all([
+    Promise.all(myClasses.map(c=>api('GET',`/api/lessons?classId=${c.id}`).catch(()=>[]))),
+    Promise.all(myClasses.map(c=>api('GET',`/api/assignments?classId=${c.id}`).catch(()=>[]))),
+    Promise.all(myClasses.map(c=>api('GET',`/api/quizzes?classId=${c.id}`).catch(()=>[]))),
+    Promise.all(myClasses.map(c=>api('GET',`/api/sessions?classId=${c.id}`).catch(()=>[])))
+  ]);
+  const les=[].concat(...allLessons).filter(Boolean);
+  const asg=[].concat(...allAsgs).filter(Boolean);
+  const qz=[].concat(...allQzs).filter(Boolean);
+  const sess=[].concat(...allSess).filter(Boolean);
+  countUp($('dCls'),myClasses.length);
+  countUp($('dStu'),students.length);
+  countUp($('dLes'),les.length);
+  countUp($('dQz'),qz.length);
+  // جلسات فعال
+  const live=sess.filter(s=>s.active);
+  $('dashSessions').innerHTML=live.length?live.map(s=>{
+    const cls=myClasses.find(c=>c.id===s.classId);
+    return `<div class="item" style="border-color:rgba(255,107,129,.35);background:rgba(255,107,129,.04)">
+      <div class="ic" style="background:rgba(255,107,129,.15)">🔴</div>
+      <div class="bd"><b>${escHtml(s.title)}</b>
+      <div class="ft"><span>🏫 ${escHtml(cls?.name||'')}</span><span>🕐 ${new Date(s.startedAt).toLocaleString('fa-IR')}</span></div></div>
+      <div class="acts"><button class="btn btn-sm btn-red" onclick="location.href='/classroom?id=${s.id}'">🎥 ورود</button></div>
+    </div>`;
+  }).join(''):'<div class="empty"><span class="e-ic">😴</span>جلسه فعالی ندارید — یکی شروع کنید!</div>';
+  // مهلت‌ها
+  const upcoming=asg.filter(a=>a.dueDate).sort((a,b)=>new Date(a.dueDate)-new Date(b.dueDate)).slice(0,5);
+  $('dashDeadlines').innerHTML=upcoming.length?upcoming.map(a=>{
+    const cls=myClasses.find(c=>c.id===a.classId);
+    const days=Math.ceil((new Date(a.dueDate)-Date.now())/86400000);
+    const cls2=days<0?'b-red':days<3?'b-yel':'b-off';
+    return `<div class="item">
+      <div class="ic" style="background:rgba(255,201,77,.13)">📝</div>
+      <div class="bd"><b>${escHtml(a.title)}</b>
+      <div class="ft"><span>🏫 ${escHtml(cls?.name||'')}</span><span>⏰ ${new Date(a.dueDate).toLocaleDateString('fa-IR')}</span>
+      <span class="badge ${cls2}">${days<0?'گذشته':faNum(days)+' روز مانده'}</span></div></div>
+      <div class="acts"><button class="btn btn-sm btn-ghost" onclick="show('assignments')">مشاهده</button></div>
+    </div>`;
+  }).join(''):'<div class="empty"><span class="e-ic">🎉</span>مهلت نزدیکی وجود ندارد</div>';
+  checkNotifs();
+}
+async function checkNotifs(){
+  try{
+    const list=await api('GET','/api/notifications')||[];
+    const unread=list.filter(n=>!n.read).length;
+    $('notifDot').style.display=unread?'block':'none';
+  }catch{}
+}
+function toggleNotif(e){e.stopPropagation();$('notifDd').classList.toggle('open');loadNotifList()}
+async function loadNotifList(){
+  try{
+    const list=await api('GET','/api/notifications')||[];
+    $('notifList').innerHTML=list.length?list.slice(0,8).map(n=>`
+      <div class="ndd-item"><span class="ic">🔔</span><div><b style="font-size:.8rem">${escHtml(n.text)}</b><small>${new Date(n.createdAt).toLocaleString('fa-IR')}</small></div></div>`).join('')
+      :'<div class="ndd-item"><span class="ic">📭</span><div>اعلانی ندارید</div></div>';
+  }catch{}
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.ndd')&&!e.target.closest('.tb-btn'))$('notifDd').classList.remove('open')});
+
+/* ═══ درس‌ها ═══ */
+let pendingFiles=[];
+async function initLessons(){await loadClasses();renderTabs('lessonTabs','lessons','loadLessons')}
+async function loadLessons(){
+  const cid=activeCls.lessons;if(!cid)return;
+  lessons=await api('GET',`/api/lessons?classId=${cid}`)||[];
+  const el=$('lessonList');
+  if(!lessons.length){el.innerHTML='<div class="empty"><span class="e-ic">📚</span>هنوز درسی ندارید — اولین درس را بسازید!</div>';return}
+  el.innerHTML=lessons.map(l=>`
+    <div class="item">
+      <div class="ic" style="background:var(--priSoft)">📘</div>
+      <div class="bd">
+        <b>${escHtml(l.title)}</b>
+        ${l.content?`<p>${escHtml(l.content.slice(0,180))}${l.content.length>180?'…':''}</p>`:''}
+        <div class="ft">
+          <span>🕐 ${new Date(l.createdAt).toLocaleDateString('fa-IR')}</span>
+          ${(l.files||[]).length?`<span>📎 ${faNum(l.files.length)} فایل</span>`:''}
+        </div>
+        ${(l.files||[]).length?`<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px">${l.files.map(f=>`<a href="${escHtml(f.url)}" target="_blank" class="btn btn-sm btn-ghost">📎 ${escHtml(f.name)}</a>`).join('')}</div>`:''}
+      </div>
+      <div class="acts">
+        <button class="ibtn" title="کپی به کلاس دیگر" data-act="copy" data-id="${l.id}">📋</button>
+        <button class="ibtn" title="ویرایش" data-act="edit" data-id="${l.id}">✏️</button>
+        <button class="ibtn warn" title="حذف" data-act="del" data-id="${l.id}">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+ $('lessonList').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const id=b.dataset.id;
+  if(b.dataset.act==='edit')openEditLesson(id);
+  if(b.dataset.act==='copy')openCopy(id);
+  if(b.dataset.act==='del'){
+    if(!await ask('این درس حذف شود؟'))return;
+    await api('DELETE',`/api/lessons/${id}`);toast('🗑️ درس حذف شد');loadLessons();
+  }
+});
+function openAddLesson(){
+  editLessonId=null;$('lMoTitle').textContent='درس جدید';
+  $('lTitle').value='';$('lContent').value='';
+  pendingFiles=[];renderFiles();$('moLesson').classList.add('open');
+}
+async function openEditLesson(id){
+  const l=lessons.find(x=>x.id===id);if(!l)return;
+  editLessonId=id;$('lMoTitle').textContent='ویرایش درس';
+  $('lTitle').value=l.title;$('lContent').value=l.content||'';
+  pendingFiles=(l.files||[]).map(f=>({name:f.name,url:f.url,type:f.type}));
+  renderFiles();$('moLesson').classList.add('open');
+}
+function handleFiles(input){
+  [...input.files].forEach(f=>{
+    if(f.size>25*1024*1024){toast('⚠️ '+f.name+' بیش از ۲۵MB است','err');return}
+    const item={name:f.name,data:null,type:f.type,url:null,uploading:true};
+    pendingFiles.push(item);renderFiles();
+    const rd=new FileReader();
+    rd.onload=async e=>{
+      item.data=e.target.result;
+      try{
+        const up=await api('POST','/api/upload',{name:f.name,data:e.target.result,type:f.type});
+        if(up?.url){item.url=up.url;item.uploading=false}
+        else item.failed=true;
+      }catch{item.failed=true}
+      item.uploading=false;renderFiles();
+    };
+    rd.readAsDataURL(f);
+  });
+  input.value='';
+}
+function renderFiles(){
+  $('lFiles').innerHTML=pendingFiles.map((f,i)=>{
+    const st=f.uploading?['⏳ آپلود...','wait']:f.failed?['❌ خطا','err']:f.url?['✅ آماده','ok']:'';
+    return `<div class="fitem">📎 <span style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(f.name)}</span>
+      ${st?`<span class="fstat ${st[1]}">${st[0]}</span>`:''}
+      <button class="rm" onclick="pendingFiles.splice(${i},1);renderFiles()">✕</button></div>`;
+  }).join('');
+}
+async function saveLesson(){
+  const title=$('lTitle').value.trim();
+  if(!title)return showErr('lErr','عنوان درس الزامی است');
+  if(pendingFiles.some(f=>f.uploading))return showErr('lErr','لطفاً صبر کنید تا آپلود فایل‌ها تمام شود');
+  const files=pendingFiles.filter(f=>f.url).map(f=>({name:f.name,url:f.url,type:f.type}));
+  const body={classId:activeCls.lessons,title,content:$('lContent').value,files};
+  if(editLessonId)await api('PATCH',`/api/lessons/${editLessonId}`,body);
+  else await api('POST','/api/lessons',body);
+  closeMo('moLesson');toast(editLessonId?'✅ درس بروزرسانی شد':'✅ درس جدید منتشر شد');
+  loadLessons();
+}
+async function openCopy(id){
+  copyLessonId=id;
+  const others=myClasses.filter(c=>c.id!==activeCls.lessons);
+  $('copyTarget').innerHTML=others.length?others.map(c=>`<option value="${c.id}">${escHtml(c.name)}</option>`).join(''):'<option value="">کلاس دیگری ندارید</option>';
+  $('moCopy').classList.add('open');
+}
+async function confirmCopy(){
+  const target=$('copyTarget').value;
+  if(!target)return toast('یک کلاس مقصد انتخاب کنید','err');
+  const res=await api('POST',`/api/lessons/${copyLessonId}/copy`,{targetClassId:target});
+  if(res?.error)return toast(res.error,'err');
+  closeMo('moCopy');toast('✅ درس کپی شد');
+}
+
+/* ═══ تکالیف ═══ */
+async function initAsg(){await loadClasses();renderTabs('asgTabs','assignments','loadAsg')}
+async function loadAsg(){
+  const cid=activeCls.assignments;if(!cid)return;
+  asgs=await api('GET',`/api/assignments?classId=${cid}`)||[];
+  const el=$('asgList');
+  if(!asgs.length){el.innerHTML='<div class="empty"><span class="e-ic">📝</span>هنوز تکلیفی ندارید</div>';return}
+  el.innerHTML=asgs.map(a=>{
+    const days=a.dueDate?Math.ceil((new Date(a.dueDate)-Date.now())/86400000):null;
+    return `<div class="item">
+      <div class="ic" style="background:rgba(255,201,77,.13)">📝</div>
+      <div class="bd">
+        <b>${escHtml(a.title)}</b>
+        ${a.description?`<p>${escHtml(a.description.slice(0,160))}</p>`:''}
+        <div class="ft">
+          <span>⏰ مهلت: ${a.dueDate?new Date(a.dueDate).toLocaleDateString('fa-IR'):'—'}</span>
+          ${days!==null?`<span class="badge ${days<0?'b-red':days<3?'b-yel':'b-off'}">${days<0?'مهلت گذشته':faNum(days)+' روز مانده'}</span>`:''}
+        </div>
+      </div>
+      <div class="acts">
+        <button class="btn btn-sm btn-pri" data-act="subs" data-id="${a.id}" data-title="${escHtml(a.title)}">📋 پاسخ‌ها</button>
+        <button class="ibtn warn" title="حذف" data-act="del" data-id="${a.id}">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+ $('asgList').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  if(b.dataset.act==='subs')openSubs(b.dataset.id,b.dataset.title);
+  if(b.dataset.act==='del'){
+    if(!await ask('این تکلیف و پاسخ‌هایش حذف شود؟'))return;
+    await api('DELETE',`/api/assignments/${b.dataset.id}`);toast('🗑️ حذف شد');loadAsg();
+  }
+});
+async function openAddAsg(){
+  $('aTitle').value='';$('aDesc').value='';$('aDue').value='';
+  asgTpls=await api('GET','/api/templates/assignments')||[];
+  $('asgTpl').innerHTML='<option value="">— بدون الگو —</option>'+asgTpls.map(t=>`<option value="${t.id}">${escHtml(t.title)}</option>`).join('');
+  $('moAsg').classList.add('open');
+}
+ $('asgTpl').addEventListener('change',()=>{
+  const t=asgTpls.find(x=>x.id===$('asgTpl').value);if(!t)return;
+  $('aTitle').value=t.title||'';$('aDesc').value=t.description||'';
+});
+async function saveAsgTpl(){
+  const title=$('aTitle').value.trim();
+  if(!title)return toast('ابتدا عنوان را وارد کنید','err');
+  await api('POST','/api/templates/assignments',{title,description:$('aDesc').value});
+  toast('✅ الگو ذخیره شد');
+}
+async function saveAsg(){
+  const title=$('aTitle').value.trim();
+  if(!title)return showErr('aErr','عنوان الزامی است');
+  await api('POST','/api/assignments',{classId:activeCls.assignments,title,description:$('aDesc').value,dueDate:$('aDue').value});
+  closeMo('moAsg');toast('✅ تکلیف ایجاد شد و به دانش‌آموزان اطلاع داده شد');loadAsg();
+}
+async function openSubs(id,title){
+  curAsgId=id;curAsgTitle=title;
+  $('subsTitle').textContent='پاسخ‌ها: '+title;
+  const subs=await api('GET',`/api/assignments/${id}/submissions`)||[];
+  const el=$('subsList');
+  if(!subs.length){el.innerHTML='<div class="empty"><span class="e-ic">📭</span>هنوز کسی پاسخ نداده</div>';$('moSubs').classList.add('open');return}
+  el.innerHTML=subs.map(s=>`
+    <div class="item">
+      <div class="av" style="background:${avColor(s.studentName)}">${escHtml((s.studentName||'؟')[0])}</div>
+      <div class="bd">
+        <b>${escHtml(s.studentName)}</b>
+        ${s.text?`<p>${escHtml(s.text.slice(0,220))}</p>`:'<p style="color:var(--muted2)">(بدون متن)</p>'}
+        <div class="ft"><span>📤 ${new Date(s.submittedAt).toLocaleString('fa-IR')}</span></div>
+        ${s.feedback?`<div style="font-size:.78rem;color:var(--green);margin-top:7px">💬 بازخورد: ${escHtml(s.feedback)}</div>`:''}
+      </div>
+      <div class="acts" style="flex-direction:column">
+        ${s.grade!==null&&s.grade!==undefined?`<span class="badge b-on">⭐ ${faNum(s.grade)}</span>`:'<span class="badge b-yel">در انتظار</span>'}
+        <button class="btn btn-sm btn-pri" data-sub="${s.id}" data-name="${escHtml(s.studentName)}" data-text="${escHtml(s.text||'')}">نمره‌دهی</button>
+      </div>
+    </div>`).join('');
+  $('moSubs').classList.add('open');
+}
+ $('subsList').addEventListener('click',e=>{
+  const b=e.target.closest('[data-sub]');if(!b)return;
+  gradeSubId=b.dataset.sub;
+  $('grTitle').textContent='نمره‌دهی: '+b.dataset.name;
+  $('grText').textContent=b.dataset.text||'(بدون متن)';
+  $('grVal').value='';$('grFb').value='';
+  $('moGrade').classList.add('open');
+});
+async function saveGrade(){
+  const g=$('grVal').value;
+  if(g==='')return toast('نمره را وارد کنید','err');
+  await api('PATCH',`/api/submissions/${gradeSubId}/grade`,{grade:parseFloat(g),feedback:$('grFb').value});
+  closeMo('moGrade');toast('⭐ نمره ثبت شد و به دانش‌آموز اطلاع داده شد');
+  openSubs(curAsgId,curAsgTitle);
+}
+
+/* ═══ آزمون‌ها ═══ */
+async function initQz(){await loadClasses();renderTabs('qzTabs','quizzes','loadQz')}
+async function loadQz(){
+  const cid=activeCls.quizzes;if(!cid)return;
+  qzs=await api('GET',`/api/quizzes?classId=${cid}`)||[];
+  const el=$('qzList');
+  if(!qzs.length){el.innerHTML='<div class="empty"><span class="e-ic">📋</span>هنوز آزمونی ندارید</div>';return}
+  el.innerHTML=qzs.map(q=>`
+    <div class="item">
+      <div class="ic" style="background:rgba(167,139,250,.13)">📋</div>
+      <div class="bd">
+        <b>${escHtml(q.title)}</b>
+        <div class="ft">
+          <span>❓ ${faNum(q.questions?.length||0)} سوال</span>
+          <span>🕐 ${new Date(q.createdAt).toLocaleDateString('fa-IR')}</span>
+        </div>
+      </div>
+      <div class="acts">
+        <button class="btn btn-sm btn-ghost" data-act="res" data-id="${q.id}" data-title="${escHtml(q.title)}">📊 نتایج</button>
+        <button class="ibtn warn" title="حذف" data-act="del" data-id="${q.id}">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+ $('qzList').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  if(b.dataset.act==='res')openQuizSubs(b.dataset.id,b.dataset.title); // نتایج آزمون هم از همان مودال
+  if(b.dataset.act==='del'){
+    if(!await ask('این آزمون و نتایجش حذف شود؟'))return;
+    await api('DELETE',`/api/quizzes/${b.dataset.id}`);toast('🗑️ حذف شد');loadQz();
+  }
+});
+async function openQuizSubs(id,title){
+  $('subsTitle').textContent='نتایج آزمون: '+title;
+  const subs=await api('GET',`/api/quizzes/${id}/submissions`)||[];
+  const el=$('subsList');
+  if(!subs.length){el.innerHTML='<div class="empty"><span class="e-ic">📭</span>هنوز کسی آزمون نداده</div>';$('moSubs').classList.add('open');return}
+  el.innerHTML=subs.map(s=>`
+    <div class="item">
+      <div class="av" style="background:${avColor(s.studentName)}">${escHtml((s.studentName||'؟')[0])}</div>
+      <div class="bd"><b>${escHtml(s.studentName)}</b><p>${escHtml(s.text)}</p>
+      <div class="ft"><span>📤 ${new Date(s.submittedAt).toLocaleString('fa-IR')}</span></div></div>
+      <div class="acts"><span class="badge ${s.score>=70?'b-on':s.score>=40?'b-yel':'b-red'}">⭐ ${faNum(s.score)}</span></div>
+    </div>`).join('');
+  $('moSubs').classList.add('open');
+}
+async function openAddQuiz(){
+  curQuizCls=activeCls.quizzes;
+  qzQuestions=[];$('qzTitle').value='';
+  qzTpls=await api('GET','/api/templates/quizzes')||[];
+  $('qzTpl').innerHTML='<option value="">— بدون الگو —</option>'+qzTpls.map(t=>`<option value="${t.id}">${escHtml(t.title)} (${faNum(t.questions?.length||0)} سوال)</option>`).join('');
+  $('qzQuestions').innerHTML='';
+  $('moQuiz').classList.add('open');
+  addQ();
+}
+ $('qzTpl').addEventListener('change',()=>{
+  const t=qzTpls.find(x=>x.id===$('qzTpl').value);if(!t)return;
+  $('qzTitle').value=t.title;
+  qzQuestions=(t.questions||[]).map(q=>{
+    if(q.type==='mc'){
+      const opts=(q.options||[]).map(o=>String(o).replace(/^[الفبجد]\)\s*/,''));
+      const idx=(q.options||[]).findIndex(o=>o===q.answer);
+      return{...q,options:opts,answer:String(idx)};
+    }
+    return{...q};
+  });
+  renderQs();
+});
+function addQ(){
+  qzQuestions.push({type:'mc',question:'',options:['','','',''],answer:'',explanation:''});
+  renderQs();
+}
+const TYPE_LB={mc:['tb-mc','چهارگزینه‌ای'],tf:['tb-tf','درست/غلط'],fill:['tb-fill','جای خالی'],essay:['tb-essay','تشریحی']};
+function renderQs(){
+  $('qzCount').textContent=faNum(qzQuestions.length)+' سوال';
+  $('qzQuestions').innerHTML=qzQuestions.map((q,i)=>`
+    <div class="qcard">
+      <div class="qcard-h">
+        <span class="qnum">سوال ${faNum(i+1)}</span>
+        <span class="tb ${TYPE_LB[q.type][0]}">${TYPE_LB[q.type][1]}</span>
+        <span style="flex:1"></span>
+        <select onchange="qzTypeChange(${i},this.value)" style="width:140px;padding:6px 10px;font-size:.76rem">
+          <option value="mc" ${q.type==='mc'?'selected':''}>چهارگزینه‌ای</option>
+          <option value="tf" ${q.type==='tf'?'selected':''}>درست/غلط</option>
+          <option value="fill" ${q.type==='fill'?'selected':''}>جای خالی</option>
+          <option value="essay" ${q.type==='essay'?'selected':''}>تشریحی</option>
+        </select>
+        <button class="ibtn warn" onclick="rmQ(${i})">✕</button>
+      </div>
+      <div class="fg"><textarea oninput="qzQuestions[${i}].question=this.value" placeholder="متن سوال..." style="min-height:60px">${escHtml(q.question)}</textarea></div>
+      ${q.type==='mc'?`
+        <div class="opts-grid">
+          ${['۱','۲','۳','۴'].map((n,oi)=>`<input type="text" placeholder="گزینه ${n}..." value="${escHtml(q.options[oi]||'')}" oninput="qzQuestions[${i}].options[${oi}]=this.value"/>`).join('')}
+        </div>
+        <div class="fg"><label>پاسخ صحیح</label><select onchange="qzQuestions[${i}].answer=this.value">
+          <option value="">انتخاب...</option>
+          ${['۱','۲','۳','۴'].map((n,oi)=>`<option value="${oi}" ${q.answer==String(oi)?'selected':''}>گزینه ${n}</option>`).join('')}
+        </select></div>`:''}
+      ${q.type==='tf'?`<div class="fg"><label>پاسخ صحیح</label><select onchange="qzQuestions[${i}].answer=this.value">
+        <option value="">انتخاب...</option>
+        <option value="درست" ${q.answer==='درست'?'selected':''}>✅ درست</option>
+        <option value="غلط" ${q.answer==='غلط'?'selected':''}>❌ غلط</option>
+      </select></div>`:''}
+      ${(q.type==='fill'||q.type==='essay')?`<div class="fg"><label>${q.type==='essay'?'پاسخ نمونه':'پاسخ صحیح'}</label><input type="text" value="${escHtml(q.answer||'')}" oninput="qzQuestions[${i}].answer=this.value"/></div>`:''}
+      <div class="fg" style="margin:0"><label>توضیح بعد از پاسخ (اختیاری)</label><input type="text" value="${escHtml(q.explanation||'')}" oninput="qzQuestions[${i}].explanation=this.value" placeholder="توضیح..."/></div>
+    </div>`).join('');
+}
+function qzTypeChange(i,t){
+  qzQuestions[i].type=t;qzQuestions[i].answer='';
+  if(t==='mc'&&!qzQuestions[i].options)qzQuestions[i].options=['','','',''];
+  renderQs();
+}
+function rmQ(i){qzQuestions.splice(i,1);renderQs()}
+async function saveQuiz(){
+  const title=$('qzTitle').value.trim();
+  if(!title)return toast('عنوان آزمون الزامی است','err');
+  if(!qzQuestions.length)return toast('حداقل یک سوال لازم است','err');
+  if(qzQuestions.some(q=>!q.question.trim()))return toast('متن همه سوالات را پر کنید','err');
+  if(qzQuestions.some(q=>q.type!=='essay'&&!q.answer&&q.answer!=='0'))return toast('پاسخ همه سوالات را مشخص کنید','err');
+  const qs=qzQuestions.map(q=>{
+    if(q.type==='mc'){
+      const labels=['الف','ب','ج','د'];
+      const opts=q.options.map((o,oi)=>o.match(/^[الفبجد]\)/)?o:`${labels[oi]}) ${o}`);
+      return{...q,options:opts,answer:opts[parseInt(q.answer)]||''};
+    }
+    return q;
+  });
+  await api('POST','/api/quizzes',{classId:curQuizCls,title,questions:qs});
+  closeMo('moQuiz');toast('✅ آزمون ساخته شد و اطلاع‌رسانی انجام شد');loadQz();
+}
+async function saveQzTpl(){
+  const title=$('qzTitle').value.trim();
+  if(!title||!qzQuestions.length)return toast('عنوان و حداقل یک سوال لازم است','err');
+  const qs=qzQuestions.map(q=>{
+    if(q.type==='mc'){
+      const labels=['الف','ب','ج','د'];
+      const opts=q.options.map((o,oi)=>o.match(/^[الفبجد]\)/)?o:`${labels[oi]}) ${o}`);
+      return{...q,options:opts,answer:opts[parseInt(q.answer)]||''};
+    }
+    return q;
+  });
+  await api('POST','/api/templates/quizzes',{title,questions:qs});
+  toast('✅ الگوی آزمون ذخیره شد');
+}
+
+/* ─── بانک سوال ─── */
+async function openBankPicker(){
+  bankCache=await api('GET','/api/question-bank')||[];
+  const el=$('bankPickList');
+  if(!bankCache.length){el.innerHTML='<div class="empty"><span class="e-ic">🗂️</span>بانک سوال خالی است — ابتدا سوال اضافه کنید</div>';}
+  else el.innerHTML=bankCache.map((q,i)=>`
+    <div class="item" data-bank="${i}" style="cursor:pointer">
+      <div class="ic" style="background:var(--priSoft)">❓</div>
+      <div class="bd">
+        <span class="tb ${TYPE_LB[q.type]?.[0]||'tb-mc'}">${TYPE_LB[q.type]?.[1]||q.type}</span>
+        <b style="display:block;margin-top:7px">${escHtml(q.question)}</b>
+        ${q.options?.length?`<p>${q.options.map(escHtml).join(' · ')}</p>`:''}
+        <div class="ft"><span>✅ ${escHtml(q.answer)}</span>${q.usageCount?`<span>🔁 ${faNum(q.usageCount)} بار استفاده</span>`:''}${q.tags?.length?`<span>🏷️ ${q.tags.map(escHtml).join(', ')}</span>`:''}</div>
+      </div>
+      <div class="acts"><button class="btn btn-sm btn-pri">＋ افزودن</button></div>
+    </div>`).join('');
+  $('moBankPick').classList.add('open');
+}
+ $('bankPickList').addEventListener('click',async e=>{
+  const it=e.target.closest('[data-bank]');if(!it)return;
+  const q=bankCache[+it.dataset.bank];if(!q)return;
+  let options=q.options||['','','',''],answer=q.answer;
+  if(q.type==='mc'){
+    options=options.map(o=>String(o).replace(/^[الفبجد]\)\s*/,''));
+    answer=String((q.options||[]).findIndex(o=>o===q.answer));
+  }
+  qzQuestions.push({type:q.type,question:q.question,options,answer,explanation:q.explanation||'',bankId:q.id});
+  renderQs();
+  await api('POST',`/api/question-bank/${q.id}/use`);
+  closeMo('moBankPick');toast('✅ سوال به آزمون اضافه شد');
+});
+
+/* ═══ حضور و غیاب ═══ */
+async function initAtt(){
+  await loadClasses();
+  $('attClass').innerHTML=myClasses.map(c=>`<option value="${c.id}">${escHtml(c.name)}</option>`).join('');
+  $('attDate').value=new Date().toISOString().slice(0,10);
+  if(myClasses.length)loadAttStudents();
+}
+async function loadAttStudents(){
+  const cid=$('attClass').value,date=$('attDate').value;
+  const cls=myClasses.find(c=>c.id===cid);
+  if(!cls){$('attStudents').innerHTML='';return}
+  const ids=cls.studentIds||[];
+  if(!ids.length){$('attStudents').innerHTML='<div class="empty"><span class="e-ic">👥</span>این کلاس دانش‌آموز ندارد</div>';return}
+  $('attStudents').innerHTML='<div class="skel" style="height:56px;margin-bottom:8px"></div>';
+  const [existing,students]=await Promise.all([
+    api('GET',`/api/attendance?classId=${cid}&date=${date}`),
+    api('GET','/api/teacher/students')
+  ]);
+  const nameMap={};(students||[]).forEach(u=>nameMap[u.id]=u.name);
+  $('attCount').textContent=faNum(ids.length)+' دانش‌آموز';
+  const rec=existing?.[0]?.records||[];
+  $('attStudents').innerHTML=ids.map(sid=>{
+    const r=rec.find(x=>x.studentId===sid);
+    const st=r?.status||'present';
+    return `<div class="att-row">
+      <div class="av" style="width:34px;height:34px;font-size:.74rem;background:${avColor(nameMap[sid]||sid)}">${escHtml((nameMap[sid]||'?')[0])}</div>
+      <b style="font-size:.86rem">${escHtml(nameMap[sid]||sid)}</b>
+      <div class="att-opts">
+        <label class="att-opt ${st==='present'?'sel-p':''}"><input type="radio" name="att-${sid}" value="present" ${st==='present'?'checked':''} style="display:none"/>✅ حاضر</label>
+        <label class="att-opt ${st==='absent'?'sel-a':''}"><input type="radio" name="att-${sid}" value="absent" ${st==='absent'?'checked':''} style="display:none"/>❌ غایب</label>
+        <label class="att-opt ${st==='late'?'sel-l':''}"><input type="radio" name="att-${sid}" value="late" ${st==='late'?'checked':''} style="display:none"/>🕐 تاخیر</label>
+      </div>
+    </div>`;
+  }).join('');
+  // رنگ انتخاب
+  $('attStudents').querySelectorAll('.att-opt input').forEach(inp=>{
+    inp.addEventListener('change',()=>{
+      inp.closest('.att-opts').querySelectorAll('.att-opt').forEach(l=>l.className='att-opt');
+      inp.closest('.att-opt').className='att-opt '+(inp.value==='present'?'sel-p':inp.value==='absent'?'sel-a':'sel-l');
+    });
+  });
+  // سابقه
+  const hist=await api('GET',`/api/attendance?classId=${cid}`)||[];
+  $('attHistory').innerHTML=hist.length?`<table><thead><tr><th>تاریخ</th><th>حاضر</th><th>غایب</th><th>تاخیر</th></tr></thead><tbody>${hist.map(a=>{
+    const p=a.records.filter(r=>r.status==='present').length;
+    const ab=a.records.filter(r=>r.status==='absent').length;
+    const la=a.records.filter(r=>r.status==='late').length;
+    return `<tr><td>${a.date}</td><td><span class="badge b-on">${faNum(p)}</span></td><td><span class="badge b-red">${faNum(ab)}</span></td><td><span class="badge b-yel">${faNum(la)}</span></td></tr>`;
+  }).join('')}</tbody></table>`:'<div class="empty"><span class="e-ic">📜</span>سابقه‌ای ندارید</div>';
+}
+async function saveAttendance(){
+  const cid=$('attClass').value,date=$('attDate').value;
+  const cls=myClasses.find(c=>c.id===cid);if(!cls)return;
+  const records=(cls.studentIds||[]).map(sid=>({
+    studentId:sid,
+    status:document.querySelector(`input[name="att-${sid}"]:checked`)?.value||'present'
+  }));
+  await api('POST','/api/attendance',{classId:cid,date,records});
+  toast('✅ حضور و غیاب ذخیره شد');loadAttStudents();
+}
+
+/* ═══ نظرسنجی ═══ */
+async function initPolls(){await loadClasses();renderTabs('pollTabs','polls','loadPolls')}
+async function loadPolls(){
+  const cid=activeCls.polls;if(!cid)return;
+  polls=await api('GET','/api/polls?classId=${cid}`)||[]');
+  const el=$('pollList');
+  if(!polls.length){el.innerHTML='<div class="empty"><span class="e-ic">📊</span>نظرسنجی ندارید</div>';return}
+  el.innerHTML=polls.map(p=>{
+    const total=p.results.reduce((a,x)=>a+x.count,0);
+    return `<div class="card" style="background:var(--bg2)">
+      <div style="font-size:.98rem;font-weight:800;margin-bottom:14px">${escHtml(p.question)}</div>
+      ${p.options.map((o,i)=>{
+        const pct=total?Math.round(p.results[i]?.count/total*100):0;
+        return `<div class="poll-opt">
+          <span class="lb">${escHtml(o)}</span>
+          <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+          <span class="pcnt">${faNum(p.results[i]?.count||0)} (${faNum(pct)}٪)</span>
+        </div>`;
+      }).join('')}
+      <div style="font-size:.72rem;color:var(--muted);margin-top:10px">🗳️ ${faNum(total)} رأی ثبت شده</div>
+    </div>`;
+  }).join('');
+}
+function openAddPoll(){$('pollQ').value='';$('pollOpts').value='';$('moPoll').classList.add('open')}
+async function savePoll(){
+  const q=$('pollQ').value.trim();
+  const opts=$('pollOpts').value.trim().split('\n').filter(x=>x.trim());
+  if(!q||opts.length<2)return showErr('pErr','سوال و حداقل ۲ گزینه لازم است');
+  await api('POST','/api/polls',{classId:activeCls.polls,question:q,options:opts});
+  closeMo('moPoll');toast('✅ نظرسنجی ایجاد شد');loadPolls();
+}
+
+/* ═══ جلسات ═══ */
+async function initSess(){await loadClasses();renderTabs('sessTabs','sessions','loadSess')}
+async function loadSess(){
+  const cid=activeCls.sessions;if(!cid)return;
+  const list=await api('GET',`/api/sessions?classId=${cid}`)||[];
+  const el=$('sessList');
+  if(!list.length){el.innerHTML='<div class="empty"><span class="e-ic">🎥</span>هنوز جلسه‌ای برگزار نشده</div>';return}
+  el.innerHTML=list.map(s=>`
+    <div class="item" style="${s.active?'border-color:rgba(255,107,129,.35);background:rgba(255,107,129,.04)':''}">
+      <div class="ic" style="background:${s.active?'rgba(255,107,129,.15)':'var(--card2)'}">${s.active?'🔴':'🎥'}</div>
+      <div class="bd">
+        <b>${escHtml(s.title)}</b>
+        <div class="ft"><span>🕐 ${new Date(s.startedAt).toLocaleString('fa-IR')}</span>${s.active?'<span class="badge b-red">زنده</span>':'<span class="badge b-off">پایان‌یافته</span>'}</div>
+      </div>
+      <div class="acts">
+        ${s.active?`<button class="btn btn-sm btn-red" onclick="location.href='/classroom?id=${s.id}'">🎥 ورود به کلاس</button>`:''}
+        ${s.meetLink?`<a href="${escHtml(s.meetLink)}" target="_blank" class="btn btn-sm btn-ghost">📹 ویدیو</a>`:''}
+      </div>
+    </div>`).join('');
+}
+function openStartSession(){$('sessTitle').value='';$('sessLink').value='';$('moSession').classList.add('open')}
+async function startSession(){
+  const title=$('sessTitle').value.trim()||'جلسه کلاسی';
+  const data=await api('POST','/api/sessions',{classId:activeCls.sessions,title,meetLink:$('sessLink').value.trim()});
+  if(data?.id){closeMo('moSession');location.href=`/classroom?id=${data.id}`}
+  else toast('خطا در ایجاد جلسه','err');
+}
+
+/* ═══ تحلیل ═══ */
+let analyticsData=null,iaData=null;
+async function initAnalytics(){await loadClasses();renderTabs('anTabs','analytics','loadAnalytics')}
+async function loadAnalytics(){
+  const cid=activeCls.analytics;if(!cid)return;
+  const data=await api('GET',`/api/classes/${cid}/analytics`);
+  if(!data||data.error){
+    $('riskCard').style.display='none';
+    $('trendChart').parentElement.innerHTML='<div class="empty"><span class="e-ic">📈</span>داده‌ای برای تحلیل موجود نیست</div>';
+    $('cmpList').innerHTML='<div class="empty">داده‌ای موجود نیست</div>';
+    return;
+  }
+  analyticsData=data;
+  // هشدار افت
+  const risk=data.atRisk||[];
+  $('riskCard').style.display=risk.length?'block':'none';
+  $('riskList').innerHTML=risk.map(r=>`
+    <div class="risk-item">
+      <div class="av" style="background:${avColor(r.name)}">${escHtml(r.name[0])}</div>
+      <div style="flex:1"><b style="font-size:.86rem">${escHtml(r.name)}</b>
+      <div style="font-size:.72rem;color:var(--muted)">${escHtml(r.reason||'افت نمرات اخیر')}</div></div>
+      <span class="badge b-red">میانگین ${faNum(r.avg)}٪</span>
+    </div>`).join('');
+  // روند
+  drawTrend(data.trend||[]);
+  // مقایسه
+  const stu=data.students||[];
+  $('cmpList').innerHTML=stu.length?stu.map(s=>{
+    const pct=s.avg||0;
+    const col=pct>=70?'var(--green)':pct>=40?'var(--yellow)':'var(--red)';
+    return `<div class="cmp-row">
+      <div class="av" style="width:30px;height:30px;font-size:.68rem;background:${avColor(s.name)}">${escHtml(s.name[0])}</div>
+      <span style="font-size:.82rem;min-width:90px">${escHtml(s.name)}</span>
+      <div class="pbar" style="flex:1"><div class="pfill" style="width:${pct}%;background:${col}"></div></div>
+      <b style="font-size:.8rem;min-width:44px;text-align:left">${faNum(pct)}٪</b>
+    </div>`;
+  }).join(''):'<div class="empty">داده‌ای موجود نیست</div>';
+  // انتخاب آزمون برای تحلیل سوال
+  const qzList=await api('GET',`/api/quizzes?classId=${cid}`)||[];
+  $('iaQuiz').innerHTML='<option value="">یک آزمون انتخاب کنید</option>'+qzList.map(q=>`<option value="${q.id}">${escHtml(q.title)}</option>`).join('');
+}
+function drawTrend(trend){
+  const cv=$('trendChart');if(!cv)return;
+  const dpr=devicePixelRatio||1,W=cv.parentElement.clientWidth||500,H=220;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';
+  const c=cv.getContext('2d');c.scale(dpr,dpr);c.clearRect(0,0,W,H);
+  if(!trend.length){c.fillStyle='rgba(139,148,167,.7)';c.font='13px Vazirmatn';c.textAlign='center';c.fillText('داده‌ای موجود نیست',W/2,H/2);return}
+  $('trendAvg').textContent='میانگین: '+faNum(Math.round(trend.reduce((a,t)=>a+t.avg,0)/trend.length))+'٪';
+  const max=100,pad=36;
+  // شبکه
+  c.strokeStyle='rgba(255,255,255,.05)';
+  for(let i=0;i<=4;i++){const y=H-30-(H-56)*i/4;c.beginPath();c.moveTo(pad-14,y);c.lineTo(W-pad+14,y);c.stroke();
+    c.fillStyle='rgba(139,148,167,.7)';c.font='10px Vazirmatn';c.textAlign='right';c.fillText(faNum(i*25)+'٪',pad-18,y+3)}
+  const n=trend.length,gap=(W-pad*2)/Math.max(n-1,1);
+  // خط + ناحیه
+  const pts=trend.map((t,i)=>({x:W-pad-gap*i,y:H-30-(t.avg/100)*(H-56)}));
+  const grad=c.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'rgba(77,159,255,.35)');grad.addColorStop(1,'rgba(77,159,255,0)');
+  c.beginPath();c.moveTo(pts[0].x,H-30);
+  pts.forEach(p=>c.lineTo(p.x,p.y));
+  c.lineTo(pts[pts.length-1].x,H-30);c.closePath();c.fillStyle=grad;c.fill();
+  c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));
+  c.strokeStyle='#4d9fff';c.lineWidth=2.5;c.lineJoin='round';c.stroke();
+  pts.forEach((p,i)=>{
+    c.beginPath();c.arc(p.x,p.y,4.5,0,7);c.fillStyle='#4d9fff';c.fill();
+    c.beginPath();c.arc(p.x,p.y,2,0,7);c.fillStyle='#fff';c.fill();
+    c.fillStyle='rgba(139,148,167,.85)';c.font='10px Vazirmatn';c.textAlign='center';
+    c.fillText(trend[i].label||trend[i].title||('#'+(i+1)),p.x,H-10);
+    c.fillStyle='#7cc0ff';c.font='bold 9px Vazirmatn';c.fillText(faNum(trend[i].avg)+'٪',p.x,p.y-10);
+  });
+}
+async function loadItemAnalysis(){
+  const qid=$('iaQuiz').value;
+  if(!qid){$('iaResult').innerHTML='<div class="empty" style="padding:24px"><span class="e-ic">🔬</span>یک آزمون انتخاب کنید</div>';return}
+  const data=await api('GET',`/api/quizzes/${qid}/analysis`);
+  if(!data||data.error){$('iaResult').innerHTML='<div class="empty" style="padding:24px"><span class="e-ic">📭</span>داده‌ای برای این آزمون موجود نیست (اول باید دانش‌آموزان آزمون بدهند)</div>';return}
+  iaData=data;
+  const items=data.items||[];
+  $('iaResult').innerHTML=items.map((it,i)=>{
+    const pct=Math.round(it.correctPct??(it.correct/(it.total||1)*100));
+    const diff=pct>=70?'آسان':pct>=40?'متوسط':'سخت';
+    const dcol=pct>=70?'var(--green)':pct>=40?'var(--yellow)':'var(--red)';
+    return `<div class="ia-row">
+      <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+        <b style="font-size:.84rem">سوال ${faNum(i+1)} — ${escHtml((it.question||'').slice(0,70))}</b>
+        <span class="badge" style="color:${dcol};border:1px solid ${dcol};background:transparent">${diff}</span>
+      </div>
+      <div class="ia-bar">
+        <div class="ia-seg" style="width:${pct}%;background:${dcol}"></div>
+        <div class="ia-seg" style="width:${100-pct}%;background:rgba(255,107,129,.25)"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:.7rem;color:var(--muted)">
+        <span>✅ ${faNum(it.correct||0)} پاسخ صحیح از ${faNum(it.total||0)}</span>
+        <b style="color:${dcol}">${faNum(pct)}٪ موفقیت</b>
+      </div>
+    </div>`;
+  }).join('')||'<div class="empty">داده‌ای موجود نیست</div>';
+}
+function downloadReport(){
+  const cid=activeCls.analytics;if(!cid)return;
+  const cls=myClasses.find(c=>c.id===cid);
+  const stu=analyticsData?.students||[];
+  const risk=analyticsData?.atRisk||[];
+  const w=window.open('','_blank');
+  w.document.write(`<html dir="rtl"><head><meta charset="utf-8"><title>گزارش کلاس</title>
+  <style>body{font-family:Tahoma;padding:30px;color:#111}h1{color:#1a5fb4}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #999;padding:9px;text-align:right;font-size:13px}th{background:#eef}</style></head><body>
+  <h1>📋 گزارش کلاس: ${escHtml(cls?.name||'')}</h1>
+  <p>تاریخ: ${new Date().toLocaleDateString('fa-IR')} — معلم: ${escHtml(user.name)}</p>
+  ${risk.length?`<p style="color:#c00">⚠️ هشدار افت تحصیلی: ${risk.map(r=>escHtml(r.name)).join('، ')}</p>`:''}
+  <table><tr><th>دانش‌آموز</th><th>میانگین نمرات</th></tr>
+  ${stu.map(s=>`<tr><td>${escHtml(s.name)}</td><td>${faNum(s.avg||0)}٪</td></tr>`).join('')||'<tr><td colspan="2">داده‌ای موجود نیست</td></tr>'}
+  </table></body></html>`);
+  w.document.close();
+  setTimeout(()=>w.print(),400);
+}
+
+/* ═══ رتبه‌بندی ═══ */
+async function initLb(){await loadClasses();renderTabs('lbTabs','leaderboard','loadLb')}
+async function loadLb(){
+  const cid=activeCls.leaderboard;if(!cid)return;
+  const lb=await api('GET',`/api/classes/${cid}/leaderboard`);
+  const el=$('lbList');
+  if(!lb||lb.error||!lb.length){el.innerHTML='<div class="empty"><span class="e-ic">🏆</span>هنوز رتبه‌بندی‌ای موجود نیست</div>';return}
+  const medals=['🥇','🥈','🥉'];
+  el.innerHTML=lb.map((s,i)=>{
+    const xp=s.totalXP||0,lvl=s.level||1;
+    const prog=Math.min(100,Math.round((xp%100)));
+    return `<div class="rank-row ${i<3?'top'+(i+1):''}">
+      ${i<3?`<div class="medal">${medals[i]}</div>`:`<div class="rank-num">${faNum(i+1)}</div>`}
+      <div class="av" style="background:${avColor(s.name)}">${escHtml(s.name[0])}</div>
+      <div style="flex:1;min-width:0"><b style="font-size:.88rem">${escHtml(s.name)}</b>
+      <div class="xp-bar" style="margin-top:5px"><div class="xp-fill" style="width:${prog}%"></div></div></div>
+      <span class="badge b-pur">لِوِل ${faNum(lvl)}</span>
+      <b style="font-size:.82rem;min-width:60px;text-align:left">${faNum(xp)} XP</b>
+    </div>`;
+  }).join('');
+  // نشان‌ها
+  const defs=await api('GET','/api/badge-defs')||[];
+  $('badgeDefs').innerHTML=defs.length?defs.map(b=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--bd)">
+      <span style="font-size:1.5rem">${b.icon||'🎖️'}</span>
+      <div><b style="font-size:.86rem">${escHtml(b.name)}</b>
+      <div style="font-size:.72rem;color:var(--muted)">${escHtml(b.description||'')}</div></div>
+    </div>`).join(''):'<div class="empty" style="padding:20px">نشانی تعریف نشده</div>';
+}
+
+/* ═══ بانک سوال ═══ */
+async function initBank(){loadBank()}
+function setBankType(t){
+  bankType=t;
+  ['mc','tf','fill','essay'].forEach(x=>$('btt-'+x).classList.toggle('on',x===t));
+  $('bankMcFields').style.display=t==='mc'?'':'none';
+  $('bankSimpleAns').style.display=t==='mc'?'none':'';
+}
+async function loadBank(){
+  bankCache=await api('GET','/api/question-bank')||[];
+  const tags=new Set();
+  bankCache.forEach(q=>(q.tags||[]).forEach(t=>tags.add(t)));
+  $('bankTagFilter').innerHTML='<option value="">همه برچسب‌ها</option>'+[...tags].map(t=>`<option value="${escHtml(t)}">${escHtml(t)}</option>`).join('');
+  renderBank();
+}
+function renderBank(){
+  const tag=$('bankTagFilter').value;
+  const list=bankCache.filter(q=>!tag||(q.tags||[]).includes(tag));
+  $('bankCount').textContent=faNum(list.length);
+  const el=$('bankList');
+  if(!list.length){el.innerHTML='<div class="empty"><span class="e-ic">🗂️</span>سوالی در بانک نیست</div>';return}
+  el.innerHTML=list.map(q=>`
+    <div class="item">
+      <div class="ic" style="background:var(--priSoft)">❓</div>
+      <div class="bd">
+        <span class="tb ${TYPE_LB[q.type]?.[0]||'tb-mc'}">${TYPE_LB[q.type]?.[1]||q.type}</span>
+        <b style="display:block;margin-top:7px">${escHtml(q.question)}</b>
+        ${q.options?.length?`<p>${q.options.map(escHtml).join(' · ')}</p>`:''}
+        <div class="ft">
+          <span>✅ ${escHtml(q.answer)}</span>
+          ${q.usageCount?`<span>🔁 ${faNum(q.usageCount)} بار استفاده</span>`:''}
+          ${q.tags?.length?`<span>🏷️ ${q.tags.map(escHtml).join('، ')}</span>`:''}
+        </div>
+      </div>
+      <div class="acts"><button class="ibtn warn" data-del="${q.id}" title="حذف">🗑️</button></div>
+    </div>`).join('');
+}
+ $('bankList').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-del]');if(!b)return;
+  if(!await ask('این سوال از بانک حذف شود؟'))return;
+  await api('DELETE',`/api/question-bank/${b.dataset.del}`);
+  toast('🗑️ حذف شد');loadBank();
+});
+async function addToBank(){
+  const q=$('bankText').value.trim();
+  if(!q)return toast('متن سوال الزامی است','err');
+  let body={type:bankType,question:q,tags:$('bankTags').value.split(',').map(t=>t.trim()).filter(Boolean)};
+  if(bankType==='mc'){
+    const opts=[$('bop1').value.trim(),$('bop2').value.trim(),$('bop3').value.trim(),$('bop4').value.trim()];
+    if(opts.some(o=>!o))return toast('همه گزینه‌ها را پر کنید','err');
+    const ans=$('bankMcAns').value;if(!ans)return toast('پاسخ صحیح را انتخاب کنید','err');
+    const labels=['الف','ب','ج','د'];
+    body.options=opts.map((o,i)=>`${labels[i]}) ${o}`);
+    body.answer=body.options[+ans-1];
+  }else{
+    const ans=$('bankAns').value.trim();
+    if(!ans)return toast('پاسخ صحیح الزامی است','err');
+    body.answer=ans;
+  }
+  const res=await api('POST','/api/question-bank',body);
+  if(res?.error)return toast(res.error,'err');
+  $('bankText').value='';$('bankTags').value='';
+  ['bop1','bop2','bop3','bop4','bankAns'].forEach(id=>$(id).value='');
+  $('bankMcAns').value='';
+  toast('✅ سوال به بانک اضافه شد');loadBank();
+}
+
+/* ═══ تقویم ═══ */
+async function initCal(){
+  calEvents=await api('GET','/api/teacher/calendar')||[];
+  renderCal();
+}
+function calShift(d){calDate.setMonth(calDate.getMonth()+d);renderCal()}
+function calToday(){calDate=new Date();renderCal()}
+function renderCal(){
+  const y=calDate.getFullYear(),m=calDate.getMonth();
+  $('calLabel').textContent=calDate.toLocaleDateString('fa-IR',{month:'long',year:'numeric'});
+  const first=new Date(y,m,1),days=new Date(y,m+1,0).getDate();
+  const offset=(first.getDay()+1)%7; // شنبه اول هفته
+  const evMap={};
+  calEvents.forEach(e=>{(evMap[e.date]=evMap[e.date]||[]).push(e)});
+  const today=new Date().toISOString().slice(0,10);
+  let html=['ش','ی','د','س','چ','پ','ج'].map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  for(let i=0;i<offset;i++)html+='<div class="cal-cell other"></div>';
+  for(let d=1;d<=days;d++){
+    const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const evs=evMap[ds]||[];
+    const cls={assignment:'a',quiz:'q',session:'s'};
+    const ic={assignment:'📝',quiz:'📋',session:'🎥'};
+    html+=`<div class="cal-cell ${ds===today?'today':''}">
+      <div class="cal-n">${faNum(d)}</div>
+      ${evs.slice(0,3).map(e=>`<div class="cal-ev ${cls[e.type]||''}" title="${escHtml(e.title)}">${ic[e.type]||'📌'} ${escHtml(e.title)}</div>`).join('')}
+      ${evs.length>3?`<div style="color:var(--muted2)">+${faNum(evs.length-3)} دیگر</div>`:''}
+    </div>`;
+  }
+  $('calGrid').innerHTML=html;
+  // پیش‌رو
+  const upcoming=calEvents.filter(e=>e.date>=today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,6);
+  const ic={assignment:'📝',quiz:'📋',session:'🎥'};
+  $('upcoming').innerHTML=upcoming.length?upcoming.map(e=>`
+    <div class="item">
+      <div class="ic" style="background:var(--priSoft)">${ic[e.type]||'📌'}</div>
+      <div class="bd"><b>${escHtml(e.title)}</b>
+      <div class="ft"><span>🏫 ${escHtml(e.className||'')}</span><span>📅 ${new Date(e.date).toLocaleDateString('fa-IR')}</span></div></div>
+    </div>`).join(''):'<div class="empty"><span class="e-ic">🗓️</span>رویداد پیش‌رویی وجود ندارد</div>';
+}
+
+/* ═══ دانش‌آموزان ═══ */
+async function initStu(){await loadClasses();renderTabs('stuTabs','students','loadStu')}
+async function loadStu(){
+  const cid=activeCls.students;if(!cid)return;
+  const cls=myClasses.find(c=>c.id===cid);
+  const students=await api('GET','/api/teacher/students')||[];
+  const inClass=students.filter(s=>(cls?.studentIds||[]).includes(s.id));
+  const el=$('stuList');
+  if(!inClass.length){el.innerHTML='<div class="empty"><span class="e-ic">👥</span>این کلاس دانش‌آموز ندارد</div>';return}
+  el.innerHTML=inClass.map(s=>`
+    <div class="item" style="cursor:pointer" data-stu="${s.id}" data-name="${escHtml(s.name)}">
+      <div class="av" style="background:${avColor(s.name)}">${escHtml(s.name[0])}</div>
+      <div class="bd"><b>${escHtml(s.name)}</b>
+      <div class="ft"><span>👤 دانش‌آموز</span></div></div>
+      <div class="acts"><button class="btn btn-sm btn-ghost">پروفایل ←</button></div>
+    </div>`).join('');
+}
+ $('stuList').addEventListener('click',e=>{
+  const it=e.target.closest('[data-stu]');if(!it)return;
+  openStudentProfile(it.dataset.stu,it.dataset.name);
+});
+async function openStudentProfile(id,name){
+  spStudent={id,name};
+  $('spTitle').textContent='پروفایل: '+name;
+  // آمار (از endpoint های موجود)
+  const badges=await api('GET',`/api/students/${id}/badges`)||[];
+  const perf=await api('GET',`/api/students/${id}/performance`).catch(()=>null);
+  $('spStats').innerHTML=`
+    <div class="sp-stat"><b style="color:var(--pri)">${perf?.avgScore!=null?faNum(perf.avgScore)+'٪':'—'}</b><span>میانگین نمرات</span></div>
+    <div class="sp-stat"><b style="color:var(--purple)">${faNum(perf?.quizzesTaken||0)}</b><span>آزمون داده</span></div>
+    <div class="sp-stat"><b style="color:var(--yellow)">${faNum(badges.length)}</b><span>نشان کسب‌شده</span></div>`;
+  $('spBadges').innerHTML=badges.length?`<div style="display:flex;gap:7px;flex-wrap:wrap">${badges.map(b=>`<span class="badge b-yel">${b.icon||'🎖️'} ${escHtml(b.name)}</span>`).join('')}</div>`
+    :'<span style="font-size:.78rem;color:var(--muted)">هنوز نشانی ندارد</span>';
+  // یادداشت‌ها
+  const notes=await api('GET',`/api/teacher/students/${id}/notes`)||[];
+  window._spNotes=notes;
+  renderNotes();
+  $('moStudent').classList.add('open');
+}
+function renderNotes(){
+  $('spNotes').innerHTML=(window._spNotes||[]).map((n,i)=>`
+    <div class="note-item">📝 <span style="flex:1">${escHtml(n.text)}</span>
+    <span style="font-size:.62rem;color:var(--muted2)">${n.createdAt?new Date(n.createdAt).toLocaleDateString('fa-IR'):''}</span>
+    <button class="rm" data-rm="${i}">✕</button></div>`).join('')
+    ||'<div style="font-size:.78rem;color:var(--muted);text-align:center;padding:12px">یادداشتی ندارید</div>';
+}
+ $('spNotes').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-rm]');if(!b)return;
+  window._spNotes.splice(+b.dataset.rm,1);
+  await api('DELETE',`/api/teacher/students/${spStudent.id}/notes`,{index:+b.dataset.rm});
+  renderNotes();
+});
+async function addNote(){
+  const t=$('spNewNote').value.trim();
+  if(!t)return;
+  const res=await api('POST',`/api/teacher/students/${spStudent.id}/notes`,{text:t});
+  window._spNotes.push(res?.note||{text:t,createdAt:new Date().toISOString()});
+  $('spNewNote').value='';
+  renderNotes();toast('📝 یادداشت اضافه شد');
+}
+
+/* ═══ کامند پالت ═══ */
+const CMDS=[
+  {ic:'📊',l:'داشبورد',k:'dash',run:()=>show('dash')},
+  {ic:'📚',l:'درس‌ها',k:'lesson',run:()=>show('lessons')},
+  {ic:'📝',l:'تکالیف',k:'asg',run:()=>show('assignments')},
+  {ic:'📋',l:'آزمون‌ها',k:'quiz',run:()=>show('quizzes')},
+  {ic:'✅',l:'حضور و غیاب',k:'att',run:()=>show('attendance')},
+  {ic:'📊',l:'نظرسنجی',k:'poll',run:()=>show('polls')},
+  {ic:'🎥',l:'کلاس مجازی',k:'session',run:()=>show('sessions')},
+  {ic:'📈',l:'تحلیل و آمار',k:'an',run:()=>show('analytics')},
+  {ic:'🏆',l:'رتبه‌بندی',k:'lb',run:()=>show('leaderboard')},
+  {ic:'🗂️',l:'بانک سوال',k:'bank',run:()=>show('bank')},
+  {ic:'📅',l:'تقویم',k:'cal',run:()=>show('calendar')},
+  {ic:'👤',l:'دانش‌آموزان',k:'stu',run:()=>show('students')},
+  {ic:'💬',l:'پیام‌رسان',k:'chat',run:()=>goChat()},
+  {ic:'🔴',l:'شروع کلاس زنده',k:'live',run:()=>show('sessions')},
+  {ic:'🎨',l:'تغییر تم روشن/تاریک',k:'theme',run:()=>toggleTheme()},
+  {ic:'🚪',l:'خروج از حساب',k:'logout',run:()=>logout()},
+];
+let cmdIdx=0,cmdFiltered=CMDS;
+function openCmdk(){$('cmdk').classList.add('open');$('cmdInput').value='';renderCmd('');setTimeout(()=>$('cmdInput').focus(),40)}
+function closeCmdk(){$('cmdk').classList.remove('open')}
+function renderCmd(q){
+  cmdFiltered=CMDS.filter(c=>c.l.includes(q)||c.k.includes(q.toLowerCase()));
+  cmdIdx=0;
+  $('cmdList').innerHTML=cmdFiltered.length?cmdFiltered.map((c,i)=>`
+    <div class="cmd-item ${i===0?'sel':''}" data-i="${i}"><span class="ic">${c.ic}</span><span>${c.l}</span></div>`).join('')
+    :'<div class="cmd-empty">موردی یافت نشد 🤷</div>';
+}
+ $('cmdInput').addEventListener('input',e=>renderCmd(e.target.value));
+ $('cmdList').addEventListener('click',e=>{
+  const it=e.target.closest('.cmd-item');if(!it)return;
+  cmdFiltered[+it.dataset.i].run();closeCmdk();
+});
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCmdk()}
+  if(!$('cmdk').classList.contains('open'))return;
+  if(e.key==='Escape')closeCmdk();
+  if(e.key==='Enter'&&cmdFiltered[cmdIdx]){cmdFiltered[cmdIdx].run();closeCmdk()}
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    cmdIdx=(cmdIdx+(e.key==='ArrowDown'?1:-1)+cmdFiltered.length)%cmdFiltered.length;
+    document.querySelectorAll('.cmd-item').forEach((el,i)=>el.classList.toggle('sel',i===cmdIdx));
+    document.querySelectorAll('.cmd-item')[cmdIdx]?.scrollIntoView({block:'nearest'});
+  }
+});
+ $('cmdk').addEventListener('click',e=>{if(e.target.id==='cmdk')closeCmdk()});
+
+/* ─── شروع ─── */
+loadDash();
+</script>
+<script src="/ai-widget.js" defer></script>
+</body>
+</html>

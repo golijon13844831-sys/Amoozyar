@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سازنده آزمون | سامانه آموزشی</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070b14;--bg2:#0b1120;
+  --card:rgba(255,255,255,.03);--card2:rgba(255,255,255,.06);
+  --glass:rgba(10,14,26,.8);
+  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.14);
+  --pri:#4d9fff;--pri2:#7cc0ff;--priSoft:rgba(77,159,255,.14);
+  --green:#2fd48c;--yellow:#ffc94d;--purple:#a78bfa;--red:#ff6b81;--cyan:#22d3ee;
+  --text:#eef2f8;--muted:#8b94a7;--muted2:#59627a;
+  --grad:linear-gradient(135deg,#4d9fff,#7cc0ff);
+}
+body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);direction:rtl;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:8px}
+.bgfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.13}
+.blob.b1{width:440px;height:440px;background:var(--pri);top:-140px;right:-110px}
+.blob.b2{width:380px;height:380px;background:var(--purple);bottom:-130px;left:-100px;opacity:.09}
+
+/* تاپ‌بار */
+.topbar{position:relative;z-index:5;display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--glass);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.back-btn{width:42px;height:42px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:1.1rem;transition:.2s;flex-shrink:0}
+.back-btn:hover{border-color:var(--pri);color:var(--pri)}
+.title-inp{flex:1;min-width:200px;background:var(--card);border:1px solid var(--bd2);border-radius:13px;color:var(--text);font-family:inherit;font-size:.95rem;font-weight:700;padding:11px 16px;direction:rtl;transition:.2s}
+.title-inp:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px var(--priSoft)}
+.title-inp::placeholder{font-weight:400;color:var(--muted2)}
+.cls-sel{background:var(--card);border:1px solid var(--bd2);border-radius:13px;color:var(--text);font-family:inherit;font-size:.84rem;padding:11px 14px;cursor:pointer;max-width:190px}
+.cls-sel:focus{outline:none;border-color:var(--pri)}
+.tbtn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:13px;border:none;font-family:inherit;font-size:.84rem;font-weight:700;cursor:pointer;transition:.2s}
+.tbtn-set{background:var(--card);border:1px solid var(--bd2);color:var(--muted)}
+.tbtn-set:hover{border-color:var(--yellow);color:var(--yellow)}
+.tbtn-prev{background:var(--card);border:1px solid var(--bd2);color:var(--muted)}
+.tbtn-prev:hover{border-color:var(--cyan);color:var(--cyan)}
+.tbtn-save{background:var(--grad);color:#fff;box-shadow:0 6px 20px -4px rgba(77,159,255,.5)}
+.tbtn-save:hover{transform:translateY(-2px)}
+.qc{display:flex;gap:6px;margin-right:auto;align-items:center;font-size:.72rem;color:var(--muted)}
+.qc b{color:var(--pri)}
+
+/* لایه */
+.layout{position:relative;z-index:1;display:flex;flex:1;overflow:hidden}
+/* ستون سوالات */
+.qlist{width:290px;background:var(--glass);backdrop-filter:blur(14px);border-left:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0}
+.ql-head{padding:14px 16px;font-size:.84rem;font-weight:800;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between}
+.ql-head b{color:var(--pri)}
+.ql-body{flex:1;overflow-y:auto;padding:10px}
+.qitem{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:13px;background:var(--card);border:1px solid var(--bd);margin-bottom:8px;cursor:pointer;transition:.15s}
+.qitem:hover{border-color:var(--bd2)}
+.qitem.sel{border-color:var(--pri);background:var(--priSoft)}
+.qitem .n{width:30px;height:30px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0}
+.qitem.sel .n{background:var(--grad);color:#fff}
+.qitem .t{flex:1;min-width:0;font-size:.76rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.qitem.sel .t{color:var(--text)}
+.qitem .ty{font-size:.6rem;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.ty-mc{background:rgba(77,159,255,.13);color:var(--pri)}
+.ty-tf{background:rgba(47,212,140,.13);color:var(--green)}
+.ty-fill{background:rgba(255,201,77,.13);color:var(--yellow)}
+.ty-essay{background:rgba(167,139,250,.13);color:var(--purple)}
+.ql-foot{padding:12px;display:flex;gap:8px;border-top:1px solid var(--bd)}
+.ql-foot button{flex:1;padding:11px;border-radius:12px;border:1px dashed var(--bd2);background:transparent;color:var(--muted);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;transition:.2s}
+.ql-foot button:hover{border-color:var(--pri);color:var(--pri);border-style:solid}
+
+/* ادیتور */
+.editor{flex:1;overflow-y:auto;padding:24px;min-width:0}
+.ecard{max-width:680px;margin:0 auto;background:var(--glass);backdrop-filter:blur(14px);border:1px solid var(--bd2);border-radius:22px;padding:26px}
+.e-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.e-num{font-size:.74rem;color:var(--muted);font-weight:700;background:var(--card2);border-radius:10px;padding:5px 13px}
+.type-tabs{display:flex;gap:6px;margin-right:auto;flex-wrap:wrap}
+.tt{padding:7px 14px;border-radius:11px;border:1px solid var(--bd2);background:var(--card);color:var(--muted);font-family:inherit;font-size:.74rem;font-weight:700;cursor:pointer;transition:.15s}
+.tt.on{background:var(--priSoft);border-color:var(--pri);color:var(--pri)}
+.fg{margin-bottom:15px}
+.fg label{display:block;font-size:.74rem;color:var(--muted);margin-bottom:7px;font-weight:600}
+.fg textarea,.fg input[type=text]{width:100%;background:var(--bg2);border:1px solid var(--bd2);border-radius:13px;color:var(--text);font-size:.92rem;padding:13px 15px;font-family:inherit;direction:rtl;transition:.2s;line-height:1.8}
+.fg textarea{min-height:100px;resize:vertical}
+.fg textarea:focus,.fg input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px var(--priSoft)}
+.opt-row{display:flex;align-items:center;gap:11px;margin-bottom:9px}
+.pick{width:34px;height:34px;border-radius:50%;border:2px solid var(--bd2);background:var(--bg2);color:transparent;cursor:pointer;font-size:.85rem;flex-shrink:0;transition:.18s;display:flex;align-items:center;justify-content:center}
+.pick:hover{border-color:var(--pri)}
+.pick.ok{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 4px 14px -2px rgba(77,159,255,.5)}
+.opt-row input{flex:1;background:var(--bg2);border:1px solid var(--bd2);border-radius:12px;color:var(--text);font-size:.88rem;padding:11px 14px;font-family:inherit;direction:rtl;transition:.2s}
+.opt-row input:focus{outline:none;border-color:var(--pri)}
+.tf-row2{display:flex;gap:11px}
+.tf-sel{flex:1;padding:13px;border-radius:13px;border:2px solid var(--bd2);background:var(--bg2);color:var(--muted);font-family:inherit;font-size:.9rem;font-weight:800;cursor:pointer;transition:.18s}
+.tf-sel.on{border-color:var(--green);background:rgba(47,212,140,.1);color:var(--green)}
+.e-actions{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}
+.e-actions button{padding:10px 16px;border-radius:12px;border:1px solid var(--bd2);background:transparent;color:var(--muted);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;transition:.18s}
+.e-actions button:hover{border-color:var(--pri);color:var(--pri)}
+.e-actions .del:hover{border-color:var(--red);color:var(--red)}
+
+/* مودال */
+.mo{position:fixed;inset:0;background:rgba(3,6,14,.72);backdrop-filter:blur(7px);z-index:300;display:none;align-items:center;justify-content:center;padding:18px}
+.mo.open{display:flex}
+.md{width:min(560px,94vw);max-height:86vh;overflow-y:auto;background:var(--bg2);border:1px solid var(--bd2);border-radius:22px;padding:26px;animation:pop .3s cubic-bezier(.2,1.35,.4,1)}
+@keyframes pop{from{opacity:0;transform:scale(.92) translateY(16px)}to{opacity:1;transform:none}}
+.mdh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.mdh h2{font-size:1rem;font-weight:800}
+.mc{background:var(--card);border:1px solid var(--bd);width:34px;height:34px;border-radius:11px;color:var(--muted);font-size:1.1rem;cursor:pointer}
+.mc:hover{color:var(--red);border-color:var(--red)}
+.set-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px dashed var(--bd)}
+.set-row:last-of-type{border:none}
+.set-row .ic{width:40px;height:40px;border-radius:12px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.set-row .bd{flex:1}
+.set-row b{font-size:.86rem;display:block}
+.set-row small{font-size:.7rem;color:var(--muted)}
+.num-inp{width:90px;background:var(--bg2);border:1px solid var(--bd2);border-radius:11px;color:var(--text);font-family:inherit;font-size:.9rem;padding:9px 12px;text-align:center;direction:ltr}
+.num-inp:focus{outline:none;border-color:var(--pri)}
+.chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chip{padding:5px 13px;border-radius:20px;border:1px solid var(--bd2);background:transparent;color:var(--muted);font-family:inherit;font-size:.7rem;cursor:pointer}
+.chip:hover{border-color:var(--pri);color:var(--pri)}
+select.sel{background:var(--bg2);border:1px solid var(--bd2);border-radius:11px;color:var(--text);font-family:inherit;font-size:.84rem;padding:9px 12px;cursor:pointer}
+.sw{position:relative;display:inline-block;width:48px;height:27px;flex-shrink:0}
+.sw input{opacity:0;width:0;height:0}
+.sw .tr{position:absolute;inset:0;background:var(--card2);border:1px solid var(--bd2);border-radius:20px;cursor:pointer;transition:.25s}
+.sw .tr::before{content:'';position:absolute;width:19px;height:19px;border-radius:50%;background:#fff;top:3px;right:3px;transition:.25s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.sw input:checked+.tr{background:var(--grad);border-color:transparent}
+.sw input:checked+.tr::before{transform:translateX(-21px)}
+/* بانک */
+.bank-it{display:flex;gap:12px;padding:14px;border-radius:14px;background:var(--card);border:1px solid var(--bd);margin-bottom:9px;cursor:pointer;transition:.15s;align-items:flex-start}
+.bank-it:hover{border-color:var(--pri);background:var(--priSoft)}
+.bank-it .ic{width:38px;height:38px;border-radius:11px;background:var(--card2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bank-it b{font-size:.84rem;display:block}
+.bank-it small{font-size:.7rem;color:var(--muted)}
+.bank-it .ty{margin-right:auto;flex-shrink:0}
+/* پیش‌نمایش */
+.pv-q{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:18px;margin-bottom:12px}
+.pv-h{display:flex;gap:9px;margin-bottom:12px;align-items:center}
+.pv-t{font-size:.92rem;font-weight:700;line-height:1.9;margin-bottom:13px}
+.pv-o{padding:11px 14px;border:1px solid var(--bd2);border-radius:12px;font-size:.86rem;color:var(--muted);margin-bottom:8px}
+.md-btn{width:100%;padding:13px;border:none;border-radius:13px;background:var(--grad);color:#fff;font-family:inherit;font-size:.88rem;font-weight:800;cursor:pointer;margin-top:8px}
+.toasts{position:fixed;bottom:22px;left:22px;display:flex;flex-direction:column;gap:10px;z-index:500}
+.toast{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--bd2);border-radius:14px;padding:12px 16px;font-size:.84rem;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:tin .3s;max-width:340px}
+@keyframes tin{from{opacity:0;transform:translateX(-24px)}}
+.toast.out{animation:tout .25s forwards}
+@keyframes tout{to{opacity:0;transform:translateX(-24px)}}
+.skel{border-radius:12px;background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:shim 1.3s infinite}
+@keyframes shim{to{background-position:-200% 0}}
+@media(max-width:900px){
+  .layout{flex-direction:column}
+  .qlist{width:100%;border-left:none;border-bottom:1px solid var(--bd);max-height:200px}
+  .ql-body{display:flex;flex-wrap:wrap;gap:8px}
+  .qitem{width:calc(50% - 4px);margin:0}
+  body{overflow:auto}
+}
+</style>
+</head>
+<body>
+<div class="bgfx"><div class="blob b1"></div><div class="blob b2"></div></div>
+
+<div class="topbar">
+  <button class="back-btn" onclick="location.href='/teacher'">→</button>
+  <input class="title-inp" id="qzTitle" placeholder="عنوان آزمون... (مثال: آزمون فصل ۲)"/>
+  <select class="cls-sel" id="clsSel"></select>
+  <div class="qc">❓ <b id="qCount">۰</b> سوال</div>
+  <button class="tbtn tbtn-set" onclick="openSettings()">⚙️ تنظیمات</button>
+  <button class="tbtn tbtn-prev" onclick="openPreview()">👁 پیش‌نمایش</button>
+  <button class="tbtn tbtn-save" onclick="saveQuiz()">💾 ذخیره آزمون</button>
+</div>
+
+<div class="layout">
+  <aside class="qlist">
+    <div class="ql-head">سوالات <b id="qCount2">۰</b></div>
+    <div class="ql-body" id="qlBody"></div>
+    <div class="ql-foot">
+      <button onclick="addQ()">＋ سوال دستی</button>
+      <button onclick="openBank()">🗂 از بانک</button>
+    </div>
+  </aside>
+  <main class="editor" id="editor">
+    <div class="ecard"><div class="skel" style="height:300px"></div></div>
+  </main>
+</div>
+
+<!-- تنظیمات -->
+<div class="mo" id="moSet">
+  <div class="md">
+    <div class="mdh"><h2>⚙️ تنظیمات آزمون</h2><button class="mc" onclick="closeMo('moSet')">✕</button></div>
+    <div class="set-row">
+      <span class="ic">⏱</span>
+      <div class="bd"><b>محدودیت زمانی (دقیقه)</b><small>۰ = بدون محدودیت — بعد از اتمام زمان، پاسخ‌ها خودکار ثبت می‌شوند</small>
+        <div class="chips">
+          <button class="chip" onclick="setTime(0)">∞</button>
+          <button class="chip" onclick="setTime(10)">۱۰</button>
+          <button class="chip" onclick="setTime(20)">۲۰</button>
+          <button class="chip" onclick="setTime(30)">۳۰</button>
+          <button class="chip" onclick="setTime(45)">۴۵</button>
+          <button class="chip" onclick="setTime(60)">۶۰</button>
+        </div>
+      </div>
+      <input type="number" class="num-inp" id="setTime" min="0" max="300" value="0" oninput="quiz.timeLimit=+this.value||0"/>
+    </div>
+    <div class="set-row">
+      <span class="ic">🔀</span>
+      <div class="bd"><b>بُر زدن ترتیب سوالات</b><small>برای هر دانش‌آموز ترتیب متفاوت (ضد تقلب)</small></div>
+      <label class="sw"><input type="checkbox" id="setShuffle"/><span class="tr"></span></label>
+    </div>
+    <div class="set-row">
+      <span class="ic">🔍</span>
+      <div class="bd"><b>نمایش مرور سوالات بعد از آزمون</b><small>دانش‌آموز پاسخ صحیح و توضیح را ببیند</small></div>
+      <label class="sw"><input type="checkbox" id="setShowRes" checked/><span class="tr"></span></label>
+    </div>
+    <div class="set-row">
+      <span class="ic">➖</span>
+      <div class="bd"><b>نمره منفی</b><small>هر پاسخ اشتباه این مقدار از نمره کم می‌کند</small></div>
+      <select class="sel" id="setNeg" onchange="quiz.negativeMark=+this.value">
+        <option value="0">بدون نمره منفی</option>
+        <option value="0.25">۰.۲۵</option>
+        <option value="0.33">۰.۳۳</option>
+        <option value="0.5">۰.۵</option>
+      </select>
+    </div>
+    <button class="md-btn" onclick="closeMo('moSet')">انجام شد</button>
+  </div>
+</div>
+
+<!-- بانک سوال -->
+<div class="mo" id="moBank">
+  <div class="md">
+    <div class="mdh"><h2>🗂️ افزودن از بانک سوال</h2><button class="mc" onclick="closeMo('moBank')">✕</button></div>
+    <div id="bankList"><div class="skel" style="height:70px;margin-bottom:9px"></div><div class="skel" style="height:70px"></div></div>
+  </div>
+</div>
+
+<!-- پیش‌نمایش -->
+<div class="mo" id="moPrev">
+  <div class="md" style="max-width:680px">
+    <div class="mdh"><h2>👁 پیش‌نمایش آزمون</h2><button class="mc" onclick="closeMo('moPrev')">✕</button></div>
+    <div id="prevBody"></div>
+    <button class="md-btn" onclick="closeMo('moPrev')">بستن</button>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+/* ═════════════════════════════════
+   سازنده آزمون مستقل
+   ═════════════════════════════════ */
+const $=id=>document.getElementById(id);
+const token=localStorage.getItem('token');
+const user=JSON.parse(localStorage.getItem('user')||'null');
+if(!token||!user||(user.role!=='teacher'&&user.role!=='admin'))location.href='/login';
+
+const params=new URLSearchParams(location.search);
+const editId=params.get('id');
+
+let quiz={title:'',classId:null,timeLimit:0,shuffle:false,showResults:true,negativeMark:0,questions:[]};
+let curQ=0,myClasses=[],bankCache=[];
+
+const faNum=n=>Number(n||0).toLocaleString('fa-IR');
+const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const TYPE={mc:['mc','چهارگزینه‌ای'],tf:['tf','درست/غلط'],fill:['fill','جای خالی'],essay:['essay','تشریحی']};
+function toast(msg,err){
+  const t=document.createElement('div');t.className='toast';
+  t.innerHTML=`<span>${err?'⚠️':'✅'}</span><span>${msg}</span>`;
+  $('toasts').appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),260)},3000);
+}
+function closeMo(id){$(id).classList.remove('open')}
+async function api(m,p,b){
+  const r=await fetch(p,{method:m,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:b?JSON.stringify(b):undefined});
+  if(r.status===401){localStorage.clear();location.href='/login';return null}
+  return r.json();
+}
+
+async function init(){
+  myClasses=await api('GET','/api/classes')||[];
+  $('clsSel').innerHTML=myClasses.length
+    ?myClasses.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')
+    :'<option value="">کلاسی ندارید</option>';
+  if(params.get('classId'))$('clsSel').value=params.get('classId');
+  quiz.classId=$('clsSel').value||null;
+  $('clsSel').onchange=()=>quiz.classId=$('clsSel').value;
+  if(editId){
+    const q=await api('GET',`/api/quizzes/${editId}`);
+    if(q&&!q.error){
+      quiz={
+        title:q.title,classId:q.classId,
+        timeLimit:q.timeLimit||0,shuffle:!!q.shuffle,
+        showResults:q.showResults!==false,negativeMark:q.negativeMark||0,
+        questions:(q.questions||[]).map(x=>x.type==='mc'?{
+          ...x,
+          options:(x.options||[]).map(o=>String(o).replace(/^[الف|ب|ج|د]\)\s*/,'')),
+          answer:String(Math.max(0,(x.options||[]).findIndex(o=>o===x.answer)))
+        }:{...x})
+      };
+      $('qzTitle').value=q.title;
+      $('clsSel').value=q.classId;
+      syncSettingsUI();
+    }
+  }
+  if(!quiz.questions.length)addQ(true);
+  renderList();
+}
+function syncSettingsUI(){
+  $('setTime').value=quiz.timeLimit;
+  $('setShuffle').checked=quiz.shuffle;
+  $('setShowRes').checked=quiz.showResults;
+  $('setNeg').value=String(quiz.negativeMark);
+}
+function setTime(m){quiz.timeLimit=m;$('setTime').value=m}
+
+/* ═══ لیست ═══ */
+function renderList(){
+  $('qCount').textContent=faNum(quiz.questions.length);
+  $('qCount2').textContent=faNum(quiz.questions.length);
+  $('qlBody').innerHTML=quiz.questions.map((q,i)=>`
+    <div class="qitem ${i===curQ?'sel':''}" onclick="selectQ(${i})">
+      <span class="n">${faNum(i+1)}</span>
+      <span class="t">${esc((q.question||'سوال جدید').slice(0,40))||'سوال جدید'}</span>
+      <span class="ty ty-${TYPE[q.type]?.[0]||'mc'}">${TYPE[q.type]?.[1]||''}</span>
+    </div>`).join('');
+}
+function selectQ(i){curQ=i;renderList();renderEditor()}
+function addQ(silent){
+  quiz.questions.push({type:'mc',question:'',options:['','','',''],answer:'',explanation:''});
+  curQ=quiz.questions.length-1;
+  renderList();renderEditor();
+  if(!silent)$('editor').scrollIntoView({behavior:'smooth'});
+}
+
+/* ═══ ادیتور ═══ */
+function renderEditor(){
+  const q=quiz.questions[curQ];if(!q)return;
+  let body='';
+  if(q.type==='mc'){
+    body=`<div class="fg"><label>گزینه‌ها — روی دایره سمت راست بزنید تا پاسخ صحیح مشخص شود</label>
+      ${['۱','۲','۳','۴'].map((n,oi)=>`
+      <div class="opt-row">
+        <button class="pick ${q.answer===String(oi)?'ok':''}" title="پاسخ صحیح" onclick="setMcAns(${oi})">✓</button>
+        <input type="text" placeholder="گزینه ${n}..." value="${esc(q.options[oi]||'')}" oninput="quiz.questions[${curQ}].options[${oi}]=this.value"/>
+      </div>`).join('')}
+    </div>`;
+  }else if(q.type==='tf'){
+    body=`<div class="fg"><label>پاسخ صحیح</label>
+      <div class="tf-row2">
+        <button class="tf-sel ${q.answer==='درست'?'on':''}" onclick="quiz.questions[${curQ}].answer='درست';renderEditor()">✅ درست</button>
+        <button class="tf-sel ${q.answer==='غلط'?'on':''}" onclick="quiz.questions[${curQ}].answer='غلط';renderEditor()">❌ غلط</button>
+      </div></div>`;
+  }else{
+    body=`<div class="fg"><label>${q.type==='essay'?'پاسخ نمونه':'پاسخ صحیح'}</label>
+      <input type="text" placeholder="پاسخ..." value="${esc(q.answer||'')}" oninput="quiz.questions[${curQ}].answer=this.value"/></div>`;
+  }
+  $('editor').innerHTML=`<div class="ecard">
+    <div class="e-head">
+      <span class="e-num">سوال ${faNum(curQ+1)}</span>
+      <div class="type-tabs">
+        ${Object.entries(TYPE).map(([k,v])=>`<button class="tt ${q.type===k?'on':''}" onclick="changeType('${k}')">${v[1]}</button>`).join('')}
+      </div>
+    </div>
+    <div class="fg"><label>متن سوال ${q.type==='fill'?'(جای خالی را با ___ مشخص کنید)':''} *</label>
+      <textarea placeholder="سوال را اینجا بنویسید..." oninput="quiz.questions[${curQ}].question=this.value;renderList()">${esc(q.question)}</textarea></div>
+    ${body}
+    <div class="fg"><label>💡 توضیح بعد از پاسخ (اختیاری — در مرور نتیجه نمایش داده می‌شود)</label>
+      <input type="text" placeholder="مثال: چون... درست است" value="${esc(q.explanation||'')}" oninput="quiz.questions[${curQ}].explanation=this.value"/></div>
+    <div class="e-actions">
+      <button onclick="moveQ(-1)">↑ بالا</button>
+      <button onclick="moveQ(1)">↓ پایین</button>
+      <button onclick="dupQ()">⧉ کپی</button>
+      <button class="del" onclick="delQ()">🗑 حذف سوال</button>
+    </div>
+  </div>`;
+}
+function setMcAns(oi){quiz.questions[curQ].answer=String(oi);renderEditor()}
+function changeType(t){
+  const q=quiz.questions[curQ];
+  if(t==='mc'&&!q.options)q.options=['','','',''];
+  if(t!==q.type)q.answer='';
+  q.type=t;renderEditor();renderList();
+}
+function moveQ(d){
+  const n=curQ+d;
+  if(n<0||n>=quiz.questions.length)return;
+  [quiz.questions[curQ],quiz.questions[n]]=[quiz.questions[n],quiz.questions[curQ]];
+  curQ=n;renderList();renderEditor();
+}
+function dupQ(){
+  quiz.questions.splice(curQ+1,0,JSON.parse(JSON.stringify(quiz.questions[curQ])));
+  renderList();toast('سوال کپی شد');
+}
+function delQ(){
+  if(quiz.questions.length<=1)return toast('آزمون حداقل یک سوال لازم دارد',true);
+  quiz.questions.splice(curQ,1);
+  curQ=Math.min(curQ,quiz.questions.length-1);
+  renderList();renderEditor();
+}
+
+/* ═══ بانک ═══ */
+async function openBank(){
+  bankCache=await api('GET','/api/question-bank')||[];
+  const el=$('bankList');
+  el.innerHTML=bankCache.length?bankCache.map((q,i)=>`
+    <div class="bank-it" onclick="pickBank(${i})">
+      <span class="ic">❓</span>
+      <div><b>${esc(q.question)}</b>
+      <small>✅ ${esc(q.answer)} ${q.usageCount?`· 🔁 ${faNum(q.usageCount)} بار استفاده`:''}</small></div>
+      <span class="ty ty-${TYPE[q.type]?.[0]||'mc'}">${TYPE[q.type]?.[1]||''}</span>
+    </div>`).join(''):'<div style="text-align:center;color:var(--muted);padding:22px;font-size:.82rem">بانک سوال خالی است</div>';
+  $('moBank').classList.add('open');
+}
+async function pickBank(i){
+  const q=bankCache[i];if(!q)return;
+  let options=q.options||['','','',''],answer=q.answer;
+  if(q.type==='mc'){
+    options=options.map(o=>String(o).replace(/^[الف|ب|ج|د]\)\s*/,''));
+    answer=String(Math.max(0,(q.options||[]).findIndex(o=>o===q.answer)));
+  }
+  quiz.questions.push({type:q.type,question:q.question,options,answer,explanation:q.explanation||'',bankId:q.id});
+  await api('POST',`/api/question-bank/${q.id}/use`).catch(()=>{});
+  closeMo('moBank');
+  curQ=quiz.questions.length-1;
+  renderList();renderEditor();
+  toast('سوال از بانک اضافه شد');
+}
+
+/* ═══ تنظیمات و پیش‌نمایش ═══ */
+ $('setShuffle').addEventListener('change',e=>quiz.shuffle=e.target.checked);
+ $('setShowRes').addEventListener('change',e=>quiz.showResults=e.target.checked);
+function openSettings(){syncSettingsUI();$('moSet').classList.add('open')}
+function openPreview(){
+  if(!quiz.questions.length)return toast('اول یک سوال بسازید',true);
+  $('prevBody').innerHTML=`
+    <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px;font-size:.74rem">
+      <span class="ty ty-mc" style="padding:4px 12px">⏱ ${quiz.timeLimit?faNum(quiz.timeLimit)+' دقیقه':'بدون محدودیت'}</span>
+      <span class="ty ty-tf" style="padding:4px 12px">❓ ${faNum(quiz.questions.length)} سوال</span>
+      ${quiz.shuffle?'<span class="ty ty-fill" style="padding:4px 12px">🔀 بُر خورده</span>':''}
+      ${quiz.negativeMark>0?`<span class="ty ty-essay" style="padding:4px 12px">➖ نمره منفی ${faNum(quiz.negativeMark)}</span>`:''}
+    </div>
+    ${quiz.questions.map((q,i)=>`
+    <div class="pv-q">
+      <div class="pv-h"><span class="e-num">سوال ${faNum(i+1)}</span><span class="ty ty-${TYPE[q.type][0]}">${TYPE[q.type][1]}</span></div>
+      <div class="pv-t">${esc(q.question)||'(بدون متن)'}</div>
+      ${q.type==='mc'?(q.options||[]).map(o=>`<div class="pv-o">◦ ${esc(String(o).replace(/^[الف|ب|ج|د]\)\s*/,''))}</div>`).join(''):''}
+      ${q.type==='tf'?'<div class="pv-o">✅ درست &nbsp;|&nbsp; ❌ غلط</div>':''}
+      ${q.type==='fill'?'<div class="pv-o">جا برای پاسخ: ________</div>':''}
+      ${q.type==='essay'?'<div class="pv-o" style="min-height:60px">جعبه پاسخ تشریحی...</div>':''}
+    </div>`).join('')}`;
+  $('moPrev').classList.add('open');
+}
+
+/* ═══ ذخیره ═══ */
+async function saveQuiz(){
+  quiz.title=$('qzTitle').value.trim();
+  quiz.classId=$('clsSel').value;
+  if(!quiz.title)return toast('عنوان آزمون را بنویسید',true);
+  if(!quiz.classId)return toast('کلاس را انتخاب کنید',true);
+  if(!quiz.questions.length)return toast('حداقل یک سوال لازم است',true);
+  const badEmpty=quiz.questions.some(q=>!q.question.trim());
+  if(badEmpty)return toast('متن همه سوالات را پر کنید',true);
+  const badAns=quiz.questions.some(q=>{
+    if(q.type==='essay')return false;
+    if(q.type==='mc')return q.answer===''||q.answer===undefined||!q.options[+q.answer]?.trim();
+    return !q.answer||!q.answer.trim();
+  });
+  if(badAns)return toast('پاسخ صحیح همه سوالات (به‌جز تشریحی) را مشخص کنید',true);
+  // فرمت mc مثل قبل: گزینه‌ها با پیشوند حروف
+  const questions=quiz.questions.map(q=>{
+    if(q.type==='mc'){
+      const labels=['الف','ب','ج','د'];
+      const opts=q.options.map((o,oi)=>String(o).match(/^[الفبجد]\)/)?String(o):`${labels[oi]}) ${o}`);
+      return{...q,options:opts,answer:opts[+q.answer]||''};
+    }
+    const{bankId,...rest}=q;
+    return rest;
+  });
+  const body={classId:quiz.classId,title:quiz.title,questions,timeLimit:quiz.timeLimit,shuffle:quiz.shuffle,showResults:quiz.showResults,negativeMark:quiz.negativeMark};
+  const res=editId?await api('PATCH',`/api/quizzes/${editId}`,body):await api('POST','/api/quizzes',body);
+  if(res?.error)return toast(res.error,true);
+  toast(editId?'آزمون بروزرسانی شد و اطلاع‌رسانی فرستاده شد ✅':'آزمون ساخته شد و به دانش‌آموزان اطلاع داده شد ✅');
+  setTimeout(()=>location.href='/teacher',1400);
+}
+init();
+</script>
+<script src="/ai-widget.js" defer></script>
+</body>
+</html>
