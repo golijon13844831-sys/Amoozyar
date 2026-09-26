@@ -1,8 +1,8 @@
-/* ═══════════════════════════════════════════════════════
-   🎓 آموزیار — سامانه آموزشی جامع | server.js نسخه ۲.۱
+/* ═══════════════════════════════════════════════════════════════
+   🎓 آموزیار — سامانه آموزشی جامع | server.js نسخه ۲.۲ (نهایی)
    اجرا:  npm install express  →  node server.js
-   نیاز: Node 18+
-   ═══════════════════════════════════════════════════════ */
+   نیاز:  Node 18+
+   ═══════════════════════════════════════════════════════════════ */
 const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
@@ -20,7 +20,10 @@ const UPLOADS = path.join(__dirname, 'public', 'uploads');
 if (!fs.existsSync(UPLOADS)) fs.mkdirSync(UPLOADS, { recursive: true });
 
 /* ═══════════════ DB ═══════════════ */
-const DB_FILE = path.join(__dirname, 'data.json');
+const DB_FILE = path.join(
+  process.env.VERCEL ? '/tmp' : __dirname,
+  'data.json'
+);
 function loadDB() {
   if (!fs.existsSync(DB_FILE)) {
     const init = {
@@ -93,7 +96,7 @@ function logActivity(db, userId, userName, userRole, action, details) {
   if (db.activityLog.length > 1000) db.activityLog = db.activityLog.slice(-1000);
 }
 
-/* ─── آپلود فایل ─── */
+/* ─── آپلود ─── */
 function saveUpload(name, dataUrl) {
   try {
     const m = /^data:([^;]+);base64,(.+)$/.exec(dataUrl || '');
@@ -135,7 +138,7 @@ function bumpStreak(db, studentId) {
   else rec.currentStreak = 1;
   rec.longestStreak = Math.max(rec.longestStreak, rec.currentStreak);
   rec.lastActiveDate = today;
-  if ([3, 7, 14, 30].includes(rec.currentStreak)) addNotif(db, studentId, `🔥 ${rec.currentStreak} روز متوالی فعالیت! عالیه!`, 'streak');
+  if ([3, 7, 14, 30].includes(rec.currentStreak)) addNotif(db, studentId, `🔥 ${rec.currentStreak} روز متوالی فعالیت!`, 'streak');
   return rec;
 }
 const DEFAULT_BADGES = [
@@ -247,7 +250,7 @@ function handleWsMessage(socket, data) {
     });
   }
 
-  /* ─── کلاس مجازی ─── */
+  /* ─── کلاس مجازی: پیام/دست/تخته/ویدئو ─── */
   if (type === 'class_message') {
     const db = loadDB();
     const session = (db.classSessions || []).find(s => s.id === data.classId);
@@ -366,7 +369,7 @@ function handleWsMessage(socket, data) {
     wsSend(socket, { type: 'presence_list', classId: data.classId, online });
   }
 
-  /* ─── ارتقاهای Adobe-Connect ─── */
+  /* ─── Adobe-Connect: لی‌اوت/یادداشت/وضعیت/خصوصی/Q&A/فایل ─── */
   if (type === 'layout_change') {
     const db = loadDB();
     const session = (db.classSessions || []).find(s => s.id === data.classId);
@@ -461,6 +464,76 @@ function handleWsMessage(socket, data) {
     saveDB(db);
     broadcast({ type: 'class_files', classId: data.classId, file: f }, id => members.has(id) && id !== socket.user.id);
   }
+
+  /* ═══ قابلیت‌های جدید کلاس مجازی ۲ ═══ */
+  if (type === 'class_pin_video') {
+    const db = loadDB();
+    const session = (db.classSessions || []).find(s => s.id === data.classId);
+    if (!session) return;
+    const members = new Set([session.teacherId, ...session.students]);
+    if (!members.has(socket.user.id)) return;
+    broadcast({ type: 'class_pin_video', classId: data.classId, userId: data.userId || null }, id => members.has(id) && id !== socket.user.id);
+  }
+  if (type === 'class_timer') {
+    const db = loadDB();
+    const session = (db.classSessions || []).find(s => s.id === data.classId);
+    if (!session || session.teacherId !== socket.user.id) return;
+    session.classTimer = { mode: data.mode || 'stop', seconds: Math.max(0, +data.seconds || 0), startedAt: Date.now() };
+    saveDB(db);
+    const members = new Set([session.teacherId, ...session.students]);
+    broadcast({ type: 'class_timer', classId: data.classId, timer: session.classTimer }, id => members.has(id));
+  }
+  if (type === 'class_reaction_burst') {
+    const db = loadDB();
+    const session = (db.classSessions || []).find(s => s.id === data.classId);
+    if (!session) return;
+    const members = new Set([session.teacherId, ...session.students]);
+    if (!members.has(socket.user.id)) return;
+    broadcast({ type: 'class_reaction_burst', classId: data.classId, emoji: String(data.emoji || '👍').slice(0, 4), userId: socket.user.id, userName: socket.user.name }, id => members.has(id) && id !== socket.user.id);
+  }
+  if (type === 'class_quick_poll') {
+    const db = loadDB();
+    const session = (db.classSessions || []).find(s => s.id === data.classId);
+    if (!session) return;
+    const members = new Set([session.teacherId, ...session.students]);
+    if (!members.has(socket.user.id)) return;
+    if (data.action === 'start') {
+      if (session.teacherId !== socket.user.id) return;
+      session.quickPoll = { q: String(data.q || 'میفهمید؟').slice(0, 120), votes: {}, active: true };
+      saveDB(db);
+      broadcast({ type: 'class_quick_poll', classId: data.classId, action: 'start', q: session.quickPoll.q }, id => members.has(id));
+    } else if (data.action === 'vote' && session.quickPoll && session.quickPoll.active) {
+      session.quickPoll.votes[socket.user.id] = data.vote === 'yes' ? 'yes' : 'no';
+      saveDB(db);
+      const yes = Object.values(session.quickPoll.votes).filter(v => v === 'yes').length;
+      const no = Object.values(session.quickPoll.votes).length - yes;
+      broadcast({ type: 'class_quick_poll', classId: data.classId, action: 'update', yes, no }, id => members.has(id));
+    } else if (data.action === 'end') {
+      if (session.teacherId !== socket.user.id) return;
+      if (session.quickPoll) session.quickPoll.active = false;
+      saveDB(db);
+      broadcast({ type: 'class_quick_poll', classId: data.classId, action: 'end' }, id => members.has(id));
+    }
+  }
+  if (type === 'class_reaction') {
+    const db = loadDB();
+    const session = (db.classSessions || []).find(s => s.id === data.classId);
+    if (!session) return;
+    const members = new Set([session.teacherId, ...session.students]);
+    if (!members.has(socket.user.id)) return;
+    broadcast({ type: 'class_reaction', classId: data.classId, emoji: String(data.emoji || '👍').slice(0, 4), userId: socket.user.id }, id => members.has(id) && id !== socket.user.id);
+  }
+  if (type === 'class_pick_user') {
+    const db = loadDB();
+    const session = (db.classSessions || []).find(s => s.id === data.classId);
+    if (!session || session.teacherId !== socket.user.id) return;
+    const members = new Set([session.teacherId, ...session.students]);
+    const pool = data.students && data.students.length ? data.students : [...members].filter(id => id !== socket.user.id);
+    const winner = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+    const u = winner ? (db.users.find(x => x.id === winner) || { name: '؟' }) : null;
+    broadcast({ type: 'class_pick_user', classId: data.classId, userId: winner, userName: u ? u.name : '' }, id => members.has(id));
+  }
+
   if (type === 'ping') wsSend(socket, { type: 'pong' });
 }
 
@@ -480,7 +553,7 @@ app.post('/api/login', (req, res) => {
 app.post('/api/register', (req, res) => {
   const { name, email, password, role } = req.body;
   if (!name || !email || !password || !role) return res.status(400).json({ error: 'همه فیلدها الزامی است' });
-  if (!['student', 'teacher'].includes(role)) return res.status(400).json({ error: 'نقش نامعتبر است — ثبت‌نام مدیر مجاز نیست' });
+  if (!['student', 'teacher'].includes(role)) return res.status(400).json({ error: 'نقش نامعتبر است' });
   if (String(name).trim().length < 3) return res.status(400).json({ error: 'نام باید حداقل ۳ کاراکتر باشد' });
   if (String(password).length < 6) return res.status(400).json({ error: 'رمز عبور باید حداقل ۶ کاراکتر باشد' });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'ایمیل نامعتبر است' });
@@ -488,7 +561,7 @@ app.post('/api/register', (req, res) => {
   if (db.users.find(u => u.email === email)) return res.status(400).json({ error: 'این ایمیل قبلاً ثبت شده است' });
   const u = { id: uid(), name: String(name).trim(), email, password: hashPw(password), role, classIds: [], active: true, createdAt: new Date().toISOString() };
   db.users.push(u);
-  logActivity(db, u.id, u.name, u.role, 'register', `ثبت‌نام ${role === 'teacher' ? 'معلم' : 'دانش‌آموز'}: ${u.name}`);
+  logActivity(db, u.id, u.name, u.role, 'register', `ثبت‌نام: ${u.name}`);
   saveDB(db);
   const token = signToken({ id: u.id, name: u.name, email: u.email, role: u.role });
   res.json({ token, user: { id: u.id, name: u.name, email: u.email, role: u.role } });
@@ -550,7 +623,7 @@ app.patch('/api/profile', auth, (req, res) => {
     (db.classes || []).forEach(c => { if (c.teacherId === u.id) c.teacherName = u.name; });
     (db.submissions || []).forEach(s => { if (s.studentId === u.id) s.studentName = u.name; });
     (db.quizSubmissions || []).forEach(s => { if (s.studentId === u.id) s.studentName = u.name; });
-    logActivity(db, u.id, u.name, u.role, 'update_profile', 'تغییر نام پروفایل');
+    logActivity(db, u.id, u.name, u.role, 'update_profile', 'تغییر نام');
   }
   saveDB(db);
   const { password, ...safe } = u;
@@ -565,7 +638,7 @@ app.post('/api/profile/password', auth, (req, res) => {
   if (!u) return res.status(404).json({ error: 'یافت نشد' });
   if (u.password !== hashPw(currentPassword)) return res.status(400).json({ error: 'رمز فعلی اشتباه است' });
   u.password = hashPw(newPassword);
-  logActivity(db, u.id, u.name, u.role, 'change_password', 'تغییر رمز عبور');
+  logActivity(db, u.id, u.name, u.role, 'change_password', 'تغییر رمز');
   saveDB(db);
   res.json({ ok: true });
 });
@@ -582,7 +655,7 @@ app.post('/api/admin/users', auth, role('admin'), (req, res) => {
   if (db.users.find(u => u.email === email)) return res.status(400).json({ error: 'ایمیل تکراری است' });
   const u = { id: uid(), name, email, password: hashPw(password), role: r, classIds: classIds || [], active: true, createdAt: new Date().toISOString() };
   db.users.push(u);
-  logActivity(db, req.user.id, req.user.name, req.user.role, 'create_user', `کاربر جدید: ${name} (${r})`);
+  logActivity(db, req.user.id, req.user.name, req.user.role, 'create_user', `کاربر: ${name} (${r})`);
   saveDB(db);
   const { password: _, ...safe } = u;
   res.json(safe);
@@ -618,13 +691,13 @@ app.delete('/api/admin/users/:id', auth, role('admin'), (req, res) => {
   const u = db.users[idx];
   if (u.role === 'admin') return res.status(400).json({ error: 'نمیتوان ادمین را حذف کرد' });
   if (u.role === 'teacher' && (db.classes || []).some(c => c.teacherId === u.id))
-    return res.status(400).json({ error: 'ابتدا کلاس‌های این معلم را به معلم دیگری منتقل یا حذف کنید' });
+    return res.status(400).json({ error: 'ابتدا کلاس‌های این معلم را منتقل یا حذف کنید' });
   if (u.role === 'student') {
     (db.classes || []).forEach(cls => { cls.studentIds = (cls.studentIds || []).filter(id => id !== u.id); });
     (db.chatRooms || []).forEach(room => { room.members = (room.members || []).filter(id => id !== u.id); });
   }
   db.users.splice(idx, 1);
-  logActivity(db, req.user.id, req.user.name, req.user.role, 'delete_user', `کاربر حذف شد: ${u.name} (${u.role})`);
+  logActivity(db, req.user.id, req.user.name, req.user.role, 'delete_user', `حذف: ${u.name}`);
   saveDB(db);
   res.json({ ok: true });
 });
@@ -653,7 +726,7 @@ app.get('/api/admin/advanced-stats', auth, role('admin'), (req, res) => {
   });
 });
 
-/* ─── اطلاعیه‌ها ─── */
+/* ─── اطلاعیه‌ها / FAQ / لاگ / بک‌آپ / تماس / بالک / تنظیمات ─── */
 app.get('/api/announcements', (req, res) => {
   const db = loadDB();
   res.json((db.announcements || []).filter(a => a.active !== false).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
@@ -689,8 +762,6 @@ app.delete('/api/admin/announcements/:id', auth, role('admin'), (req, res) => {
   saveDB(db);
   res.json({ ok: true });
 });
-
-/* ─── FAQ ─── */
 app.get('/api/faqs', (req, res) => { const db = loadDB(); res.json((db.faqs || []).filter(f => f.active !== false)); });
 app.get('/api/admin/faqs', auth, role('admin'), (req, res) => { const db = loadDB(); res.json(db.faqs || []); });
 app.post('/api/admin/faqs', auth, role('admin'), (req, res) => {
@@ -719,8 +790,6 @@ app.delete('/api/admin/faqs/:id', auth, role('admin'), (req, res) => {
   saveDB(db);
   res.json({ ok: true });
 });
-
-/* ─── لاگ / بک‌آپ / تماس / بالک / تنظیمات ─── */
 app.get('/api/admin/activity-log', auth, role('admin'), (req, res) => {
   const db = loadDB();
   const { action, limit } = req.query;
@@ -731,7 +800,7 @@ app.get('/api/admin/activity-log', auth, role('admin'), (req, res) => {
 app.get('/api/admin/backup', auth, role('admin'), (req, res) => {
   const db = loadDB();
   const safeDb = { ...db, users: db.users.map(u => { const { password, ...s } = u; return s; }) };
-  logActivity(db, req.user.id, req.user.name, req.user.role, 'backup_export', 'دانلود پشتیبان دیتابیس');
+  logActivity(db, req.user.id, req.user.name, req.user.role, 'backup_export', 'دانلود پشتیبان');
   saveDB(db);
   res.setHeader('Content-Disposition', `attachment; filename="backup-${new Date().toISOString().slice(0, 10)}.json"`);
   res.json(safeDb);
@@ -797,7 +866,7 @@ app.get('/api/settings', (req, res) => { const db = loadDB(); res.json(db.settin
 app.patch('/api/admin/settings', auth, role('admin'), (req, res) => {
   const db = loadDB();
   db.settings = { ...(db.settings || {}), ...req.body };
-  logActivity(db, req.user.id, req.user.name, req.user.role, 'update_settings', 'تنظیمات سامانه ویرایش شد');
+  logActivity(db, req.user.id, req.user.name, req.user.role, 'update_settings', 'تنظیمات ویرایش شد');
   saveDB(db);
   res.json(db.settings);
 });
@@ -823,7 +892,7 @@ app.post('/api/admin/restore', auth, role('admin'), (req, res) => {
     return { ...bu, password: existing ? existing.password : hashPw('changeme123') };
   });
   const merged = { ...db, ...backup, users: restoredUsers };
-  logActivity(merged, req.user.id, req.user.name, req.user.role, 'backup_restore', 'دیتابیس از فایل پشتیبان بازیابی شد');
+  logActivity(merged, req.user.id, req.user.name, req.user.role, 'backup_restore', 'بازیابی پشتیبان');
   saveDB(merged);
   res.json({ ok: true, usersRestored: restoredUsers.length });
 });
@@ -847,7 +916,7 @@ app.get('/api/teacher/students', auth, role('teacher'), (req, res) => {
   res.json(db.users.filter(u => ids.has(u.id)).map(u => ({ id: u.id, name: u.name })));
 });
 
-/* ═══════════════ کلاس‌ها ═══════════════ */
+/* ═══════════════ کلاس‌ها / درس‌ها / تکالیف ═══════════════ */
 app.get('/api/classes', auth, (req, res) => {
   const db = loadDB();
   let classes = db.classes || [];
@@ -866,7 +935,7 @@ app.post('/api/classes', auth, role('admin'), (req, res) => {
   db.classes.push(cls);
   if (!db.chatRooms) db.chatRooms = [];
   db.chatRooms.push({ id: 'room_' + cls.id, classId: cls.id, name: `گروه ${cls.name}`, type: 'class', members: [teacherId, ...(studentIds || [])], createdAt: new Date().toISOString() });
-  logActivity(db, req.user.id, req.user.name, req.user.role, 'create_class', `کلاس جدید: ${name} (معلم: ${teacher.name})`);
+  logActivity(db, req.user.id, req.user.name, req.user.role, 'create_class', `کلاس: ${name}`);
   saveDB(db);
   res.json(cls);
 });
@@ -901,8 +970,6 @@ app.delete('/api/classes/:id', auth, role('admin'), (req, res) => {
   saveDB(db);
   res.json({ ok: true });
 });
-
-/* ═══════════════ درس‌ها ═══════════════ */
 app.get('/api/lessons', auth, (req, res) => {
   const db = loadDB();
   let lessons = db.lessons || [];
@@ -918,7 +985,7 @@ app.post('/api/lessons', auth, role('teacher', 'admin'), (req, res) => {
   if (!db.lessons) db.lessons = [];
   db.lessons.push(lesson);
   const cls = (db.classes || []).find(c => c.id === classId);
-  if (cls) (cls.studentIds || []).forEach(sid => addNotif(db, sid, `درس جدید: "${title}" در کلاس ${cls.name}`, 'lesson'));
+  if (cls) (cls.studentIds || []).forEach(sid => addNotif(db, sid, `درس جدید: "${title}" در ${cls.name}`, 'lesson'));
   saveDB(db);
   res.json(lesson);
 });
@@ -948,13 +1015,9 @@ app.post('/api/lessons/:id/copy', auth, role('teacher', 'admin'), (req, res) => 
   if (!targetClassId || !ownsClass(req, db, targetClassId)) return res.status(403).json({ error: 'کلاس مقصد نامعتبر است' });
   const copy = { ...JSON.parse(JSON.stringify(lesson)), id: uid(), classId: targetClassId, createdAt: new Date().toISOString() };
   db.lessons.push(copy);
-  const cls = (db.classes || []).find(c => c.id === targetClassId);
-  if (cls) (cls.studentIds || []).forEach(sid => addNotif(db, sid, `درس جدید: "${copy.title}" در کلاس ${cls.name}`, 'lesson'));
   saveDB(db);
   res.json(copy);
 });
-
-/* ═══════════════ تکالیف ═══════════════ */
 app.get('/api/assignments', auth, (req, res) => {
   const db = loadDB();
   let list = db.assignments || [];
@@ -1011,7 +1074,7 @@ app.patch('/api/submissions/:id/grade', auth, role('teacher', 'admin'), (req, re
   if (!assignment || !ownsClass(req, db, assignment.classId)) return res.status(403).json({ error: 'دسترسی ندارید' });
   sub.grade = req.body.grade;
   sub.feedback = req.body.feedback || '';
-  addNotif(db, sub.studentId, `نمره تکلیف شما ثبت شد: ${sub.grade}`, 'grade');
+  addNotif(db, sub.studentId, `نمره تکلیف شما: ${sub.grade}`, 'grade');
   saveDB(db);
   res.json(sub);
 });
@@ -1020,7 +1083,7 @@ app.get('/api/student/submissions', auth, role('student'), (req, res) => {
   res.json((db.submissions || []).filter(s => s.studentId === req.user.id));
 });
 
-/* ═══════════════ آزمون‌ها (نسخه گامایی + پچ‌ها) ═══════════════ */
+/* ═══════════════ آزمون‌ها (گامایی + پچ‌ها) ═══════════════ */
 app.get('/api/quizzes', auth, (req, res) => {
   const db = loadDB();
   let list = db.quizzes || [];
@@ -1084,18 +1147,14 @@ app.delete('/api/quizzes/:id', auth, role('teacher', 'admin'), (req, res) => {
   saveDB(db);
   res.json({ ok: true });
 });
-/* نتایج آزمون برای معلم (پچ باگ ۳) */
 app.get('/api/quizzes/:id/submissions', auth, role('teacher', 'admin'), (req, res) => {
   const db = loadDB();
   const quiz = (db.quizzes || []).find(q => q.id === req.params.id);
   if (!quiz) return res.status(404).json({ error: 'یافت نشد' });
   if (!ownsClass(req, db, quiz.classId)) return res.status(403).json({ error: 'دسترسی ندارید' });
   res.json((db.quizSubmissions || []).filter(s => s.quizId === quiz.id)
-    .map(s => ({ id: s.id, studentName: s.studentName, score: s.score,
-      grade: s.score, text: `امتیاز: ${s.score} از ۱۰۰ — ${s.correct} از ${s.total} صحیح`,
-      feedback: '', submittedAt: s.submittedAt })));
+    .map(s => ({ id: s.id, studentName: s.studentName, score: s.score, grade: s.score, text: `امتیاز: ${s.score} از ۱۰۰ — ${s.correct} از ${s.total} صحیح`, feedback: '', submittedAt: s.submittedAt })));
 });
-/* دریافت آزمون دانش‌آموز — با کلید قطعی (پچ باگ ۲) */
 app.get('/api/student/quizzes/:id', auth, role('student'), (req, res) => {
   const db = loadDB();
   const quiz = (db.quizzes || []).find(q => q.id === req.params.id && q.active);
@@ -1121,13 +1180,12 @@ app.get('/api/student/quizzes/:id/mysubmission', auth, role('student'), (req, re
   const sub = (db.quizSubmissions || []).find(s => s.quizId === req.params.id && s.studentId === req.user.id);
   res.json(sub || null);
 });
-/* ثبت پاسخ — دو فرمت + کلید قطعی (پچ باگ ۲) */
 app.post('/api/student/quizzes/:id/submit', auth, role('student'), (req, res) => {
   const db = loadDB();
   const quiz = (db.quizzes || []).find(q => q.id === req.params.id);
   if (!quiz) return res.status(404).json({ error: 'آزمون یافت نشد' });
   if ((db.quizSubmissions || []).find(s => s.quizId === req.params.id && s.studentId === req.user.id))
-    return res.status(400).json({ error: 'قبلاً این آزمون را داده‌اید' });
+    return res.status(400).json({ error: 'قبلاً داده‌اید' });
   let answersArr;
   if (Array.isArray(req.body.answers)) answersArr = req.body.answers;
   else {
@@ -1438,7 +1496,7 @@ app.delete('/api/teacher/students/:id/notes', auth, role('teacher', 'admin'), (r
   res.json({ ok: true });
 });
 
-/* ═══════════════ جلسات زنده ═══════════════ */
+/* ═══════════════ جلسات زنده (کلاس مجازی) ═══════════════ */
 app.get('/api/sessions', auth, (req, res) => {
   const db = loadDB();
   let list = db.classSessions || [];
@@ -1458,11 +1516,12 @@ app.post('/api/sessions', auth, role('teacher', 'admin'), (req, res) => {
     students: cls ? cls.studentIds : [],
     active: true, startedAt: new Date().toISOString(),
     currentLayout: 'sharing', notes: '', whiteboard: [[], [], []],
-    messages: [], qna: [], files: [], userStatuses: {}
+    messages: [], qna: [], files: [], userStatuses: {},
+    classTimer: null, quickPoll: null
   };
   if (!db.classSessions) db.classSessions = [];
   db.classSessions.push(s);
-  if (cls) (cls.studentIds || []).forEach(sid => addNotif(db, sid, `🔴 کلاس زنده شروع شد: ${s.title}`, 'class'));
+  if (cls) (cls.studentIds || []).forEach(sid => addNotif(db, sid, `🔴 کلاس زنده: ${s.title}`, 'class'));
   saveDB(db);
   res.json(s);
 });
@@ -1492,6 +1551,12 @@ app.post('/api/sessions/:id/whiteboard', auth, (req, res) => {
   saveDB(db);
   res.json({ ok: true });
 });
+app.get('/api/sessions/:id/whiteboard-get', auth, (req, res) => {
+  const db = loadDB();
+  const s = (db.classSessions || []).find(x => x.id === req.params.id);
+  if (!s) return res.status(404).json({ error: 'یافت نشد' });
+  res.json({ data: s.whiteboard || [] });
+});
 app.post('/api/sessions/:id/notes', auth, (req, res) => {
   const db = loadDB();
   const s = (db.classSessions || []).find(x => x.id === req.params.id);
@@ -1514,7 +1579,7 @@ app.post('/api/sessions/:id/recording', auth, role('teacher', 'admin'), (req, re
   res.json(up);
 });
 
-/* ═══════════════ حضور و غیاب ═══════════════ */
+/* ═══════════════ حضور و غیاب / نظرسنجی ═══════════════ */
 app.get('/api/attendance', auth, (req, res) => {
   const db = loadDB();
   let list = db.attendance || [];
@@ -1534,8 +1599,6 @@ app.post('/api/attendance', auth, role('teacher', 'admin'), (req, res) => {
   saveDB(db);
   res.json(rec);
 });
-
-/* ═══════════════ نظرسنجی ═══════════════ */
 app.get('/api/polls', auth, (req, res) => {
   const db = loadDB();
   let list = db.polls || [];
@@ -1557,7 +1620,7 @@ app.post('/api/polls', auth, role('teacher', 'admin'), (req, res) => {
   if (!db.polls) db.polls = [];
   db.polls.push(p);
   const cls = (db.classes || []).find(c => c.id === classId);
-  if (cls) (cls.studentIds || []).forEach(sid => addNotif(db, sid, `📊 نظرسنجی جدید: ${question}`, 'poll'));
+  if (cls) (cls.studentIds || []).forEach(sid => addNotif(db, sid, `📊 نظرسنجی: ${question}`, 'poll'));
   saveDB(db);
   res.json(p);
 });
@@ -1687,7 +1750,7 @@ app.patch('/api/chat/messages/:id', auth, (req, res) => {
   const db = loadDB();
   const msg = (db.messages || []).find(m => m.id === req.params.id);
   if (!msg) return res.status(404).json({ error: 'یافت نشد' });
-  if (msg.senderId !== req.user.id) return res.status(403).json({ error: 'فقط فرستنده می‌تواند ویرایش کند' });
+  if (msg.senderId !== req.user.id) return res.status(403).json({ error: 'فقط فرستنده' });
   msg.text = String(req.body.text || '').slice(0, 4000);
   msg.edited = true;
   saveDB(db);
@@ -1770,7 +1833,7 @@ app.get('/api/chat/presence', auth, (req, res) => {
 });
 app.post('/api/chat/upload', auth, (req, res) => {
   const up = saveUpload(req.body.name, req.body.data);
-  if (!up) return res.status(400).json({ error: 'فایل نامعتبر یا بیش از حد بزرگ' });
+  if (!up) return res.status(400).json({ error: 'فایل نامعتبر یا بزرگ' });
   res.json(up);
 });
 app.post('/api/upload', auth, (req, res) => {
@@ -1779,7 +1842,7 @@ app.post('/api/upload', auth, (req, res) => {
   res.json(up);
 });
 
-/* ═══════════════ اعلان‌ها ═══════════════ */
+/* ═══════════════ اعلان‌ها / عمومی ═══════════════ */
 app.get('/api/notifications', auth, (req, res) => {
   const db = loadDB();
   res.json((db.notifications || []).filter(n => n.userId === req.user.id).slice(-50).reverse());
@@ -1790,8 +1853,6 @@ app.patch('/api/notifications/read', auth, (req, res) => {
   saveDB(db);
   res.json({ ok: true });
 });
-
-/* ═══════════════ عمومی ═══════════════ */
 app.get('/api/public/stats', (req, res) => {
   const db = loadDB();
   res.json({
@@ -1804,9 +1865,9 @@ app.get('/api/public/stats', (req, res) => {
 app.get('/api/public/status', (req, res) => res.json({ ok: true, uptime: process.uptime() }));
 app.get('/api/public/changelog', (req, res) => {
   res.json([
-    { version: '۲.۱', date: new Date().toLocaleDateString('fa-IR'), items: ['🤖 آموزبات: دستیار هوشمند در همه صفحات', '🤖 آموزبات در پیام‌رسان و کلاس مجازی', 'سازنده آزمون با تولید سوال AI', 'برندینگ جدید: آموزیار'] },
-    { version: '۲.۰', date: '—', items: ['طراحی جدید تمام پنل‌ها', 'ثبت‌نام عمومی و پروفایل کاربری', 'آزمون‌ساز گامایی با تایمر و پرچم', 'کلاس مجازی Adobe Connect', 'پیام‌رسان تلگرامی'] },
-    { version: '۱.۰', date: '—', items: ['پنل مدیر، معلم و دانش‌آموز', 'پیام‌رسان و کلاس مجازی اولیه', 'آزمون‌ساز و بانک سوال'] }
+    { version: '۲.۲', date: new Date().toLocaleDateString('fa-IR'), items: ['🎬 کلاس مجازی ۲: تعویض دوربین، پین ویدئو، تایمر، تاس/چرخ', '⚡ بازی سرعتی + نظرسنجی سریع + واکنش‌های شناور', '🔦 قلم لیزری تخته + آموزبات×تخته', '📱 ریسپانسیو کامل موبایل'] },
+    { version: '۲.۱', date: '—', items: ['🤖 آموزبات در همه صفحات + پیام‌رسان + کلاس', 'سازنده آزمون با AI', 'برندینگ آموزیار'] },
+    { version: '۲.۰', date: '—', items: ['طراحی جدید پنل‌ها', 'ثبت‌نام و پروفایل', 'آزمون‌ساز گامایی', 'Adobe Connect', 'پیام‌رسان تلگرامی'] }
   ]);
 });
 app.get('/api/public/weather', async (req, res) => {
@@ -1820,45 +1881,59 @@ app.get('/api/public/weather', async (req, res) => {
 });
 
 /* ═════════════════════════════════════
-   🤖 آموزبات — پروکسی هوش مصنوعی (با توکن)
-   ═════════════════════════════════════ */
-/* ═════════════════════════════════════
    🤖 آموزبات — پروکسی هوش مصنوعی
    فرمت قطعی (تست‌شده): POST + Bearer + {prompt}
+   پاسخ API: {"text":"...", "raw":{...}}
    ═════════════════════════════════════ */
 const AI_ENDPOINT = 'https://amooz-bat.vercel.app/api/gemini';
-const AI_TOKEN = process.env.AI_TOKEN || 'd658e8f2d2fd08673c8205416617700c996ddb4ee92750b0';   // ⬅️ توکن خودت
+const AI_TOKEN = process.env.AI_TOKEN || 'YOUR_TOKEN_HERE';   // ⬅️ توکن خودت
 
-async function callAI(prompt) {
-  const r = await fetch(AI_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + AI_TOKEN          // ← فقط همین هدر — هیچ چیز اضافه نه!
-    },
-    body: JSON.stringify({ prompt: String(prompt).slice(0, 8000) })   // ← فقط کلید prompt
-  });
-  if (!r.ok) {
+async function callAI(prompt, attempt) {
+  attempt = attempt || 0;
+  const ctrl = new AbortController();
+  const kill = setTimeout(function () { ctrl.abort(); }, 65000);
+  try {
+    const r = await fetch(AI_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + AI_TOKEN
+      },
+      body: JSON.stringify({ prompt: String(prompt).slice(0, 8000) }),
+      signal: ctrl.signal
+    });
+    clearTimeout(kill);
+    if (r.ok) {
+      const data = await r.json();
+      /* فرمت اصلی API شما */
+      if (typeof data.text === 'string' && data.text.trim()) return data.text.trim();
+      /* فرمت‌های پشتیبان */
+      if (typeof data === 'string' && data.trim()) return data.trim();
+      for (const k of ['response', 'reply', 'result', 'answer', 'output', 'content']) {
+        if (typeof data[k] === 'string' && data[k].trim()) return data[k].trim();
+      }
+      if (data.candidates && data.candidates[0] && data.candidates[0].content && Array.isArray(data.candidates[0].content.parts)) {
+        const t = data.candidates[0].content.parts.map(p => p.text || '').join('').trim();
+        if (t) return t;
+      }
+      throw new Error('فرمت پاسخ شناسایی نشد');
+    }
+    /* ۵۰۳/۵۰۴/۴۲۹ → retry تا ۳ بار */
+    if ((r.status === 503 || r.status === 504 || r.status === 429) && attempt < 3) {
+      await new Promise(rs => setTimeout(rs, 1500 * (attempt + 1)));
+      return callAI(prompt, attempt + 1);
+    }
     let detail = '';
-    try { detail = (await r.text()).slice(0, 200); } catch {}
+    try { detail = (await r.text()).slice(0, 150); } catch {}
     throw new Error('API ' + r.status + (detail ? ' — ' + detail : ''));
+  } catch (e) {
+    clearTimeout(kill);
+    if ((e.name === 'AbortError' || /timeout/i.test(e.message)) && attempt < 3) {
+      await new Promise(rs => setTimeout(rs, 1500 * (attempt + 1)));
+      return callAI(prompt, attempt + 1);
+    }
+    throw e;
   }
-  const raw = await r.text();
-  let data;
-  try { data = JSON.parse(raw); } catch {
-    if (raw.trim()) return raw.trim();
-    throw new Error('پاسخ خالی');
-  }
-  /* پاسخ API شما: {"text":"...", "raw":{...}} */
-  if (typeof data.text === 'string' && data.text.trim()) return data.text.trim();
-  for (const k of ['response', 'reply', 'result', 'answer', 'output', 'content']) {
-    if (typeof data[k] === 'string' && data[k].trim()) return data[k].trim();
-  }
-  if (data.candidates?.[0]?.content?.parts) {
-    const t = data.candidates[0].content.parts.map(p => p.text || '').join('').trim();
-    if (t) return t;
-  }
-  throw new Error('فرمت پاسخ شناسایی نشد');
 }
 
 /* محدودیت: ۱۵ درخواست در دقیقه برای هر کاربر */
@@ -1881,7 +1956,6 @@ app.post('/api/ai', auth, async (req, res) => {
     res.json({ reply });
   } catch (e) {
     console.error('[آموزبات]', e.message);
-    /* حالا خطای واقعی API در پیام هست — دیباگ آینده آسان */
     res.status(502).json({ error: 'ارتباط با آموزبات برقرار نشد — ' + String(e.message).slice(0, 80) });
   }
 });
@@ -1907,14 +1981,19 @@ Object.entries(PAGES).forEach(([route, file]) => {
 });
 
 /* ═══════════════ شروع ═══════════════ */
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log('');
-  console.log('  🎓 آموزیار — سامانه آموزشی جامع | نسخه ۲.۱');
-  console.log('  ─────────────────────────────────────────');
-  console.log(`  🚀 سرور:   http://localhost:${PORT}`);
-  console.log('  🔑 ادمین:  admin@school.ir / admin123');
-  console.log('  🤖 آموزبات: ' + (AI_TOKEN === 'YOUR_TOKEN_HERE' ? '⚠️  توکن تنظیم نشده! AI_TOKEN را در server.js بگذار' : 'فعال ✅'));
-  console.log('  📁 صفحات:  public/ (۱۰ صفحه + ai-widget + chat-ai + classroom-ai)');
-  console.log('');
-});
+if (process.env.VERCEL) {
+  /* 🚀 حالت Vercel: فقط اپ صادر می‌شود (بدون WebSocket) */
+  module.exports = app;
+} else {
+  const PORT = process.env.PORT || 3000;
+  server.listen(PORT, () => {
+    console.log('');
+    console.log('  🎓 آموزیار — نسخه ۲.۲ (نهایی)');
+    console.log('  ─────────────────────────────────────────');
+    console.log(`  🚀 سرور:   http://localhost:${PORT}`);
+    console.log('  🔑 ادمین:  admin@school.ir / admin123');
+    console.log('  🤖 آموزبات: ' + (AI_TOKEN === 'YOUR_TOKEN_HERE' ? '⚠️  AI_TOKEN تنظیم نشده!' : 'فعال ✅'));
+    console.log('  📁 صفحات:  public/ (۱۰ صفحه + ۳ اسکریپت AI)');
+    console.log('');
+  });
+}
