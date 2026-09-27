@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ورود و ثبت‌نام | سامانه آموزشی</title>
+<title>ورود و ثبت‌نام | آموزیار</title>
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -18,8 +18,6 @@
 }
 body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);direction:rtl;min-height:100vh;overflow-x:hidden}
 ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:8px}
-
-/* پس‌زمینه */
 .bgfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.2}
 .blob.b1{width:500px;height:500px;background:var(--pri);top:-160px;right:-120px;animation:fl 14s ease-in-out infinite}
@@ -28,7 +26,6 @@ body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);c
 @keyframes fl{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.12)}}
 .grid-fx{position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
 
-/* چیدمان دو ستونه */
 .split{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1.05fr;min-height:100vh}
 @media(max-width:900px){.split{grid-template-columns:1fr}}
 
@@ -44,7 +41,7 @@ body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);c
 .brand h2 b{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .brand p{color:var(--muted);font-size:.92rem;line-height:1.9;max-width:400px}
 .feat-list{display:flex;flex-direction:column;gap:13px;margin-top:6px}
-.feat{display:flex;align-items:center;gap:13px;padding:13px 16px;border-radius:14px;background:var(--card);border:1px solid var(--bd);backdrop-filter:blur(8px);transition:.2s}
+.feat{display:flex;align-items:center;gap:13px;padding:13px 16px;border-radius:14px;background:var(--card);border:1px solid var(--bd);transition:.2s}
 .feat:hover{border-color:var(--bd2);transform:translateX(-4px)}
 .feat .fi{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;background:var(--card2);flex-shrink:0}
 .feat b{font-size:.86rem;display:block}
@@ -58,28 +55,32 @@ body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);c
 .fcard .mini-logo{display:none;text-align:center;margin-bottom:20px}
 @media(max-width:900px){.fcard .mini-logo{display:block}.brand{display:none}}
 
-/* تب‌ها */
+/* ═══ تب‌ها — ✅ فیکس RTL: «ورود» راست = کادر راست ═══ */
 .tabs{position:relative;display:flex;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:5px;margin-bottom:26px}
-.tab{flex:1;padding:11px;border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:.2s;position:relative;z-index:1;border-radius:10px}
+.tab{flex:1;padding:11px;border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:color .25s;position:relative;z-index:1;border-radius:10px}
 .tab.active{color:#fff}
-.tab-ind{position:absolute;top:5px;bottom:5px;width:calc(50% - 5px);background:var(--grad);border-radius:10px;transition:right .3s cubic-bezier(.4,0,.2,1),left .3s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 16px -3px rgba(139,92,246,.5)}
-.tabs[data-active="register"] .tab-ind{right:5px}
-.tabs[data-active="login"] .tab-ind{right:calc(50% + 0px)}
+.tab-ind{position:absolute;top:5px;bottom:5px;width:calc(50% - 5px);background:var(--grad);border-radius:10px;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:0 4px 16px -3px rgba(139,92,246,.5)}
+body[data-tab="login"] .tab-ind{right:5px}
+body[data-tab="register"] .tab-ind{right:50%}
 
-/* فرم */
 .fg{margin-bottom:16px}
 .fg label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:7px;font-weight:600}
-.inp{position:relative}
-.inp input{width:100%;background:var(--bg2);border:1px solid var(--bd2);border-radius:13px;color:var(--text);font-size:.92rem;padding:13px 15px;font-family:inherit;direction:ltr;text-align:left;transition:.2s}
-.inp input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px var(--priSoft)}
-.inp .eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem}
-.inp .eye:hover{color:var(--text)}
-.inp .pre{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted2);font-size:.85rem;pointer-events:none}
 
-/* انتخاب نقش */
+/* ═══ فیلدها — ✅ ایموجی در ستون جدا (flex نه absolute) ═══ */
+.field{display:flex;align-items:stretch;background:var(--bg2);border:1px solid var(--bd2);border-radius:13px;transition:.2s;overflow:hidden}
+.field:focus-within{border-color:var(--pri);box-shadow:0 0 0 4px var(--priSoft)}
+.field .ficon{display:flex;align-items:center;justify-content:center;width:44px;flex-shrink:0;color:var(--muted2);font-size:1rem;background:rgba(255,255,255,.02);border-left:1px solid var(--bd)}
+.field input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--text);font-size:.92rem;padding:13px 14px;font-family:inherit;box-shadow:none;-webkit-appearance:none;appearance:none}
+.field input.ltr{direction:ltr;text-align:left}
+.field input.rtl-input{direction:rtl;text-align:right}
+.field input::placeholder{color:var(--muted2)}
+.field .eye{display:flex;align-items:center;justify-content:center;width:44px;flex-shrink:0;background:none;border:none;border-right:1px solid var(--bd);color:var(--muted);cursor:pointer;font-size:1rem}
+.field .eye:hover{color:var(--text)}
+
+/* ═══ کارت نقش ═══ */
 .roles{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:16px}
 .role-card{position:relative;padding:18px 12px;border:2px solid var(--bd2);border-radius:16px;background:var(--bg2);cursor:pointer;text-align:center;transition:.2s;overflow:hidden}
-.role-card:hover{border-color:var(--bd2);transform:translateY(-2px)}
+.role-card:hover{transform:translateY(-2px)}
 .role-card.sel{border-color:var(--pri);background:var(--priSoft)}
 .role-card .ri{font-size:2rem;display:block;margin-bottom:8px}
 .role-card b{font-size:.88rem;display:block}
@@ -96,39 +97,37 @@ body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);c
 .pw-strength.s3 i:nth-child(-n+3){background:var(--green)}
 .pw-label{font-size:.68rem;color:var(--muted2);margin-top:5px}
 
-/* دکمه */
-.btn-main{width:100%;padding:15px;border:none;border-radius:14px;background:var(--grad);color:#fff;font-family:inherit;font-size:.98rem;font-weight:800;cursor:pointer;transition:.2s;box-shadow:0 8px 26px -6px rgba(139,92,246,.55);margin-top:6px}
-.btn-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 34px -6px rgba(139,92,246,.65)}
-.btn-main:disabled{opacity:.55;cursor:not-allowed}
+/* ═══ دکمه — بدون فرم، بدون refresh ═══ */
+.btn-main{width:100%;padding:15px;border:none;border-radius:14px;background:var(--grad);color:#fff;font-family:inherit;font-size:.98rem;font-weight:800;cursor:pointer;transition:.2s;box-shadow:0 8px 26px -6px rgba(139,92,246,.55);margin-top:6px;display:block}
+.btn-main:hover:not(:disabled){transform:translateY(-2px)}
+.btn-main:disabled{opacity:.55;cursor:not-allowed;transform:none}
 
-/* خطا */
+/* پیام‌ها */
 .err{display:none;align-items:center;gap:10px;background:rgba(255,107,129,.1);border:1px solid rgba(255,107,129,.35);color:var(--red);border-radius:13px;padding:12px 15px;font-size:.84rem;margin-bottom:16px}
 .err.show{display:flex;animation:shake .4s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(6px)}75%{transform:translateX(-6px)}}
 
-/* سوییچ فرم */
 .switch-hint{text-align:center;margin-top:20px;font-size:.82rem;color:var(--muted)}
 .switch-hint a{color:var(--pri2);cursor:pointer;font-weight:700}
 .switch-hint a:hover{text-decoration:underline}
 
-/* هشدار ادمین */
 .admin-hint{margin-top:20px;padding:14px;background:rgba(77,159,255,.07);border:1px solid rgba(77,159,255,.2);border-radius:13px;font-size:.76rem;color:var(--muted);text-align:center;line-height:1.9}
 .admin-hint b{color:var(--blue)}
 .admin-hint code{background:var(--card2);border-radius:6px;padding:2px 8px;font-family:inherit;font-size:.72rem;direction:ltr;display:inline-block}
 
 /* اوورلی موفقیت */
-.success-ov{position:fixed;inset:0;background:rgba(7,11,20,.9);backdrop-filter:blur(8px);z-index:100;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.success-ov{position:fixed;inset:0;background:rgba(7,11,20,.9);backdrop-filter:blur(8px);z-index:100;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;text-align:center}
 .success-ov.show{display:flex}
 .check-ring{width:90px;height:90px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:2.6rem;color:#fff;animation:checkPop .5s cubic-bezier(.2,1.6,.4,1);box-shadow:0 0 0 12px var(--priSoft),0 0 60px rgba(139,92,246,.5)}
 @keyframes checkPop{from{transform:scale(.3);opacity:0}}
 .success-ov h2{font-size:1.4rem;font-weight:800}
-.success-ov p{color:var(--muted);font-size:.88rem}
+.success-ov p{color:var(--muted);font-size:.88rem;max-width:380px}
 .load-bar{width:180px;height:4px;background:var(--card2);border-radius:3px;overflow:hidden;margin-top:6px}
 .load-bar::after{content:'';display:block;height:100%;width:40%;background:var(--grad);border-radius:3px;animation:slide 1s infinite}
 @keyframes slide{from{transform:translateX(220%)}to{transform:translateX(-220%)}}
 </style>
 </head>
-<body>
+<body data-tab="login">
 
 <div class="bgfx"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div class="grid-fx"></div>
@@ -138,51 +137,58 @@ body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);c
   <div class="brand">
     <div class="brand-logo">
       <div class="lb">🎓</div>
-      <div><h1>سامانه آموزشی</h1><small>پلتفرم جامع آموزش آنلاین</small></div>
+      <div><h1>آموزیار</h1><small>پلتفرم جامع آموزش آنلاین</small></div>
     </div>
     <h2>یادگیری را <b>متحول</b> کنید</h2>
-    <p>کلاس مجازی زنده، آزمون‌ساز هوشمند، پیام‌رسان درون‌سازمانی و تحلیل پیشرفت — همه در یک سامانه فارسی.</p>
+    <p>کلاس مجازی زنده، آزمون‌ساز هوشمند، پیام‌رسان درون‌سازمانی و دستیار هوشمند آموزبات — همه در یک سامانه فارسی.</p>
     <div class="feat-list">
-      <div class="feat"><span class="fi">🎥</span><div><b>کلاس مجازی ادوبی‌کانکتی</b><small>تخته هوشمند، اتاق گروهی، نظرسنجی زنده</small></div></div>
-      <div class="feat"><span class="fi">💬</span><div><b>پیام‌رسان تلگرامی</b><small>ریپلای، واکنش، پیام صوتی و استیکر</small></div></div>
+      <div class="feat"><span class="fi">🎥</span><div><b>کلاس مجازی حرفه‌ای</b><small>تخته هوشمند، اتاق گروهی، نظرسنجی زنده</small></div></div>
+      <div class="feat"><span class="fi">💬</span><div><b>پیام‌رسان کامل</b><small>ریپلای، واکنش، پیام صوتی و استیکر</small></div></div>
+      <div class="feat"><span class="fi">🤖</span><div><b>دستیار هوشمند آموزبات</b><small>سوال بپرس، جزوه بخواه، سوال آزمون بساز</small></div></div>
       <div class="feat"><span class="fi">🎮</span><div><b>گیمیفیکیشن کامل</b><small>XP، سطح، استریک روزانه و نشان</small></div></div>
-      <div class="feat"><span class="fi">📈</span><div><b>تحلیل هوشمند</b><small>روند نمرات، نقاط ضعف و هشدار افت</small></div></div>
     </div>
-    <div class="brand-foot">🔒 داده‌های شما امن است · © سامانه آموزشی</div>
+    <div class="brand-foot">🔒 داده‌های شما امن است · © آموزیار</div>
   </div>
 
   <!-- ═══ فرم ═══ -->
   <div class="form-side">
     <div class="fcard">
-      <div class="mini-logo"><div style="font-size:2.6rem">🎓</div><h1 style="font-size:1.15rem;margin-top:6px">سامانه آموزشی</h1></div>
+      <div class="mini-logo"><div style="font-size:2.6rem">🎓</div><h1 style="font-size:1.15rem;margin-top:6px">آموزیار</h1></div>
 
-      <div class="tabs" data-active="login" id="tabs">
+      <div class="tabs">
         <div class="tab-ind"></div>
-        <button class="tab active" onclick="switchTab('login')">ورود</button>
-        <button class="tab" onclick="switchTab('register')">ثبت‌نام</button>
+        <button type="button" class="tab active" id="tabLoginBtn" onclick="switchTab('login')">ورود</button>
+        <button type="button" class="tab" id="tabRegBtn" onclick="switchTab('register')">ثبت‌نام</button>
       </div>
 
-      <!-- ═══ فرم ورود ═══ -->
-      <form id="loginForm" onsubmit="return false">
+      <!-- ═══ ورود ═══ -->
+      <div id="loginPane">
         <div class="err" id="loginErr"></div>
         <div class="fg">
           <label>ایمیل</label>
-          <div class="inp"><span class="pre">📧</span><input type="email" id="loginEmail" placeholder="example@school.ir" autocomplete="email"/></div>
+          <div class="field">
+            <span class="ficon">📧</span>
+            <input type="email" id="loginEmail" placeholder="example@school.ir" autocomplete="email" class="ltr"/>
+          </div>
         </div>
         <div class="fg">
           <label>رمز عبور</label>
-          <div class="inp"><span class="pre">🔒</span><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"/><button type="button" class="eye" onclick="togglePw('loginPass',this)">👁</button></div>
+          <div class="field">
+            <span class="ficon">🔒</span>
+            <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"/>
+            <button type="button" class="eye" onclick="togglePw('loginPass',this)">👁</button>
+          </div>
         </div>
-        <button class="btn-main" id="loginBtn" onclick="doLogin()">🚀 ورود به سامانه</button>
+        <button type="button" class="btn-main" id="loginBtn" onclick="doLogin()">🚀 ورود به آموزیار</button>
         <div class="switch-hint">حساب ندارید؟ <a onclick="switchTab('register')">ثبت‌نام رایگان</a></div>
         <div class="admin-hint">
-          <b>حساب مدیر پیش‌فرض:</b><br>
-          <code>admin@school.ir</code> · <code>admin123</code>
+          <b></b><br>
+          <code></code> · <code></code>
         </div>
-      </form>
+      </div>
 
-      <!-- ═══ فرم ثبت‌نام ═══ -->
-      <form id="regForm" style="display:none" onsubmit="return false">
+      <!-- ═══ ثبت‌نام ═══ -->
+      <div id="regPane" style="display:none">
         <div class="err" id="regErr"></div>
         <div class="fg">
           <label>من می‌خواهم به‌عنوان...</label>
@@ -199,31 +205,43 @@ body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);c
         </div>
         <div class="fg">
           <label>نام کامل</label>
-          <div class="inp"><span class="pre">👤</span><input type="text" id="regName" placeholder="نام و نام خانوادگی" autocomplete="name" style="direction:rtl;text-align:right"/></div>
+          <div class="field">
+            <span class="ficon">👤</span>
+            <input type="text" id="regName" placeholder="نام و نام خانوادگی" autocomplete="name" class="rtl-input"/>
+          </div>
         </div>
         <div class="fg">
           <label>ایمیل</label>
-          <div class="inp"><span class="pre">📧</span><input type="email" id="regEmail" placeholder="example@school.ir" autocomplete="email"/></div>
+          <div class="field">
+            <span class="ficon">📧</span>
+            <input type="email" id="regEmail" placeholder="example@school.ir" autocomplete="email" class="ltr"/>
+          </div>
         </div>
         <div class="fg">
           <label>رمز عبور</label>
-          <div class="inp"><span class="pre">🔒</span><input type="password" id="regPass" placeholder="حداقل ۶ کاراکتر" autocomplete="new-password" oninput="pwStrength()"/><button type="button" class="eye" onclick="togglePw('regPass',this)">👁</button></div>
+          <div class="field">
+            <span class="ficon">🔒</span>
+            <input type="password" id="regPass" placeholder="حداقل ۶ کاراکتر" autocomplete="new-password" oninput="pwStrength()"/>
+            <button type="button" class="eye" onclick="togglePw('regPass',this)">👁</button>
+          </div>
           <div class="pw-strength" id="pwBar"><i></i><i></i><i></i></div>
           <div class="pw-label" id="pwLabel"></div>
         </div>
         <div class="fg">
           <label>تکرار رمز عبور</label>
-          <div class="inp"><span class="pre">🔁</span><input type="password" id="regPass2" placeholder="تکرار رمز" autocomplete="new-password"/></div>
+          <div class="field">
+            <span class="ficon">🔁</span>
+            <input type="password" id="regPass2" placeholder="تکرار رمز" autocomplete="new-password"/>
+          </div>
         </div>
-        <button class="btn-main" id="regBtn" onclick="doRegister()">✨ ساخت حساب من</button>
+        <button type="button" class="btn-main" id="regBtn" onclick="doRegister()">✨ ساخت حساب من</button>
         <div class="switch-hint">قبلاً ثبت‌نام کرده‌اید؟ <a onclick="switchTab('login')">ورود</a></div>
         <div class="admin-hint">👑 حساب <b>مدیر</b> فقط توسط مدیر سیستم ساخته می‌شود</div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- اوورلی موفقیت -->
 <div class="success-ov" id="successOv">
   <div class="check-ring">✓</div>
   <h2 id="sucTitle">خوش آمدید!</h2>
@@ -232,32 +250,54 @@ body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);c
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
-let regRole='student';
+var $=function(id){return document.getElementById(id)};
+var regRole='student';
+var busy=false;
 
-/* اگر لاگین است → هدایت */
-const savedUser=JSON.parse(localStorage.getItem('user')||'null');
-const savedToken=localStorage.getItem('token');
+/* ═══ توکن کهله؟ اول چک، بعد redirect (بدون حلقه) ═══ */
+var savedUser=null;
+try{savedUser=JSON.parse(localStorage.getItem('user')||'null')}catch(e){savedUser=null}
+var savedToken=localStorage.getItem('token');
 if(savedUser&&savedToken){
-  const dest={admin:'/admin',teacher:'/teacher',student:'/student'};
-  if(dest[savedUser.role])location.replace(dest[savedUser.role]);
+  fetch('/api/me',{headers:{'Authorization':'Bearer '+savedToken}})
+  .then(function(r){
+    if(r.status===401||r.status===404){
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      return null;
+    }
+    return r.json();
+  })
+  .then(function(me){
+    if(!me||me.error)return;
+    try{
+      if(me.name)savedUser.name=me.name;
+      if(me.role)savedUser.role=me.role;
+      localStorage.setItem('user',JSON.stringify(savedUser));
+    }catch(e){}
+    var dest={admin:'/admin',teacher:'/teacher',student:'/student'}[me.role||savedUser.role];
+    if(dest)location.replace(dest);
+  })
+  .catch(function(){});
 }
 
-/* تب از URL (?tab=register) */
-const params=new URLSearchParams(location.search);
-if(params.get('tab')==='register')switchTab('register');
-
+/* ═══ تب‌ها ═══ */
 function switchTab(t){
-  const tabs=$('tabs');
-  tabs.dataset.active=t;
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.textContent.includes(t==='login'?'ورود':'ثبت‌نام')));
-  $('loginForm').style.display=t==='login'?'':'none';
-  $('regForm').style.display=t==='register'?'':'none';
+  document.body.setAttribute('data-tab',t);
+  $('tabLoginBtn').classList.toggle('active',t==='login');
+  $('tabRegBtn').classList.toggle('active',t==='register');
+  $('loginPane').style.display=(t==='login')?'':'none';
+  $('regPane').style.display=(t==='register')?'':'none';
   hideErr('loginErr');hideErr('regErr');
 }
+try{
+  var params=new URLSearchParams(location.search);
+  if(params.get('tab')==='register')switchTab('register');
+}catch(e){}
 
 function togglePw(id,btn){
-  const inp=$(id);
+  var inp=$(id);
+  if(!inp)return;
   inp.type=inp.type==='password'?'text':'password';
   btn.textContent=inp.type==='password'?'👁':'🙈';
 }
@@ -269,63 +309,94 @@ function pickRole(r){
 }
 
 function pwStrength(){
-  const v=$('regPass').value;
-  let s=0;
+  var v=$('regPass').value;
+  var s=0;
   if(v.length>=6)s++;
   if(v.length>=9&&/[A-Za-z]/.test(v)&&/[0-9]/.test(v))s++;
   if(v.length>=12||(/[^A-Za-z0-9]/.test(v)&&s>=2))s++;
-  const bar=$('pwBar');
-  bar.className='pw-strength '+(s?'s'+s:'');
+  $('pwBar').className='pw-strength '+(s?'s'+s:'');
   $('pwLabel').textContent=v?(s===1?'ضعیف — کمی قوی‌تر کن':s===2?'متوسط — خوبه!':'قوی — عالی 💪'):'';
 }
 
-function showErr(id,msg){const e=$(id);e.innerHTML='<span>⚠️</span><span>'+msg+'</span>';e.classList.remove('show');void e.offsetWidth;e.classList.add('show')}
+function showErr(id,msg){
+  var e=$(id);
+  e.innerHTML='<span>⚠️</span><span>'+String(msg).replace(/</g,'&lt;')+'</span>';
+  e.classList.remove('show');
+  void e.offsetWidth;
+  e.classList.add('show');
+}
 function hideErr(id){$(id).classList.remove('show')}
 
 function redirectByRole(role){
-  const dest={admin:'/admin',teacher:'/teacher',student:'/student'};
-  setTimeout(()=>location.href=dest[role]||'/',1400);
+  var dest={admin:'/admin',teacher:'/teacher',student:'/student'}[role]||'/';
+  setTimeout(function(){location.href=dest},1400);
 }
 
 /* ═══ ورود ═══ */
-async function doLogin(){
-  const email=$('loginEmail').value.trim();
-  const pass=$('loginPass').value;
-  if(!email||!pass)return showErr('loginErr','ایمیل و رمز عبور را وارد کنید');
-  const btn=$('loginBtn');btn.disabled=true;btn.textContent='⏳ در حال ورود...';
-  try{
-    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})});
-    const d=await r.json();
-    if(!r.ok)throw new Error(d.error||'خطا در ورود');
-    localStorage.setItem('token',d.token);
-    localStorage.setItem('user',JSON.stringify(d.user));
-    showSuccess('خوش برگشتی، '+d.user.name+'!','در حال انتقال به پنل '+({admin:'مدیریت',teacher:'معلم',student:'دانش‌آموز'})[d.user.role]+'...');
-    redirectByRole(d.user.role);
-  }catch(e){showErr('loginErr',e.message)}
-  finally{btn.disabled=false;btn.textContent='🚀 ورود به سامانه'}
+function doLogin(){
+  if(busy)return;
+  var email=$('loginEmail').value.trim();
+  var pass=$('loginPass').value;
+  if(!email)return showErr('loginErr','ایمیل را وارد کنید');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return showErr('loginErr','ایمیل معتبر نیست');
+  if(!pass)return showErr('loginErr','رمز عبور را وارد کنید');
+  busy=true;
+  var btn=$('loginBtn');
+  btn.disabled=true;btn.textContent='⏳ در حال ورود...';
+  hideErr('loginErr');
+  fetch('/api/login',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:email,password:pass})
+  })
+  .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d}})})
+  .then(function(res){
+    if(!res.ok)throw new Error(res.d&&res.d.error||'خطا در ورود');
+    localStorage.setItem('token',res.d.token);
+    localStorage.setItem('user',JSON.stringify(res.d.user));
+    showSuccess('خوش برگشتی، '+res.d.user.name+'!','در حال انتقال به پنل '+({admin:'مدیریت',teacher:'معلم',student:'دانش‌آموز'})[res.d.user.role]+'...');
+    redirectByRole(res.d.user.role);
+  })
+  .catch(function(e){
+    busy=false;
+    btn.disabled=false;btn.textContent='🚀 ورود به آموزیار';
+    showErr('loginErr',e.message||'خطا در اتصال به سرور');
+  });
 }
 
 /* ═══ ثبت‌نام ═══ */
-async function doRegister(){
-  const name=$('regName').value.trim();
-  const email=$('regEmail').value.trim();
-  const pass=$('regPass').value;
-  const pass2=$('regPass2').value;
+function doRegister(){
+  if(busy)return;
+  var name=$('regName').value.trim();
+  var email=$('regEmail').value.trim();
+  var pass=$('regPass').value;
+  var pass2=$('regPass2').value;
   if(!name||name.length<3)return showErr('regErr','نام کامل را وارد کنید (حداقل ۳ حرف)');
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return showErr('regErr','ایمیل معتبر وارد کنید');
   if(pass.length<6)return showErr('regErr','رمز عبور باید حداقل ۶ کاراکتر باشد');
   if(pass!==pass2)return showErr('regErr','تکرار رمز با رمز عبور یکسان نیست');
-  const btn=$('regBtn');btn.disabled=true;btn.textContent='⏳ در حال ساخت حساب...';
-  try{
-    const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password:pass,role:regRole})});
-    const d=await r.json();
-    if(!r.ok)throw new Error(d.error||'خطا در ثبت‌نام');
-    localStorage.setItem('token',d.token);
-    localStorage.setItem('user',JSON.stringify(d.user));
-    showSuccess('حساب شما ساخته شد! 🎉','خوش آمدی '+d.user.name+' — در حال انتقال...');
-    redirectByRole(d.user.role);
-  }catch(e){showErr('regErr',e.message)}
-  finally{btn.disabled=false;btn.textContent='✨ ساخت حساب من'}
+  busy=true;
+  var btn=$('regBtn');
+  btn.disabled=true;btn.textContent='⏳ در حال ساخت حساب...';
+  hideErr('regErr');
+  fetch('/api/register',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:name,email:email,password:pass,role:regRole})
+  })
+  .then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d}})})
+  .then(function(res){
+    if(!res.ok)throw new Error(res.d&&res.d.error||'خطا در ثبت‌نام');
+    localStorage.setItem('token',res.d.token);
+    localStorage.setItem('user',JSON.stringify(res.d.user));
+    showSuccess('حساب شما ساخته شد! 🎉','خوش آمدی '+res.d.user.name+' — در حال انتقال...');
+    redirectByRole(res.d.user.role);
+  })
+  .catch(function(e){
+    busy=false;
+    btn.disabled=false;btn.textContent='✨ ساخت حساب من';
+    showErr('regErr',e.message||'خطا در اتصال به سرور');
+  });
 }
 
 function showSuccess(title,sub){
@@ -334,12 +405,13 @@ function showSuccess(title,sub){
   $('successOv').classList.add('show');
 }
 
-/* Enter برای ارسال */
-document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    if($('loginForm').style.display!=='none')doLogin();
-    else doRegister();
-  }
+/* Enter فقط روی پین فعال */
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter')return;
+  if(e.target.tagName==='BUTTON'||e.target.tagName==='A')return;
+  e.preventDefault();
+  if($('loginPane').style.display!=='none')doLogin();
+  else doRegister();
 });
 </script>
 <script src="/ai-widget.js" defer></script>
