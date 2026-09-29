@@ -516,11 +516,11 @@ function closeModal(){$('#modalWrap').classList.add('hidden')}
 function setTheme(t){
   document.documentElement.dataset.theme=t;localStorage.setItem('avc-theme',t);
   $$('.theme-btn').forEach(b=>b.innerHTML=I(t==='dark'?'sun':'moon'));
-  if(bgNet.on)bgNet.themeSync();
+  if(typeof bgNet!=='undefined'&&bgNet.on)bgNet.themeSync();
 }
  $$('.theme-btn').forEach(b=>b.onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
 /* ✅ فیکس: فراخوانی اولیه — آیکون تم از همان لحظه اول پر است */
-setTheme(document.documentElement.dataset.theme);
+
 
 /* ═════════ پس‌زمینه‌ی زنده ═════════ */
 const bgNet={cv:null,cx:null,nds:[],raf:0,mx:-9e3,my:-9e3,en:0,on:false,d:1,
@@ -2098,6 +2098,11 @@ async function adapt(){
 renderNetChip();
 
 /* ═════════ بوت نهایی ═════════ */
+/* ═════════ بوت نهایی ═════════ */
+setTheme(document.documentElement.dataset.theme);   /* ✅ اینجا — bgNet تعریف شده است */
+route();
+bgNet.start();
+initPreview();
 route();
 bgNet.start();
 initPreview();
@@ -2111,3 +2116,4 @@ setInterval(()=>{
 <script src="/ai-widget.js" defer></script>
 </body>
 </html>
+
