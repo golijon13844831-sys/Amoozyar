@@ -12,7 +12,7 @@
     {
       "id": "mub7udjlptxa",
       "name": "علی",
-      "email": "1384",
+      "email": "ali@shcool.ir",
       "password": "4838ed084d1d287f80c52bfd51eca8fc2cbda981d44c28cbe8bb1a7c7a4393e8",
       "role": "teacher",
       "classIds": [
@@ -24,7 +24,7 @@
     {
       "id": "mub8av1i3yhr",
       "name": "محمد",
-      "email": "1392",
+      "email": "1392@sh.com",
       "password": "f57f3d1e8fe57cb02c0851a03ba6f8a8b1e1d7bcc0fe42d231f8d653bd4247cd",
       "role": "student",
       "classIds": [
@@ -36,7 +36,7 @@
     {
       "id": "muc90ihjfz3c",
       "name": "محمد طاها گل افروز",
-      "email": "1353",
+      "email": "1353@sh.com",
       "password": "f2e4fb8c4285931f593b228fa10313c40cacc8f6cbfcd207ec54fbba7d120ace",
       "role": "student",
       "classIds": [
