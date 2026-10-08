@@ -297,6 +297,50 @@ input,select,textarea{font:inherit;color:var(--tx)}
  .join-top{padding:13px 15px}
 }
 @media(min-width:901px){.grab{display:none}}
+
+/* Mobile refinement — classroom only */
+@media(max-width:600px){
+  .topbar{height:52px;padding:0 8px;gap:5px}
+  .topbar .mid{justify-content:flex-start;overflow:hidden}
+  .topbar .mid .chip{max-width:48vw;overflow:hidden;text-overflow:ellipsis}
+  .chip{height:32px;padding:0 8px;font-size:10.5px}
+  #clock{font-size:11px}
+  .body{min-height:0}
+  .strip{gap:6px;padding:7px 7px 0}
+  .tile{width:92px;height:65px;border-radius:11px}
+  .stage{margin:6px 6px 68px;border-radius:14px}
+  .stage-head{padding:7px 10px;min-height:40px}
+  .stage-head .s-label{font-size:10.5px}
+  .stage-body{min-height:0}
+  .toolbar{bottom:7px;max-width:calc(100% - 8px);padding:5px;border-radius:14px}
+  .tb-b{width:41px;height:41px;border-radius:11px}
+  .side{height:82dvh;border-radius:20px 20px 0 0}
+  .tabbar button{min-height:44px;font-size:11.5px}
+  .chat-list{padding:9px}
+  .msg{font-size:12px;padding:8px 10px}
+  .comp-row input{min-height:40px}
+  .wb-bar{overflow-x:auto;flex-wrap:nowrap}
+  .wb-b{width:36px;height:36px;flex:none}
+  .act-wrap{padding:16px 10px}
+  .opt-btn{font-size:12.5px;padding:11px 12px}
+  .modal-wrap{padding:8px}
+  .modal{border-radius:16px;max-height:90dvh}
+  .modal .m-body{padding:14px}
+  .m-foot{padding:0 14px 14px}
+  .join-top{padding:10px 11px}
+  .join-hero{padding:20px 14px}
+  .join-hero h1{font-size:1.3rem}
+  .join-hero p{font-size:.75rem}
+  .join-card{padding:0 8px 20px}
+  .jm-video{aspect-ratio:4/3}
+  .join-form{padding:18px;border-radius:16px}
+  .linkrow .hint{max-width:50%}
+}
+@media(max-width:380px){
+  .tile{width:82px;height:58px}
+  .chip{font-size:9.5px}
+  .toolbar .tb-b{width:39px;height:39px}
+}
 </style>
 </head>
 <body>
