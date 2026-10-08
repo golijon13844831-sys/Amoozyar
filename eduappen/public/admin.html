@@ -322,6 +322,57 @@ tbody tr:hover{background:var(--card2)}
   .search-pill{min-width:0}
   .search-pill span,.search-pill kbd{display:none}
 }
+
+
+/* Responsive hardening — mobile/tablet; desktop rules remain unchanged */
+img,video,canvas,svg{max-width:100%}
+button,input,select,textarea{max-width:100%}
+.cont,.main,.hero,.grid2,.row2,.item,.sec,.card{min-width:0}
+@media (max-width: 760px){
+  .cont{padding:14px}
+  .topbar{padding:10px 12px;gap:8px;min-height:58px;flex-wrap:wrap}
+  .pg-crumb{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.82rem}
+  .search-pill{max-width:100%;min-width:0}
+  .hero{padding:18px;gap:12px}
+  .hero h1,.hero h2{font-size:clamp(1.15rem,5vw,1.65rem);line-height:1.55}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:7px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .stat{min-width:0;padding:14px}
+  .stat-n{font-size:clamp(1.2rem,5vw,1.7rem)}
+  .grid2,.row2{grid-template-columns:minmax(0,1fr);gap:12px}
+  .item{flex-wrap:wrap;gap:10px;padding:14px}
+  .item .bd{min-width:0;overflow-wrap:anywhere}
+  .item .acts{width:100%;flex-wrap:wrap}
+  .item .acts .btn{flex:0 1 auto}
+  .search-box{min-width:0;width:100%;max-width:none}
+  .chips,.cls-tabs{gap:7px}
+  .chip,.cls-tab{max-width:100%;white-space:normal}
+  .md{width:100%;max-width:100%;max-height:90dvh;padding:17px;border-radius:17px;overflow:auto}
+  .mo{padding:10px;align-items:flex-end}
+  .mdh{gap:10px}
+  .mdh h2{min-width:0;overflow-wrap:anywhere}
+  .tblwrap{max-width:100%;overscroll-behavior-x:contain}
+  .tblwrap table{min-width:560px}
+  .toasts{left:12px;right:12px;bottom:12px}
+  .toast{max-width:100%;overflow-wrap:anywhere}
+  .bulkbar{max-width:calc(100vw - 20px);bottom:10px;padding:9px}
+  .cal-grid{gap:3px}
+  .cal-grid>*{min-width:0}
+  .btn{white-space:normal;justify-content:center;line-height:1.45}
+}
+@media (max-width: 420px){
+  .cont{padding:10px}
+  .topbar{padding:8px 10px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .stat{padding:11px}
+  .stat-l{overflow-wrap:anywhere}
+  .hero{padding:14px}
+  .hero-meta .hchip{max-width:100%;white-space:normal}
+  .item .ic{width:38px;height:38px}
+  .md{padding:14px}
+  .btn{padding:9px 12px;font-size:.8rem}
+}
+
 </style>
 </head>
 <body>
