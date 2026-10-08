@@ -125,6 +125,28 @@ body[data-tab="register"] .tab-ind{right:50%}
 .load-bar{width:180px;height:4px;background:var(--card2);border-radius:3px;overflow:hidden;margin-top:6px}
 .load-bar::after{content:'';display:block;height:100%;width:40%;background:var(--grad);border-radius:3px;animation:slide 1s infinite}
 @keyframes slide{from{transform:translateX(220%)}to{transform:translateX(-220%)}}
+
+/* Mobile refinement — scoped to login */
+@media(max-width:600px){
+  body{min-width:0}
+  .form-side{padding:16px 10px;align-items:flex-start;min-height:100vh}
+  .fcard{max-width:100%;margin:8px 0 18px;padding:22px 16px;border-radius:20px}
+  .tabs{margin-bottom:20px}
+  .tab{padding:10px 8px;font-size:.84rem}
+  .fg{margin-bottom:13px}
+  .field input{font-size:.88rem;padding:12px 11px}
+  .field .ficon,.field .eye{width:40px}
+  .roles{gap:8px}
+  .role-card{padding:14px 8px}
+  .role-card .ri{font-size:1.7rem}
+  .btn-main{padding:13px;font-size:.92rem}
+  .admin-hint{font-size:.7rem;padding:11px}
+}
+@media(max-width:380px){
+  .fcard{padding:19px 13px}
+  .role-card b{font-size:.8rem}
+  .role-card small{font-size:.62rem}
+}
 </style>
 </head>
 <body data-tab="login">
