@@ -322,6 +322,33 @@ body.selecting .sel-check{display:flex}
   .msg-row.mine .sel-check{left:-32px}
   .msg-row:not(.mine) .sel-check{right:-32px}
 }
+
+/* Mobile refinement — chat only */
+@media(max-width:600px){
+  .topbar{padding:8px 10px}
+  .topbar h1{font-size:.88rem}
+  .topbar-left{gap:8px;min-width:0}
+  .back-btn{padding:5px 8px;font-size:.72rem}
+  .topbar>div:last-child span{display:none}
+  .icon-btn{width:32px;height:32px}
+  .rooms-panel{width:100%}
+  .chat-header{padding:7px 10px;gap:8px}
+  .chat-header-avatar{width:36px;height:36px}
+  .chat-header h2{font-size:.86rem}
+  .chat-header-sub{font-size:.67rem}
+  .chat-header-actions{gap:3px}
+  .chat-header-actions .icon-btn{width:32px;height:32px}
+  .messages{padding:10px 10px 6px}
+  .bubble{font-size:.83rem;padding:7px 9px}
+  .msg-row{max-width:92%}
+  .msg-avatar{width:30px;height:30px}
+  .composer{padding:7px 8px}
+}
+@media(max-width:380px){
+  .messages{padding-inline:7px}
+  .msg-row{max-width:95%}
+  .bubble{font-size:.8rem}
+}
 </style>
 </head>
 <body>
