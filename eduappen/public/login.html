@@ -125,6 +125,33 @@ body[data-tab="register"] .tab-ind{right:50%}
 .load-bar{width:180px;height:4px;background:var(--card2);border-radius:3px;overflow:hidden;margin-top:6px}
 .load-bar::after{content:'';display:block;height:100%;width:40%;background:var(--grad);border-radius:3px;animation:slide 1s infinite}
 @keyframes slide{from{transform:translateX(220%)}to{transform:translateX(-220%)}}
+
+
+/* Responsive hardening — login/register */
+@media (max-width: 600px){
+  .form-side{padding:18px 12px;align-items:flex-start}
+  .fcard{padding:24px 18px;border-radius:20px;margin:auto 0;width:100%;max-width:440px}
+  .tabs{margin-bottom:20px}
+  .tab{padding:10px 7px;font-size:.86rem}
+  .roles{gap:8px}
+  .role-card{padding:14px 8px}
+  .role-card .ri{font-size:1.7rem}
+  .field input{padding:12px 10px;font-size:16px}
+  .field .ficon,.field .eye{width:40px}
+  .btn-main{padding:14px 10px}
+  .admin-hint{overflow-wrap:anywhere}
+  .admin-hint code{max-width:100%;overflow-wrap:anywhere}
+  .success-ov h2{font-size:1.2rem}
+}
+@media (max-width: 360px){
+  .form-side{padding:12px 8px}
+  .fcard{padding:20px 13px}
+  .roles{grid-template-columns:1fr 1fr;gap:6px}
+  .role-card b{font-size:.8rem}
+  .role-card small{font-size:.64rem}
+  .field .ficon,.field .eye{width:34px}
+}
+
 </style>
 </head>
 <body data-tab="login">
