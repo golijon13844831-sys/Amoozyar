@@ -297,6 +297,62 @@ input,select,textarea{font:inherit;color:var(--tx)}
  .join-top{padding:13px 15px}
 }
 @media(min-width:901px){.grab{display:none}}
+
+
+/* Responsive hardening — virtual classroom */
+.room,.body,.stage-col,.stage,.stage-body,.side{min-width:0;max-width:100%}
+.stage-body video,.stage-body canvas,.stage-body img{max-width:100%;max-height:100%;object-fit:contain}
+.join-card>*{min-width:0}
+.input{min-width:0;max-width:100%;font-size:16px}
+@media (min-width:601px) and (max-width:900px){
+  .topbar{padding-inline:10px;gap:7px}
+  .topbar .mid{overflow-x:auto;justify-content:flex-start;scrollbar-width:none}
+  .topbar .mid::-webkit-scrollbar{display:none}
+  .chip{padding-inline:8px}
+  .body{grid-template-columns:minmax(0,1fr)}
+  .side{width:100%;max-width:100%}
+  .stage{margin-inline:10px}
+  .toolbar{max-width:calc(100% - 16px);overflow-x:auto;scrollbar-width:none}
+  .toolbar::-webkit-scrollbar{display:none}
+}
+@media (max-width:600px){
+  .room{height:100dvh;height:100svh;min-height:0}
+  .topbar{height:52px;min-height:52px;padding:0 8px;gap:5px}
+  .topbar .brand{gap:6px;min-width:0}
+  .topbar .brand .brand-sub{display:none}
+  .topbar .mid{justify-content:flex-start;overflow-x:auto;scrollbar-width:none;gap:5px}
+  .topbar .mid::-webkit-scrollbar{display:none}
+  .chip{height:32px;padding:0 8px;font-size:11px}
+  .topbar .left{gap:3px}
+  .topbar .left .ibtn{width:34px;height:34px}
+  .body{grid-template-columns:minmax(0,1fr);min-height:0}
+  .stage-col{min-height:0}
+  .strip{padding:7px 8px 0;gap:7px}
+  .tile{width:92px;height:66px}
+  .stage{margin:7px 7px 76px;min-height:0}
+  .stage-head{padding:8px 10px;gap:6px;flex-wrap:wrap}
+  .stage-body{min-height:0;padding:6px}
+  .toolbar{bottom:calc(7px + env(safe-area-inset-bottom,0px));max-width:calc(100% - 12px);padding:5px;gap:2px;border-radius:14px}
+  .tb-b{width:40px;height:40px;flex:0 0 40px}
+  .side{height:82dvh;padding-bottom:env(safe-area-inset-bottom,0px)}
+  .modal-wrap{padding:8px;align-items:end}
+  .modal{width:100%;max-width:100%;max-height:90dvh;overflow:auto;border-radius:18px;padding:16px}
+  .join-top{padding:10px 12px}
+  .join-card{padding:0 10px 22px;gap:16px}
+  .jm-video{aspect-ratio:4/3}
+  .row{flex-wrap:wrap;min-width:0}
+  .row>*{min-width:0}
+  .linkrow .hint{max-width:100%}
+  .btn.big{width:100%}
+}
+@media (max-width:380px){
+  .topbar .brand .lg{font-size:.9rem}
+  .topbar .mid .chip:nth-child(n+3){display:none}
+  .tb-b{width:37px;height:37px;flex-basis:37px}
+  .tile{width:82px;height:60px}
+  .stage{margin-bottom:72px}
+}
+
 </style>
 </head>
 <body>
