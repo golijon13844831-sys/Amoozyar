@@ -16,6 +16,8 @@
   --text:#eef2f8;--muted:#8b94a7;--muted2:#59627a;
   --r:18px;--shadow:0 14px 44px rgba(0,0,0,.45);
   --grad:linear-gradient(135deg,#4d9fff,#7cc0ff);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-top:env(safe-area-inset-top,0px);
 }
 [data-theme=light]{
   --bg:#f2f5fb;--bg2:#ffffff;
@@ -25,19 +27,23 @@
   --text:#0f172a;--muted:#5b6478;--muted2:#8b94a7;
   --priSoft:rgba(77,159,255,.1);--shadow:0 14px 40px rgba(30,41,80,.12);
 }
+html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);direction:rtl;display:flex;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
 ::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:8px}
 ::selection{background:var(--priSoft)}
+*{box-sizing:border-box}
+img,svg,canvas,video{max-width:100%;height:auto}
+button,input,select,textarea{font:inherit}
 .bgfx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.16}
 .blob.b1{width:480px;height:480px;background:var(--pri);top:-140px;right:-100px;animation:fl 14s ease-in-out infinite}
 .blob.b2{width:420px;height:420px;background:var(--purple);bottom:-120px;left:-80px;opacity:.12;animation:fl 18s ease-in-out infinite reverse}
 @keyframes fl{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.12)}}
-.sb{width:266px;position:fixed;right:0;top:0;bottom:0;z-index:60;display:flex;flex-direction:column;background:var(--glass);backdrop-filter:blur(18px);border-left:1px solid var(--bd);transition:width .28s,transform .3s}
+.sb{width:266px;position:fixed;right:0;top:0;bottom:0;z-index:60;display:flex;flex-direction:column;background:var(--glass);backdrop-filter:blur(18px);border-left:1px solid var(--bd);transition:width .28s}
 body.sb-min .sb{width:82px}
 .sb-logo{display:flex;align-items:center;gap:12px;padding:20px 20px 16px;cursor:pointer}
-.logo-badge{width:44px;height:44px;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;box-shadow:0 8px 22px rgba(77,159,255,.35)}
+.logo-badge{width:44px;height:44px;border-radius:14px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.35rem;flex-shrink:0;box-shadow:0 8px 22px rgba(77,159,255,.4)}
 .sb-logo h1{font-size:1.02rem;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
 .sb-logo small{display:block;font-size:.68rem;color:var(--muted);font-weight:400}
 body.sb-min .sb-logo h1,body.sb-min .sb-logo small,body.sb-min .ni-label,body.sb-min .sb-sec,body.sb-min .sb-user-info,body.sb-min .sb-min-btn span{opacity:0;pointer-events:none}
@@ -51,13 +57,13 @@ body.sb-min .sb-logo h1,body.sb-min .sb-logo small,body.sb-min .ni-label,body.sb
 .ni.active .ic{background:var(--grad);box-shadow:0 6px 18px rgba(77,159,255,.4);border-color:transparent}
 .ni.active::after{content:'';position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:4px;height:26px;background:var(--grad);border-radius:4px;box-shadow:0 0 12px rgba(77,159,255,.6)}
 .sb-user{margin:12px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--bd);display:flex;align-items:center;gap:11px}
-.sb-user .av{width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--priSoft)}
+.sb-user .av{width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 0 0 3px var(--bg)}
 .sb-user-info{min-width:0;flex:1}
 .sb-user-info b{display:block;font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sb-user-info span{font-size:.68rem;color:var(--muted)}
-.logout{margin-top:10px;width:100%;padding:9px;border-radius:11px;border:1px solid var(--bd2);background:transparent;color:var(--muted);font-family:inherit;font-size:.8rem;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px;justify-content:center}
+.logout{margin-top:10px;width:100%;padding:9px;border-radius:11px;border:1px solid var(--bd2);background:transparent;color:var(--muted);font-family:inherit;font-size:.8rem;cursor:pointer;transition:.2s}
 .logout:hover{border-color:var(--red);color:var(--red)}
-.sb-min-btn{margin:8px auto;padding:7px;border-radius:10px;border:none;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;font-size:.72rem}
+.sb-min-btn{margin:8px auto;padding:7px;border-radius:10px;border:none;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;font-size:.8rem;transition:.2s}
 .sb-min-btn:hover{color:var(--text);background:var(--card2)}
 .main{margin-right:266px;flex:1;position:relative;z-index:1;min-width:0;transition:margin .28s}
 body.sb-min .main{margin-right:82px}
@@ -65,11 +71,11 @@ body.sb-min .main{margin-right:82px}
 .pg-crumb{min-width:0;flex:1}
 .pg-crumb h2{font-size:1.05rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pg-crumb span{font-size:.7rem;color:var(--muted)}
-.tb-btn{width:42px;height:42px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:1.05rem;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+.tb-btn{width:42px;height:42px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:1.05rem;display:flex;align-items:center;justify-content:center;transition:.2s}
 .tb-btn:hover{border-color:var(--bd2);color:var(--text);transform:translateY(-2px)}
 .tb-btn .dot{position:absolute;top:9px;right:9px;width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px var(--bg);animation:pd 2s infinite}
 @keyframes pd{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
-.search-pill{display:flex;align-items:center;gap:9px;padding:9px 15px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);font-size:.82rem;cursor:pointer;min-width:190px}
+.search-pill{display:flex;align-items:center;gap:9px;padding:9px 15px;border-radius:13px;border:1px solid var(--bd);background:var(--card);color:var(--muted);font-size:.82rem;cursor:pointer;min-width:180px;transition:.2s}
 .search-pill:hover{border-color:var(--bd2);color:var(--text)}
 .search-pill kbd{margin-right:auto;background:var(--card2);border:1px solid var(--bd2);border-radius:6px;padding:2px 7px;font-size:.66rem;font-family:inherit}
 .tb-av{width:42px;height:42px;border-radius:13px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;flex-shrink:0;cursor:pointer;box-shadow:0 4px 14px rgba(77,159,255,.3)}
@@ -81,7 +87,7 @@ body.sb-min .main{margin-right:82px}
 .ph h1{font-size:1.5rem;font-weight:800}
 .ph h1 i{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .ph p{color:var(--muted);font-size:.86rem;margin-top:4px}
-.hero{position:relative;border-radius:24px;padding:30px 32px;overflow:hidden;border:1px solid var(--bd);background:linear-gradient(120deg,rgba(77,159,255,.16),rgba(167,139,250,.1) 55%,rgba(34,211,238,.12));margin-bottom:22px}
+.hero{position:relative;border-radius:24px;padding:30px 32px;overflow:hidden;border:1px solid var(--bd);background:linear-gradient(120deg,rgba(77,159,255,.16),rgba(167,139,250,.1) 55%,rgba(34,211,238,.08))}
 .hero::before{content:'';position:absolute;top:-70px;left:-40px;width:280px;height:280px;border-radius:50%;background:var(--pri);filter:blur(90px);opacity:.25}
 .hero>*{position:relative;z-index:1}
 .hero .hi{font-size:2.3rem;display:inline-block;animation:wave 2.4s ease-in-out infinite;transform-origin:70% 70%}
@@ -96,7 +102,7 @@ body.sb-min .main{margin-right:82px}
 .stat{position:relative;padding:20px;border-radius:var(--r);background:var(--card);border:1px solid var(--bd);overflow:hidden;transition:transform .25s,box-shadow .25s}
 .stat:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
 .stat::after{content:'';position:absolute;top:-55%;left:-25%;width:190px;height:190px;border-radius:50%;background:var(--c,var(--pri));filter:blur(70px);opacity:.17}
-.stat-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;background:var(--c,var(--pri));box-shadow:0 8px 22px -6px var(--c,var(--pri));margin-bottom:13px;position:relative}
+.stat-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;background:var(--c,var(--pri));box-shadow:0 8px 22px -6px var(--c,var(--pri))}
 .stat-n{font-size:1.9rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;position:relative}
 .stat-l{font-size:.74rem;color:var(--muted);margin-top:6px;position:relative}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:22px;transition:border-color .25s}
@@ -105,7 +111,6 @@ body.sb-min .main{margin-right:82px}
 .ch h2{font-size:1rem;font-weight:800;display:flex;align-items:center;gap:9px}
 .ch h2 .ic{width:34px;height:34px;border-radius:10px;background:var(--card2);display:inline-flex;align-items:center;justify-content:center;font-size:.95rem}
 .grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
-@media(max-width:1000px){.grid2{grid-template-columns:1fr}}
 .btn{padding:10px 18px;border-radius:12px;border:none;font-family:inherit;font-size:.84rem;font-weight:600;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .btn:active{transform:scale(.96)}
 .btn-pri{background:var(--grad);color:#fff;box-shadow:0 6px 20px -4px rgba(77,159,255,.45)}
@@ -117,21 +122,20 @@ body.sb-min .main{margin-right:82px}
 .btn-ghost:hover{border-color:var(--pri);color:var(--pri)}
 .btn-danger{background:rgba(255,107,129,.12);color:var(--red);border:1px solid rgba(255,107,129,.3)}
 .btn-sm{padding:7px 12px;font-size:.74rem;border-radius:10px}
-.ibtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:.85rem;display:inline-flex;align-items:center;justify-content:center;transition:.18s}
+.ibtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--muted);cursor:pointer;font-size:.85rem;display:inline-flex;align-items:center;justify-content:center;transition:.15s}
 .ibtn:hover{border-color:var(--pri);color:var(--pri);background:var(--priSoft);transform:translateY(-2px)}
 .ibtn.warn:hover{border-color:var(--red);color:var(--red)}
 .fg{margin-bottom:14px}
 .fg label{display:block;font-size:.76rem;color:var(--muted);margin-bottom:7px;font-weight:600}
-input[type=text],input[type=email],input[type=password],input[type=number],input[type=date],input[type=file],select,textarea{width:100%;background:var(--bg2);border:1px solid var(--bd2);border-radius:12px;color:var(--text);font-size:.88rem;padding:11px 14px;font-family:inherit;direction:rtl;transition:.2s}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=date],input[type=file],select,textarea{width:100%;background:var(--bg2);border:1px solid var(--bd2);border-radius:12px;padding:10px 13px;color:var(--text);font-family:inherit;font-size:.88rem;direction:rtl;transition:.2s}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px var(--priSoft)}
 textarea{min-height:90px;resize:vertical;line-height:1.7}
-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b94a7' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 14px center}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b94a7' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 13px center;padding-left:38px}
 select option{background:var(--bg2);color:var(--text)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:560px){.row2{grid-template-columns:1fr}}
 input[type=radio],input[type=checkbox]{accent-color:var(--pri);cursor:pointer}
 .cls-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;align-items:center}
-.cls-tab{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:20px;border:1px solid var(--bd2);background:var(--card);color:var(--muted);font-family:inherit;font-size:.82rem;cursor:pointer;transition:.18s;font-weight:600}
+.cls-tab{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:20px;border:1px solid var(--bd2);background:var(--card);color:var(--muted);font-family:inherit;font-size:.82rem;cursor:pointer;transition:.15s}
 .cls-tab:hover{color:var(--text);transform:translateY(-1px)}
 .cls-tab.on{background:var(--priSoft);border-color:var(--pri);color:var(--pri);font-weight:700}
 .cls-tab .mini-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.6}
@@ -159,7 +163,7 @@ input[type=radio],input[type=checkbox]{accent-color:var(--pri);cursor:pointer}
 .mdh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .mdh h2{font-size:1.05rem;font-weight:800;display:flex;gap:10px;align-items:center}
 .mdh .ic{width:40px;height:40px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.1rem}
-.mc{background:var(--card);border:1px solid var(--bd);width:36px;height:36px;border-radius:11px;color:var(--muted);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.mc{background:var(--card);border:1px solid var(--bd);width:36px;height:36px;border-radius:11px;color:var(--muted);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
 .mc:hover{color:var(--red);border-color:var(--red);transform:rotate(90deg)}
 .err{background:rgba(255,107,129,.1);border:1px solid rgba(255,107,129,.35);color:var(--red);border-radius:12px;padding:11px 14px;font-size:.82rem;margin-bottom:14px;display:none}
 .att-row{display:flex;align-items:center;gap:11px;padding:11px 14px;background:var(--card);border:1px solid var(--bd);border-radius:13px;margin-bottom:8px}
@@ -215,7 +219,7 @@ input[type=radio],input[type=checkbox]{accent-color:var(--pri);cursor:pointer}
 .qb-q{font-size:.9rem;margin-bottom:4px}
 .qb-ans{font-size:.82rem;color:var(--green)}
 .qb-type-badge{font-size:.7rem;font-weight:bold;padding:2px 8px;border-radius:20px}
-.file-drop{position:relative;display:block;padding:22px;border:2px dashed var(--bd2);border-radius:14px;text-align:center;color:var(--muted);font-size:.86rem;cursor:pointer;transition:.2s;background:var(--card)}
+.file-drop{position:relative;display:block;padding:22px;border:2px dashed var(--bd2);border-radius:14px;text-align:center;color:var(--muted);font-size:.86rem;cursor:pointer;transition:.2s;background:transparent}
 .file-drop:hover{border-color:var(--pri);color:var(--pri);background:var(--priSoft)}
 .file-drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .flist{margin-top:10px;display:flex;flex-direction:column;gap:7px}
@@ -235,8 +239,8 @@ input[type=radio],input[type=checkbox]{accent-color:var(--pri);cursor:pointer}
 .cmd-item:hover,.cmd-item.sel{background:var(--priSoft)}
 .cmd-item.sel .ic{background:var(--grad)}
 .cmd-empty{padding:26px;text-align:center;color:var(--muted);font-size:.82rem}
-.toasts{position:fixed;bottom:22px;left:22px;display:flex;flex-direction:column;gap:10px;z-index:500}
-.toast{display:flex;align-items:center;gap:11px;background:var(--bg2);border:1px solid var(--bd2);border-radius:15px;padding:13px 17px;font-size:.84rem;box-shadow:var(--shadow);animation:tin .3s;max-width:340px}
+.toasts{position:fixed;bottom:calc(22px + var(--safe-bottom));left:22px;display:flex;flex-direction:column;gap:10px;z-index:500}
+.toast{display:flex;align-items:center;gap:11px;background:var(--bg2);border:1px solid var(--bd2);border-radius:15px;padding:13px 17px;font-size:.84rem;box-shadow:var(--shadow);animation:tin .3s}
 @keyframes tin{from{opacity:0;transform:translateX(-24px)}}
 .toast.out{animation:tout .25s forwards}
 @keyframes tout{to{opacity:0;transform:translateX(-24px)}}
@@ -262,14 +266,71 @@ th{padding:12px 14px;text-align:right;font-size:.7rem;color:var(--muted);font-we
 td{padding:12px 14px;border-top:1px solid var(--bd);font-size:.84rem;vertical-align:middle}
 tbody tr:hover{background:var(--card2)}
 .burger{display:none}
-@media(max-width:940px){
-  .sb{transform:translateX(100%);width:266px!important}
-  body.sb-open .sb{transform:none;box-shadow:var(--shadow)}
+/* ═══════════════════════════════════════════════════════ */
+/* MOBILE / TABLET RESPONSIVE CSS */
+/* ═══════════════════════════════════════════════════════ */
+@media(max-width:1100px){
+  .container,.cont,.main,.grid2,.stats,.row2,.sp-stats,.cls-grid,.ring-wrap{
+    width:100%!important;max-width:100%!important;
+  }
+  .grid2,.stats,.row2,.sp-stats,.cls-grid{
+    grid-template-columns:1fr 1fr!important;
+  }
   .main{margin-right:0!important}
-  .burger{display:flex}
-  .cont{padding:16px}
-  .search-pill{min-width:0}
-  .search-pill span,.search-pill kbd{display:none}
+  .sb{width:220px!important}
+}
+@media(max-width:760px){
+  body{min-width:0;overflow-x:hidden}
+  .cont,.container,.content,.main,.hero,.card,.panel,.md,.form-side{
+    padding-left:12px!important;padding-right:12px!important;
+  }
+  .grid2,.stats,.row2,.sp-stats,.cls-grid{
+    grid-template-columns:1fr!important;
+  }
+  .topbar,.header-inner,.ch,.mdh,.search-pill,.hero-meta,.btn-row,.tabs,.cls-tabs,.type-tabs{
+    flex-wrap:wrap!important;gap:8px!important;
+  }
+  .btn,.btn-pri,.btn-ghost,.btn-green,.btn-blue,.btn-danger,.chip,.tt,.tab,.cls-tab{
+    width:100%!important;justify-content:center!important;
+  }
+  .search-pill span,.search-pill kbd{display:none!important}
+  .sb{
+    position:fixed!important;right:0!important;top:0!important;bottom:0!important;
+    width:78%!important;max-width:320px!important;
+    transform:translateX(105%)!important;transition:transform .25s ease!important;z-index:300!important;
+  }
+  body.sb-open .sb,body.mobile-open .sb{
+    transform:translateX(0)!important;
+  }
+  .main{
+    margin-right:0!important;width:100%!important;
+  }
+  .burger{display:flex!important}
+  .hero h1,.hero h2,.ph h1,.section-title{
+    font-size:1.5rem!important;line-height:1.5!important;
+  }
+  .item,.li,.note-item{
+    flex-direction:column!important;
+  }
+  .item .acts,.li .acts{
+    width:100%!important;
+  }
+  .toasts{
+    left:10px!important;right:10px!important;
+    bottom:calc(10px + var(--safe-bottom))!important;
+  }
+}
+@media(max-width:480px){
+  .hero,.card,.panel,.md{border-radius:14px!important}
+  .btn,.btn-pri,.btn-ghost,.btn-green,.btn-blue,.btn-danger{
+    min-height:44px!important;
+  }
+  .ph h1,.hero h1,.hero h2{font-size:1.35rem!important}
+}
+@media(pointer:coarse){
+  button,a,.ni,.btn,.tab,.cls-tab,.tt,.cmd-item{
+    min-height:44px!important;
+  }
 }
 </style>
 </head>
@@ -357,7 +418,7 @@ tbody tr:hover{background:var(--card2)}
         </div>
       </div>
       <div class="card" style="margin-top:16px">
-        <div class="ch"><h2><span class="ic">🗓️</span>نزدیک‌ترین مهلت‌های تکلیف</h2><button class="btn btn-sm btn-ghost" onclick="show('assignments')">همه تکالیف ←</button></div>
+        <div class="ch"><h2><span class="ic">🗓️</span>نزدیک‌ترین مهلت‌های تکلیف</h2><button class="btn btn-sm btn-ghost" onclick="show('assignments')">همه تکالیف</button></div>
         <div id="dashDeadlines"><div class="skel" style="height:52px"></div></div>
       </div>
     </div>
@@ -371,1197 +432,9 @@ tbody tr:hover{background:var(--card2)}
       </div>
     </div>
 
-    <div class="sec" id="sec-assignments">
-      <div class="ph"><h1>مدیریت <i>تکالیف</i> 📝</h1><p>تکلیف بدهید، پاسخ‌ها را ببینید و نمره‌دهی کنید</p></div>
-      <div class="cls-tabs" id="asgTabs"></div>
-      <div class="card">
-        <div class="ch"><h2><span class="ic">📝</span>تکالیف کلاس</h2><button class="btn btn-pri" onclick="openAddAsg()">＋ تکلیف جدید</button></div>
-        <div id="asgList"><div class="skel" style="height:80px;margin-bottom:11px"></div><div class="skel" style="height:80px"></div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-quizzes">
-      <div class="ph"><h1>سازنده <i>آزمون</i> 📋</h1><p>آزمون‌ها را در سازنده حرفه‌ای با تایمر، نمره منفی و AI بسازید</p></div>
-      <div class="cls-tabs" id="qzTabs"></div>
-      <div class="card">
-        <div class="ch"><h2><span class="ic">📋</span>آزمون‌های کلاس</h2><button class="btn btn-pri" onclick="location.href='/quizbuilder'">＋ آزمون جدید (سازنده)</button></div>
-        <div id="qzList"><div class="skel" style="height:80px;margin-bottom:11px"></div><div class="skel" style="height:80px"></div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-attendance">
-      <div class="ph"><h1>حضور و <i>غیاب</i> ✅</h1><p>ثبت حضور دانش‌آموزان و مشاهده سابقه</p></div>
-      <div class="card">
-        <div class="ch"><h2><span class="ic">🗓️</span>ثبت حضور و غیاب</h2><span style="font-size:.72rem;color:var(--muted)" id="attCount"></span></div>
-        <div class="row2" style="margin-bottom:16px">
-          <div class="fg"><label>کلاس</label><select id="attClass" onchange="loadAttStudents()"></select></div>
-          <div class="fg"><label>تاریخ</label><input type="date" id="attDate"/></div>
-        </div>
-        <div id="attStudents"><div class="skel" style="height:56px;margin-bottom:8px"></div><div class="skel" style="height:56px"></div></div>
-        <button class="btn btn-green" style="width:100%;margin-top:14px;padding:13px" onclick="saveAttendance()">💾 ذخیره حضور و غیاب</button>
-      </div>
-      <div class="card" style="margin-top:16px">
-        <div class="ch"><h2><span class="ic">📜</span>سابقه حضور و غیاب</h2></div>
-        <div class="tblwrap" id="attHistory"><div class="skel" style="height:50px"></div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-polls">
-      <div class="ph"><h1><i>نظرسنجی</i> 📊</h1><p>نظرسنجی زنده از دانش‌آموزان</p></div>
-      <div class="cls-tabs" id="pollTabs"></div>
-      <div class="card">
-        <div class="ch"><h2><span class="ic">📊</span>نظرسنجی‌ها</h2><button class="btn btn-pri" onclick="openAddPoll()">＋ نظرسنجی جدید</button></div>
-        <div id="pollList"><div class="skel" style="height:100px;margin-bottom:11px"></div><div class="skel" style="height:100px"></div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-sessions">
-      <div class="ph"><h1>کلاس <i>مجازی</i> 🎥</h1><p>جلسات آنلاین برگزار کنید — تخته هوشمند، چت زنده و آموزبات</p></div>
-      <div class="cls-tabs" id="sessTabs"></div>
-      <div class="card">
-        <div class="ch"><h2><span class="ic">🎥</span>جلسات کلاس</h2><button class="btn btn-red" onclick="openStartSession()">🔴 شروع کلاس زنده</button></div>
-        <div id="sessList"><div class="skel" style="height:80px;margin-bottom:11px"></div><div class="skel" style="height:80px"></div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-analytics">
-      <div class="ph"><h1>تحلیل و <i>آمار پیشرفته</i> 📈</h1><p>روند نمرات، مقایسه دانش‌آموزان و تحلیل سوالات</p></div>
-      <div class="cls-tabs" id="anTabs"></div>
-      <div class="card" id="riskCard" style="display:none;border-color:rgba(255,107,129,.35);margin-bottom:16px">
-        <div class="ch"><h2><span class="ic" style="background:rgba(255,107,129,.15)">⚠️</span><span style="color:var(--red)">هشدار افت تحصیلی</span></h2></div>
-        <div id="riskList"></div>
-      </div>
-      <div class="grid2">
-        <div class="card">
-          <div class="ch"><h2><span class="ic">📈</span>روند نمرات کلاس</h2><span style="font-size:.7rem;color:var(--muted)" id="trendAvg"></span></div>
-          <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
-        </div>
-        <div class="card">
-          <div class="ch"><h2><span class="ic">⚖️</span>مقایسه دانش‌آموزان</h2></div>
-          <div id="cmpList" style="max-height:260px;overflow-y:auto"><div class="skel" style="height:38px;margin-bottom:8px"></div><div class="skel" style="height:38px"></div></div>
-        </div>
-      </div>
-      <div class="card" style="margin-top:16px">
-        <div class="ch"><h2><span class="ic">🔬</span>تحلیل سوالات آزمون</h2><select id="iaQuiz" onchange="loadItemAnalysis()" style="width:220px"></select></div>
-        <div id="iaResult"><div class="empty" style="padding:24px"><span class="e-ic">🔬</span>یک آزمون انتخاب کنید</div></div>
-      </div>
-      <div class="card" style="margin-top:16px">
-        <div class="ch"><h2><span class="ic">🖨️</span>گزارش کامل کلاس</h2><button class="btn btn-green" onclick="downloadReport()">🖨️ چاپ / خروجی PDF</button></div>
-        <p style="font-size:.82rem;color:var(--muted);line-height:1.8">گزارش شامل نمرات، وضعیت تکالیف و حضور و غیاب همه دانش‌آموزان کلاس انتخابی است.</p>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-leaderboard">
-      <div class="ph"><h1>رتبه‌بندی و <i>نشان‌ها</i> 🏆</h1><p>امتیازدهی بر اساس مشارکت و عملکرد دانش‌آموزان</p></div>
-      <div class="cls-tabs" id="lbTabs"></div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="ch"><h2><span class="ic">🏆</span>جدول رتبه‌بندی</h2></div>
-        <div id="lbList"><div class="skel" style="height:56px;margin-bottom:9px"></div><div class="skel" style="height:56px"></div></div>
-      </div>
-      <div class="card">
-        <div class="ch"><h2><span class="ic">🎖️</span>نشان‌های سامانه</h2></div>
-        <div id="badgeDefs"><div class="skel" style="height:48px"></div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-bank">
-      <div class="ph"><h1>بانک سوال <i>مرکزی</i> 🗂️</h1><p>سوالات را یک‌بار بسازید، در آزمون‌های مختلف استفاده کنید</p></div>
-      <div class="card" style="margin-bottom:16px">
-        <div class="ch"><h2><span class="ic">✨</span>افزودن سوال جدید</h2></div>
-        <div class="type-tabs">
-          <button class="tt on" id="btt-mc" onclick="setBankType('mc')">🔘 چهارگزینه‌ای</button>
-          <button class="tt" id="btt-tf" onclick="setBankType('tf')">✅ درست/غلط</button>
-          <button class="tt" id="btt-fill" onclick="setBankType('fill')">✏️ جای خالی</button>
-          <button class="tt" id="btt-essay" onclick="setBankType('essay')">📝 تشریحی</button>
-        </div>
-        <div class="fg"><label>متن سوال</label><textarea id="bankText" placeholder="سوال..."></textarea></div>
-        <div id="bankMcFields">
-          <div class="fg"><label>گزینه‌ها</label>
-            <div class="row2" style="grid-template-columns:1fr 1fr;gap:8px">
-              <input type="text" id="bop1" placeholder="گزینه ۱"/><input type="text" id="bop2" placeholder="گزینه ۲"/>
-              <input type="text" id="bop3" placeholder="گزینه ۳"/><input type="text" id="bop4" placeholder="گزینه ۴"/>
-            </div>
-          </div>
-          <div class="fg"><label>پاسخ صحیح</label><select id="bankMcAns"><option value="">انتخاب...</option><option value="1">گزینه ۱</option><option value="2">گزینه ۲</option><option value="3">گزینه ۳</option><option value="4">گزینه ۴</option></select></div>
-        </div>
-        <div class="fg" id="bankSimpleAns" style="display:none"><label>پاسخ صحیح</label><input type="text" id="bankAns" placeholder="پاسخ..."/></div>
-        <div class="fg"><label>برچسب‌ها (با کاما جدا کنید)</label><input type="text" id="bankTags" placeholder="مثال: فصل۱, جبر, آسان"/></div>
-        <button class="btn btn-pri" onclick="addToBank()">➕ افزودن به بانک</button>
-      </div>
-      <div class="card">
-        <div class="ch"><h2><span class="ic">🗂️</span>سوالات بانک <span class="badge b-blue" id="bankCount">۰</span></h2>
-          <select id="bankTagFilter" onchange="renderBank()" style="width:180px"><option value="">همه برچسب‌ها</option></select>
-        </div>
-        <div id="bankList"><div class="skel" style="height:70px;margin-bottom:10px"></div><div class="skel" style="height:70px"></div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-calendar">
-      <div class="ph"><h1>تقویم <i>کلاسی</i> 📅</h1><p>تکالیف، آزمون‌ها و جلسات پیش‌رو در یک نگاه</p></div>
-      <div class="card">
-        <div class="ch">
-          <h2><span class="ic">🗓️</span><span id="calLabel">این ماه</span></h2>
-          <div style="display:flex;gap:7px">
-            <button class="btn btn-sm btn-ghost" onclick="calShift(-1)">→ قبلی</button>
-            <button class="btn btn-sm btn-ghost" onclick="calToday()">امروز</button>
-            <button class="btn btn-sm btn-ghost" onclick="calShift(1)">بعدی ←</button>
-          </div>
-        </div>
-        <div class="cal-grid" id="calGrid"><div class="skel" style="height:74px"></div></div>
-        <div style="display:flex;gap:16px;margin-top:14px;font-size:.68rem;color:var(--muted);flex-wrap:wrap">
-          <span><i class="cal-ev a" style="display:inline-block;width:10px;height:10px"></i> تکلیف</span>
-          <span><i class="cal-ev q" style="display:inline-block;width:10px;height:10px"></i> آزمون</span>
-          <span><i class="cal-ev s" style="display:inline-block;width:10px;height:10px"></i> جلسه زنده</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="sec" id="sec-students">
-      <div class="ph"><h1>مدیریت <i>دانش‌آموزان</i> 👤</h1><p>پروفایل، آمار و یادداشت خصوصی هر دانش‌آموز</p></div>
-      <div class="cls-tabs" id="stuTabs"></div>
-      <div class="card">
-        <div class="ch"><h2><span class="ic">👥</span>لیست دانش‌آموزان</h2></div>
-        <div id="stuList"><div class="skel" style="height:56px;margin-bottom:9px"></div><div class="skel" style="height:56px"></div></div>
-      </div>
-    </div>
-
   </div>
 </div>
 
-<div class="mo" id="moLesson">
-  <div class="md">
-    <div class="mdh"><h2><span class="ic">📚</span><span id="lMoTitle">درس جدید</span></h2><button class="mc" onclick="closeMo('moLesson')">✕</button></div>
-    <div class="fg"><label>عنوان درس *</label><input type="text" id="lTitle" placeholder="مثال: معادله درجه دوم"/></div>
-    <div class="fg"><label>محتوا</label><textarea id="lContent" placeholder="توضیحات، نکات و محتوای درس..."></textarea></div>
-    <div class="fg">
-      <label>فایل‌های پیوست</label>
-      <div class="file-drop">📎 کلیک کنید یا فایل را رها کنید (PDF، تصویر، ویدیو)<input type="file" multiple onchange="handleFiles(this)"/></div>
-      <div class="flist" id="lFiles"></div>
-    </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
-      <button class="btn btn-ghost" onclick="closeMo('moLesson')">انصراف</button>
-      <button class="btn btn-pri" onclick="saveLesson()">💾 ذخیره درس</button>
-    </div>
-  </div>
-</div>
-
-<div class="mo" id="moCopy">
-  <div class="md" style="max-width:400px">
-    <div class="mdh"><h2><span class="ic">📋</span>کپی به کلاس دیگر</h2><button class="mc" onclick="closeMo('moCopy')">✕</button></div>
-    <div class="fg"><label>کلاس مقصد</label><select id="copyTarget"></select></div>
-    <button class="btn btn-purple" style="width:100%" onclick="confirmCopy()">📋 کپی کن</button>
-  </div>
-</div>
-
-<div class="mo" id="moAsg">
-  <div class="md">
-    <div class="mdh"><h2><span class="ic">📝</span>تکلیف جدید</h2><button class="mc" onclick="closeMo('moAsg')">✕</button></div>
-    <div class="fg"><label>بارگذاری از الگو (اختیاری)</label><select id="asgTpl"></select></div>
-    <div class="fg"><label>عنوان تکلیف *</label><input type="text" id="aTitle" placeholder="عنوان تکلیف"/></div>
-    <div class="fg"><label>توضیحات</label><textarea id="aDesc" placeholder="شرح تکلیف..."></textarea></div>
-    <div class="fg"><label>مهلت تحویل</label><input type="date" id="aDue"/></div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap">
-      <button class="btn btn-ghost" onclick="closeMo('moAsg')">انصراف</button>
-      <button class="btn btn-purple" onclick="saveAsgTpl()">💾 ذخیره الگو</button>
-      <button class="btn btn-pri" onclick="saveAsg()">💾 ذخیره تکلیف</button>
-    </div>
-  </div>
-</div>
-
-<div class="mo" id="moSubs">
-  <div class="md">
-    <div class="mdh"><h2><span class="ic">📥</span><span id="subsTitle">پاسخ‌ها</span></h2><button class="mc" onclick="closeMo('moSubs')">✕</button></div>
-    <div id="subsList"><div class="skel" style="height:80px"></div></div>
-  </div>
-</div>
-
-<div class="mo" id="moGrade">
-  <div class="md" style="max-width:460px">
-    <div class="mdh"><h2><span class="ic">⭐</span><span id="grTitle">نمره‌دهی</span></h2><button class="mc" onclick="closeMo('moGrade')">✕</button></div>
-    <div class="fg"><label>پاسخ دانش‌آموز</label><div id="grText" style="padding:14px;background:var(--card);border:1px solid var(--bd);border-radius:12px;font-size:.86rem;line-height:1.8;color:var(--muted);max-height:180px;overflow-y:auto;white-space:pre-wrap"></div></div>
-    <div class="row2">
-      <div class="fg"><label>نمره (۰ تا ۲۰)</label><input type="number" id="grVal" min="0" max="20" step="0.25" placeholder="نمره"/></div>
-      <div class="fg"><label>بازخورد</label><input type="text" id="grFb" placeholder="نظر شما..."/></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-      <button class="btn btn-ghost" onclick="closeMo('moGrade')">بعداً</button>
-      <button class="btn btn-green" onclick="saveGrade()">💾 ثبت نمره</button>
-    </div>
-  </div>
-</div>
-
-<div class="mo" id="moPoll">
-  <div class="md">
-    <div class="mdh"><h2><span class="ic">📊</span>نظرسنجی جدید</h2><button class="mc" onclick="closeMo('moPoll')">✕</button></div>
-    <div class="fg"><label>سوال *</label><input type="text" id="pollQ" placeholder="سوال نظرسنجی..."/></div>
-    <div class="fg"><label>گزینه‌ها (هر خط یک گزینه)</label><textarea id="pollOpts" placeholder="گزینه اول&#10;گزینه دوم&#10;گزینه سوم" style="min-height:110px"></textarea></div>
-    <button class="btn btn-pri" style="width:100%" onclick="savePoll()">💾 ذخیره نظرسنجی</button>
-  </div>
-</div>
-
-<div class="mo" id="moSession">
-  <div class="md" style="max-width:440px">
-    <div class="mdh"><h2><span class="ic">🔴</span>شروع کلاس زنده</h2><button class="mc" onclick="closeMo('moSession')">✕</button></div>
-    <div class="fg"><label>عنوان جلسه</label><input type="text" id="sessTitle" placeholder="مثال: جلسه پنجم — فصل دو"/></div>
-    <div class="fg"><label>لینک ویدیو (اختیاری — Zoom/Meet)</label><input type="text" id="sessLink" placeholder="https://zoom.us/j/..." style="direction:ltr"/></div>
-    <button class="btn btn-red" style="width:100%;padding:13px" onclick="startSession()">🔴 شروع کلاس زنده</button>
-    <p style="font-size:.74rem;color:var(--muted);text-align:center;margin-top:12px">تخته هوشمند، چت زنده، آموزبات و اتاق‌های گروهی در سامانه موجود است</p>
-  </div>
-</div>
-
-<div class="mo" id="moStudent">
-  <div class="md wide">
-    <div class="mdh"><h2><span class="ic">👤</span><span id="spTitle">پروفایل دانش‌آموز</span></h2><button class="mc" onclick="closeMo('moStudent')">✕</button></div>
-    <div class="sp-stats" id="spStats"></div>
-    <div id="spBadges" style="margin-bottom:16px"></div>
-    <hr style="border:none;border-top:1px dashed var(--bd2);margin-bottom:14px">
-    <h3 style="font-size:.86rem;color:var(--muted);margin-bottom:12px">📝 یادداشت‌های خصوصی <small style="color:var(--muted2)">(فقط شما می‌بینید)</small></h3>
-    <div id="spNotes" style="margin-bottom:14px;max-height:220px;overflow-y:auto"></div>
-    <div style="display:flex;gap:9px">
-      <input type="text" id="spNewNote" placeholder="یادداشت جدید..." style="flex:1"/>
-      <button class="btn btn-pri" onclick="addNote()">افزودن</button>
-    </div>
-  </div>
-</div>
-
-<div class="mo" id="moAsk">
-  <div class="md" style="max-width:380px;text-align:center">
-    <div class="mdh" style="justify-content:center"><h2 style="justify-content:center">🤔</h2></div>
-    <p id="askMsg" style="font-size:.92rem;line-height:1.9;margin-bottom:22px">مطمئنی؟</p>
-    <div style="display:flex;gap:10px"><button class="btn btn-ghost" style="flex:1" id="askNo">انصراف</button><button class="btn btn-danger" style="flex:1" id="askOk">بله</button></div>
-  </div>
-</div>
-
-<div class="cmdk" id="cmdk">
-  <div class="cmd-box">
-    <div class="cmd-in"><span>🔍</span><input type="text" id="cmdInput" placeholder="جستجوی فرمان... (Esc بستن)"/></div>
-    <div class="cmd-list" id="cmdList"></div>
-  </div>
-</div>
-
-<div class="toasts" id="toasts"></div>
-
-<script>
-var $=function(id){return document.getElementById(id)};
-var token=localStorage.getItem('token');
-var user=JSON.parse(localStorage.getItem('user')||'null');
-if(!token||!user||user.role!=='teacher')location.href='/';
-
-var myClasses=[],activeCls={};
-var pendingFiles=[],editLessonId=null,gradeSubId=null,curAsgId=null,curAsgTitle=null;
-var asgTpls=[],calDate=new Date(),calEvents=[],copyLessonId=null;
-var bankType='mc',bankCache=[],analyticsData=null,spStudent=null,spNotesCache=[];
-
-/* ─── helpers ─── */
-function faNum(n){return Number(n||0).toLocaleString('fa-IR')}
-function escHtml(t){return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function avColor(name){var cs=['#ff6b81','#4d9fff','#2fd48c','#a78bfa','#ffc94d','#22d3ee','#ff8fa3','#7ce7b4'];var h=0;var s=String(name||'؟');for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return cs[h%cs.length]}
-function api(m,p,b){
-  return fetch(p,{method:m,headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:b?JSON.stringify(b):undefined})
-  .then(function(r){
-    if(r.status===401){localStorage.clear();location.href='/';return null}
-    return r.json();
-  });
-}
-function toast(msg,type){
-  type=type||'ok';
-  var t=document.createElement('div');t.className='toast '+type;
-  var ic=type==='ok'?'✅':type==='err'?'⚠️':'ℹ️';
-  t.innerHTML='<span class="tic">'+ic+'</span><span>'+msg+'</span>';
-  $('toasts').appendChild(t);
-  setTimeout(function(){t.classList.add('out');setTimeout(function(){t.remove()},260)},3400);
-}
-function ask(msg,ok){
-  return new Promise(function(res){
-    $('askMsg').textContent=msg;$('askOk').textContent=ok||'بله';
-    $('moAsk').classList.add('open');
-    $('askOk').onclick=function(){$('moAsk').classList.remove('open');res(true)};
-    $('askNo').onclick=function(){$('moAsk').classList.remove('open');res(false)};
-  });
-}
-function closeMo(id){$(id).classList.remove('open')}
-function logout(){localStorage.clear();location.href='/'}
-function goChat(){location.href='/chat'}
-function showErr(id,msg){var el=$(id);el.textContent=msg;el.style.display='block';setTimeout(function(){el.style.display='none'},4000)}
-function countUp(el,target){
-  var cur=0,steps=36,inc=Math.max(1,target/steps);
-  var t=setInterval(function(){cur+=inc;if(cur>=target){cur=target;clearInterval(t)}el.textContent=faNum(Math.round(cur))},26);
-}
-
-function applyTheme(t){document.documentElement.setAttribute('data-theme',t);$('themeBtn').textContent=t==='light'?'☀️':'🌙';localStorage.setItem('theme',t)}
-function toggleTheme(){applyTheme(document.documentElement.getAttribute('data-theme')==='light'?'dark':'light')}
-applyTheme(localStorage.getItem('theme')||'dark');
-
-function tick(){
-  var n=new Date();
-  if($('heroClock'))$('heroClock').textContent=n.toLocaleTimeString('fa-IR');
-  if($('heroDate'))$('heroDate').textContent=n.toLocaleDateString('fa-IR',{weekday:'long',day:'numeric',month:'long'});
-}
-setInterval(tick,1000);tick();
- $('heroName').textContent=user.name;$('sbName').textContent=user.name;
- $('sbAv').textContent=user.name[0];document.querySelector('.tb-av').textContent=user.name[0];
-
-/* ─── ناوبری ─── */
-var SEC_META={dash:['داشبورد','نمای کلی'],lessons:['درس‌ها','مدیریت محتوای آموزشی'],assignments:['تکالیف','ایجاد و نمره‌دهی'],quizzes:['آزمون‌ها','سازنده آزمون'],attendance:['حضور و غیاب','ثبت و سابقه'],polls:['نظرسنجی','نظرسنجی زنده'],sessions:['کلاس مجازی','جلسات آنلاین'],analytics:['تحلیل و آمار','آمار پیشرفته'],leaderboard:['رتبه‌بندی','نشان‌ها و امتیاز'],bank:['بانک سوال','سوالات مرکزی'],calendar:['تقویم','برنامه کلاسی'],students:['دانش‌آموزان','پروفایل و یادداشت']};
-document.querySelectorAll('.ni[data-sec]').forEach(function(ni){ni.addEventListener('click',function(){show(ni.dataset.sec)})});
-function show(name){
-  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active')});
-  var sec=$('sec-'+name);if(sec)sec.classList.add('active');
-  document.querySelectorAll('.ni').forEach(function(n){n.classList.toggle('active',n.dataset.sec===name)});
-  var m=SEC_META[name]||['',''];$('pgTitle').textContent=m[0];$('pgSub').textContent=m[1];
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(innerWidth<940)document.body.classList.remove('sb-open');
-  if(name==='dash')loadDash();
-  if(name==='lessons')initLessons();
-  if(name==='assignments')initAsg();
-  if(name==='quizzes')initQz();
-  if(name==='attendance')initAtt();
-  if(name==='polls')initPolls();
-  if(name==='sessions')initSess();
-  if(name==='analytics')initAnalytics();
-  if(name==='leaderboard')initLb();
-  if(name==='bank')initBank();
-  if(name==='calendar')initCal();
-  if(name==='students')initStu();
-}
-
-/* ─── کلاس‌ها ─── */
-function loadClasses(){
-  if(myClasses.length)return Promise.resolve(myClasses);
-  return api('GET','/api/classes').then(function(c){myClasses=c||[];return myClasses});
-}
-function renderTabs(tabsId,key,loader){
-  var el=$(tabsId);
-  if(!myClasses.length){el.innerHTML='<span style="color:var(--muted);font-size:.82rem">هنوز کلاسی به شما اختصاص داده نشده 😔</span>';return}
-  if(!activeCls[key])activeCls[key]=myClasses[0].id;
-  el.innerHTML=myClasses.map(function(c){
-    return '<button class="cls-tab '+(activeCls[key]===c.id?'on':'')+'" data-id="'+c.id+'" data-key="'+key+'" data-loader="'+loader+'"><span class="mini-dot"></span>'+escHtml(c.name)+'</button>';
-  }).join('');
-  window[loader]();
-}
-document.addEventListener('click',function(e){
-  var t=e.target.closest('.cls-tab');if(!t)return;
-  activeCls[t.dataset.key]=t.dataset.id;
-  renderTabs(t.parentElement.id,t.dataset.key,t.dataset.loader);
-});
-
-/* ═══ داشبورد ═══ */
-function loadDash(){
-  loadClasses().then(function(){
-    return api('GET','/api/teacher/students');
-  }).then(function(students){
-    students=students||[];
-    countUp($('dStu'),students.length);
-    countUp($('dCls'),myClasses.length);
-    var promises=myClasses.map(function(c){return api('GET','/api/lessons?classId='+c.id).catch(function(){return []})});
-    return Promise.all(promises).then(function(allL){
-      var les=[].concat.apply([],allL).filter(Boolean);
-      countUp($('dLes'),les.length);
-      var p2=myClasses.map(function(c){return api('GET','/api/quizzes?classId='+c.id).catch(function(){return []})});
-      return Promise.all(p2).then(function(allQ){
-        var qz=[].concat.apply([],allQ).filter(Boolean);
-        countUp($('dQz'),qz.length);
-        return api('GET','/api/teacher/calendar');
-      });
-    });
-  }).then(function(){
-  }).catch(function(){});
-  /* جلسات فعال و مهلت‌ها */
-  loadClasses().then(function(){
-    var p1=myClasses.map(function(c){return api('GET','/api/sessions?classId='+c.id).catch(function(){return []})});
-    var p2=myClasses.map(function(c){return api('GET','/api/assignments?classId='+c.id).catch(function(){return []})});
-    return Promise.all([Promise.all(p1),Promise.all(p2)]);
-  }).then(function(res){
-    var sess=[].concat.apply([],res[0]).filter(Boolean);
-    var asg=[].concat.apply([],res[1]).filter(Boolean);
-    var live=sess.filter(function(s){return s.active});
-    $('dashSessions').innerHTML=live.length?live.map(function(s){
-      var cls=myClasses.find(function(c){return c.id===s.classId});
-      return '<div class="item" style="border-color:rgba(255,107,129,.35);background:rgba(255,107,129,.04)">'+
-      '<div class="ic" style="background:rgba(255,107,129,.15)">🔴</div>'+
-      '<div class="bd"><b>'+escHtml(s.title)+'</b>'+
-      '<div class="ft"><span>🏫 '+escHtml(cls?cls.name:'')+'</span><span>🕐 '+new Date(s.startedAt).toLocaleString('fa-IR')+'</span></div></div>'+
-      '<div class="acts"><button class="btn btn-sm btn-red" onclick="location.href=\'/classroom?id='+s.id+'\'">🎥 ورود</button></div></div>';
-    }).join(''):'<div class="empty"><span class="e-ic">😴</span>جلسه فعالی ندارید — یکی شروع کنید!</div>';
-    var upcoming=asg.filter(function(a){return a.dueDate}).sort(function(a,b){return new Date(a.dueDate)-new Date(b.dueDate)}).slice(0,5);
-    $('dashDeadlines').innerHTML=upcoming.length?upcoming.map(function(a){
-      var cls=myClasses.find(function(c){return c.id===a.classId});
-      var days=Math.ceil((new Date(a.dueDate)-Date.now())/86400000);
-      var cls2=days<0?'b-red':days<3?'b-yel':'b-off';
-      return '<div class="item"><div class="ic" style="background:rgba(255,201,77,.13)">📝</div>'+
-      '<div class="bd"><b>'+escHtml(a.title)+'</b>'+
-      '<div class="ft"><span>🏫 '+escHtml(cls?cls.name:'')+'</span><span>⏰ '+new Date(a.dueDate).toLocaleDateString('fa-IR')+'</span>'+
-      '<span class="badge '+cls2+'">'+(days<0?'گذشته':faNum(days)+' روز مانده')+'</span></div></div></div>';
-    }).join(''):'<div class="empty"><span class="e-ic">🎉</span>مهلت نزدیکی وجود ندارد</div>';
-  }).catch(function(){});
-}
-
-/* ═══ درس‌ها ═══ */
-function initLessons(){loadClasses().then(function(){renderTabs('lessonTabs','lessons','loadLessons')})}
-function loadLessons(){
-  var cid=activeCls.lessons;if(!cid)return;
-  api('GET','/api/lessons?classId='+cid).then(function(list){
-    list=list||[];
-    var el=$('lessonList');
-    if(!list.length){el.innerHTML='<div class="empty"><span class="e-ic">📚</span>هنوز درسی ندارید — اولین درس را بسازید!</div>';return}
-    el.innerHTML=list.map(function(l){
-      var filesHtml='';
-      if(l.files&&l.files.length){
-        filesHtml='<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:9px">'+l.files.map(function(f){
-          return '<a href="'+escHtml(f.url)+'" target="_blank" class="btn btn-sm btn-ghost">📎 '+escHtml(f.name)+'</a>';
-        }).join('')+'</div>';
-      }
-      return '<div class="item">'+
-      '<div class="ic" style="background:var(--priSoft)">📘</div>'+
-      '<div class="bd"><b>'+escHtml(l.title)+'</b>'+
-      (l.content?'<p>'+escHtml(l.content.slice(0,180))+(l.content.length>180?'…':'')+'</p>':'')+
-      '<div class="ft"><span>🕐 '+new Date(l.createdAt).toLocaleDateString('fa-IR')+'</span>'+
-      ((l.files||[]).length?'<span>📎 '+faNum(l.files.length)+' فایل</span>':'')+'</div>'+filesHtml+'</div>'+
-      '<div class="acts">'+
-      '<button class="ibtn" title="کپی به کلاس دیگر" data-act="copy" data-id="'+l.id+'">📋</button>'+
-      '<button class="ibtn" title="ویرایش" data-act="edit" data-id="'+l.id+'">✏️</button>'+
-      '<button class="ibtn warn" title="حذف" data-act="del" data-id="'+l.id+'">🗑️</button></div></div>';
-    }).join('');
-  });
-}
- $('lessonList').addEventListener('click',function(e){
-  var b=e.target.closest('[data-act]');if(!b)return;
-  var id=b.dataset.id;
-  if(b.dataset.act==='edit')openEditLesson(id);
-  if(b.dataset.act==='copy')openCopy(id);
-  if(b.dataset.act==='del'){
-    ask('این درس حذف شود؟').then(function(yes){
-      if(!yes)return;
-      api('DELETE','/api/lessons/'+id).then(function(){toast('🗑️ درس حذف شد');loadLessons()});
-    });
-  }
-});
-function openAddLesson(){
-  editLessonId=null;$('lMoTitle').textContent='درس جدید';
-  $('lTitle').value='';$('lContent').value='';
-  pendingFiles=[];renderFiles();$('moLesson').classList.add('open');
-}
-function openEditLesson(id){
-  api('GET','/api/lessons?classId='+activeCls.lessons).then(function(list){
-    var l=(list||[]).find(function(x){return x.id===id});if(!l)return;
-    editLessonId=id;$('lMoTitle').textContent='ویرایش درس';
-    $('lTitle').value=l.title;$('lContent').value=l.content||'';
-    pendingFiles=(l.files||[]).map(function(f){return {name:f.name,url:f.url,type:f.type}});
-    renderFiles();$('moLesson').classList.add('open');
-  });
-}
-function handleFiles(input){
-  [].forEach.call(input.files,function(f){
-    if(f.size>25*1024*1024){toast('⚠️ '+f.name+' بیش از ۲۵MB است','err');return}
-    var item={name:f.name,data:null,type:f.type,url:null,uploading:true};
-    pendingFiles.push(item);renderFiles();
-    var rd=new FileReader();
-    rd.onload=function(e){
-      item.data=e.target.result;
-      api('POST','/api/upload',{name:f.name,data:e.target.result,type:f.type}).then(function(up){
-        if(up&&up.url){item.url=up.url;item.uploading=false}
-        else item.failed=true;
-        renderFiles();
-      }).catch(function(){item.failed=true;item.uploading=false;renderFiles()});
-    };
-    rd.readAsDataURL(f);
-  });
-  input.value='';
-}
-function renderFiles(){
-  $('lFiles').innerHTML=pendingFiles.map(function(f,i){
-    var st=f.uploading?['⏳ آپلود...','wait']:f.failed?['❌ خطا','err']:['✅ آماده','ok'];
-    return '<div class="fitem">📎 <span style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escHtml(f.name)+'</span>'+
-    '<span class="fstat '+st[1]+'">'+st[0]+'</span>'+
-    '<button class="rm" onclick="pendingFiles.splice('+i+',1);renderFiles()">✕</button></div>';
-  }).join('');
-}
-function saveLesson(){
-  var title=$('lTitle').value.trim();
-  if(!title)return toast('عنوان درس الزامی است','err');
-  if(pendingFiles.some(function(f){return f.uploading}))return toast('صبر کنید تا آپلود تمام شود','err');
-  var files=pendingFiles.filter(function(f){return f.url}).map(function(f){return {name:f.name,url:f.url,type:f.type}});
-  var body={classId:activeCls.lessons,title:title,content:$('lContent').value,files:files};
-  var p=editLessonId?api('PATCH','/api/lessons/'+editLessonId,body):api('POST','/api/lessons',body);
-  p.then(function(res){
-    if(res&&res.error)return toast(res.error,'err');
-    closeMo('moLesson');
-    toast(editLessonId?'✅ درس بروزرسانی شد':'✅ درس منتشر شد');
-    loadLessons();
-  });
-}
-function openCopy(id){
-  copyLessonId=id;
-  var others=myClasses.filter(function(c){return c.id!==activeCls.lessons});
-  $('copyTarget').innerHTML=others.length?others.map(function(c){return '<option value="'+c.id+'">'+escHtml(c.name)+'</option>'}).join(''):'<option value="">کلاس دیگری ندارید</option>';
-  $('moCopy').classList.add('open');
-}
-function confirmCopy(){
-  var target=$('copyTarget').value;
-  if(!target)return toast('یک کلاس مقصد انتخاب کنید','err');
-  api('POST','/api/lessons/'+copyLessonId+'/copy',{targetClassId:target}).then(function(res){
-    if(res&&res.error)return toast(res.error,'err');
-    closeMo('moCopy');toast('✅ درس کپی شد');
-  });
-}
-
-/* ═══ تکالیف ═══ */
-function initAsg(){loadClasses().then(function(){renderTabs('asgTabs','assignments','loadAsg')})}
-function loadAsg(){
-  var cid=activeCls.assignments;if(!cid)return;
-  Promise.all([api('GET','/api/assignments?classId='+cid)]).then(function(res){
-    var list=res[0]||[];
-    var el=$('asgList');
-    if(!list.length){el.innerHTML='<div class="empty"><span class="e-ic">📝</span>هنوز تکلیفی ندارید</div>';return}
-    el.innerHTML=list.map(function(a){
-      var days=a.dueDate?Math.ceil((new Date(a.dueDate)-Date.now())/86400000):null;
-      return '<div class="item">'+
-      '<div class="ic" style="background:rgba(255,201,77,.13)">📝</div>'+
-      '<div class="bd"><b>'+escHtml(a.title)+'</b>'+
-      (a.description?'<p>'+escHtml(a.description.slice(0,160))+'</p>':'')+
-      '<div class="ft"><span>⏰ مهلت: '+(a.dueDate?new Date(a.dueDate).toLocaleDateString('fa-IR'):'—')+'</span>'+
-      (days!==null?'<span class="badge '+(days<0?'b-red':days<3?'b-yel':'b-off')+'">'+(days<0?'مهلت گذشته':faNum(days)+' روز مانده')+'</span>':'')+
-      '</div></div>'+
-      '<div class="acts">'+
-      '<button class="btn btn-sm btn-pri" data-act="subs" data-id="'+a.id+'" data-title="'+escHtml(a.title)+'">📋 پاسخ‌ها</button>'+
-      '<button class="ibtn warn" title="حذف" data-act="del" data-id="'+a.id+'">🗑️</button></div></div>';
-    }).join('');
-  });
-}
- $('asgList').addEventListener('click',function(e){
-  var b=e.target.closest('[data-act]');if(!b)return;
-  if(b.dataset.act==='subs')openSubs(b.dataset.id,b.dataset.title);
-  if(b.dataset.act==='del'){
-    ask('این تکلیف و پاسخ‌هایش حذف شود؟').then(function(yes){
-      if(!yes)return;
-      api('DELETE','/api/assignments/'+b.dataset.id).then(function(){toast('🗑️ حذف شد');loadAsg()});
-    });
-  }
-});
-function openAddAsg(){
-  $('aTitle').value='';$('aDesc').value='';$('aDue').value='';
-  api('GET','/api/templates/assignments').then(function(tpls){
-    asgTpls=tpls||[];
-    $('asgTpl').innerHTML='<option value="">— بدون الگو —</option>'+asgTpls.map(function(t){
-      return '<option value="'+t.id+'">'+escHtml(t.title)+'</option>';
-    }).join('');
-    $('moAsg').classList.add('open');
-  });
-}
- $('asgTpl').addEventListener('change',function(){
-  var t=asgTpls.find(function(x){return x.id===$('asgTpl').value});if(!t)return;
-  $('aTitle').value=t.title||'';$('aDesc').value=t.description||'';
-});
-function saveAsgTpl(){
-  var title=$('aTitle').value.trim();
-  if(!title)return toast('ابتدا عنوان را وارد کنید','err');
-  api('POST','/api/templates/assignments',{title:title,description:$('aDesc').value}).then(function(){
-    toast('✅ الگو ذخیره شد');
-  });
-}
-function saveAsg(){
-  var title=$('aTitle').value.trim();
-  if(!title)return toast('عنوان الزامی است','err');
-  api('POST','/api/assignments',{classId:activeCls.assignments,title:title,description:$('aDesc').value,dueDate:$('aDue').value}).then(function(){
-    closeMo('moAsg');toast('✅ تکلیف ایجاد شد');loadAsg();
-  });
-}
-function openSubs(id,title){
-  curAsgId=id;curAsgTitle=title;
-  $('subsTitle').textContent='پاسخ‌ها: '+title;
-  api('GET','/api/assignments/'+id+'/submissions').then(function(subs){
-    renderSubs(subs||[],false);
-  });
-}
-function renderSubs(subs,isQuiz){
-  var el=$('subsList');
-  if(!subs.length){el.innerHTML='<div class="empty"><span class="e-ic">📭</span>هنوز کسی پاسخ نداده</div>';$('moSubs').classList.add('open');return}
-  el.innerHTML=subs.map(function(s){
-    return '<div class="item">'+
-    '<div class="av" style="background:'+avColor(s.studentName)+'">'+escHtml((s.studentName||'؟')[0])+'</div>'+
-    '<div class="bd"><b>'+escHtml(s.studentName)+'</b>'+
-    (s.text?'<p>'+escHtml(String(s.text).slice(0,220))+'</p>':'')+
-    '<div class="ft"><span>📤 '+new Date(s.submittedAt).toLocaleString('fa-IR')+'</span></div>'+
-    (s.feedback?'<div style="font-size:.78rem;color:var(--green);margin-top:7px">💬 بازخورد: '+escHtml(s.feedback)+'</div>':'')+
-    '</div>'+
-    '<div class="acts" style="flex-direction:column">'+
-    (s.grade!==null&&s.grade!==undefined?'<span class="badge '+(s.score!==undefined&&isQuiz?(s.score>=70?'b-on':s.score>=40?'b-yel':'b-red'):'b-on')+'">⭐ '+faNum(s.grade)+'</span>':'<span class="badge b-yel">در انتظار</span>')+
-    (isQuiz?'':'<button class="btn btn-sm btn-pri" data-sub="'+s.id+'" data-name="'+escHtml(s.studentName)+'" data-text="'+escHtml(String(s.text||''))+'">نمره‌دهی</button>')+
-    '</div></div>';
-  }).join('');
-  $('moSubs').classList.add('open');
-}
- $('subsList').addEventListener('click',function(e){
-  var b=e.target.closest('[data-sub]');if(!b)return;
-  gradeSubId=b.dataset.sub;
-  $('grTitle').textContent='نمره‌دهی: '+b.dataset.name;
-  $('grText').textContent=b.dataset.text||'(بدون متن)';
-  $('grVal').value='';$('grFb').value='';
-  $('moGrade').classList.add('open');
-});
-function saveGrade(){
-  var g=$('grVal').value;
-  if(g==='')return toast('نمره را وارد کنید','err');
-  api('PATCH','/api/submissions/'+gradeSubId+'/grade',{grade:parseFloat(g),feedback:$('grFb').value}).then(function(){
-    closeMo('moGrade');toast('⭐ نمره ثبت شد');
-    openSubs(curAsgId,curAsgTitle);
-  });
-}
-
-/* ═══ آزمون‌ها ═══ */
-function initQz(){loadClasses().then(function(){renderTabs('qzTabs','quizzes','loadQz')})}
-function loadQz(){
-  var cid=activeCls.quizzes;if(!cid)return;
-  api('GET','/api/quizzes?classId='+cid).then(function(list){
-    list=list||[];
-    var el=$('qzList');
-    if(!list.length||list.error){el.innerHTML='<div class="empty"><span class="e-ic">📋</span>هنوز آزمونی ندارید</div>';return}
-    el.innerHTML=list.map(function(q){
-      return '<div class="item">'+
-      '<div class="ic" style="background:rgba(167,139,250,.13)">📋</div>'+
-      '<div class="bd"><b>'+escHtml(q.title)+'</b>'+
-      '<div class="ft"><span>❓ '+faNum((q.questions&&q.questions.length)||0)+' سوال</span>'+
-      '<span>🕐 '+new Date(q.createdAt).toLocaleDateString('fa-IR')+'</span>'+
-      (q.timeLimit?'<span class="badge b-blue">⏱ '+faNum(q.timeLimit)+' دقیقه</span>':'')+
-      '</div></div>'+
-      '<div class="acts">'+
-      '<button class="btn btn-sm btn-pri" data-act="res" data-id="'+q.id+'" data-title="'+escHtml(q.title)+'">📊 نتایج</button>'+
-      '<button class="ibtn" title="ویرایش در سازنده" onclick="location.href=\'/quizbuilder?id='+q.id+'\'">✏️</button>'+
-      '<button class="ibtn warn" title="حذف" data-act="del" data-id="'+q.id+'">🗑️</button></div></div>';
-    }).join('');
-  });
-}
- $('qzList').addEventListener('click',function(e){
-  var b=e.target.closest('[data-act]');if(!b)return;
-  if(b.dataset.act==='res')openQuizSubs(b.dataset.id,b.dataset.title);
-  if(b.dataset.act==='del'){
-    ask('این آزمون و نتایجش حذف شود؟').then(function(yes){
-      if(!yes)return;
-      api('DELETE','/api/quizzes/'+b.dataset.id).then(function(){toast('🗑️ حذف شد');loadQz()});
-    });
-  }
-});
-function openQuizSubs(id,title){
-  $('subsTitle').textContent='نتایج آزمون: '+title;
-  api('GET','/api/quizzes/'+id+'/submissions').then(function(subs){
-    renderSubs(subs||[],true);
-  });
-}
-
-/* ═══ حضور و غیاب ═══ */
-function initAtt(){
-  loadClasses().then(function(){
-    $('attClass').innerHTML=myClasses.map(function(c){return '<option value="'+c.id+'">'+escHtml(c.name)+'</option>'}).join('');
-    $('attDate').value=new Date().toISOString().slice(0,10);
-    if(myClasses.length)loadAttStudents();
-  });
-}
-function loadAttStudents(){
-  var cid=$('attClass').value,date=$('attDate').value;
-  var cls=myClasses.find(function(c){return c.id===cid});
-  if(!cls){$('attStudents').innerHTML='';return}
-  var ids=cls.studentIds||[];
-  if(!ids.length){$('attStudents').innerHTML='<div class="empty"><span class="e-ic">👥</span>این کلاس دانش‌آموز ندارد</div>';return}
-  $('attStudents').innerHTML='<div class="skel" style="height:56px;margin-bottom:8px"></div>';
-  Promise.all([
-    api('GET','/api/attendance?classId='+cid+'&date='+date),
-    api('GET','/api/teacher/students')
-  ]).then(function(res){
-    var existing=res[0],students=res[1]||[];
-    var nameMap={};
-    students.forEach(function(u){nameMap[u.id]=u.name});
-    $('attCount').textContent=faNum(ids.length)+' دانش‌آموز';
-    var rec=(existing&&existing[0]&&existing[0].records)||[];
-    $('attStudents').innerHTML=ids.map(function(sid){
-      var r=rec.find(function(x){return x.studentId===sid});
-      var st=r?r.status:'present';
-      var nm=nameMap[sid]||sid;
-      return '<div class="att-row">'+
-      '<div class="av" style="width:34px;height:34px;font-size:.74rem;background:'+avColor(nm)+'">'+escHtml((nm||'?')[0])+'</div>'+
-      '<b style="font-size:.86rem">'+escHtml(nm)+'</b>'+
-      '<div class="att-opts">'+
-      '<label class="att-opt '+(st==='present'?'sel-p':'')+'"><input type="radio" name="att-'+sid+'" value="present" '+(st==='present'?'checked':'')+' style="display:none"/>✅ حاضر</label>'+
-      '<label class="att-opt '+(st==='absent'?'sel-a':'')+'"><input type="radio" name="att-'+sid+'" value="absent" '+(st==='absent'?'checked':'')+' style="display:none"/>❌ غایب</label>'+
-      '<label class="att-opt '+(st==='late'?'sel-l':'')+'"><input type="radio" name="att-'+sid+'" value="late" '+(st==='late'?'checked':'')+' style="display:none"/>🕐 تاخیر</label>'+
-      '</div></div>';
-    }).join('');
-    $('attStudents').querySelectorAll('.att-opt input').forEach(function(inp){
-      inp.addEventListener('change',function(){
-        var opts=inp.closest('.att-opts').querySelectorAll('.att-opt');
-        opts.forEach(function(l){l.className='att-opt'});
-        inp.closest('.att-opt').className='att-opt '+(inp.value==='present'?'sel-p':inp.value==='absent'?'sel-a':'sel-l');
-      });
-    });
-    api('GET','/api/attendance?classId='+cid).then(function(hist){
-      hist=hist||[];
-      var hel=$('attHistory');
-      if(!hist.length){hel.innerHTML='<div class="empty"><span class="e-ic">📜</span>سابقه‌ای ندارید</div>';return}
-      hel.innerHTML='<table><thead><tr><th>تاریخ</th><th>حاضر</th><th>غایب</th><th>تاخیر</th></tr></thead><tbody>'+
-      hist.map(function(a){
-        var p=a.records.filter(function(r){return r.status==='present'}).length;
-        var ab=a.records.filter(function(r){return r.status==='absent'}).length;
-        var la=a.records.filter(function(r){return r.status==='late'}).length;
-        return '<tr><td>'+a.date+'</td><td><span class="badge b-on">'+faNum(p)+'</span></td><td><span class="badge b-red">'+faNum(ab)+'</span></td><td><span class="badge b-yel">'+faNum(la)+'</span></td></tr>';
-      }).join('')+'</tbody></table>';
-    });
-  });
-}
-function saveAttendance(){
-  var cid=$('attClass').value,date=$('attDate').value;
-  var cls=myClasses.find(function(c){return c.id===cid});if(!cls)return;
-  var records=(cls.studentIds||[]).map(function(sid){
-    var sel=document.querySelector('input[name="att-'+sid+'"]:checked');
-    return {studentId:sid,status:sel?sel.value:'present'};
-  });
-  api('POST','/api/attendance',{classId:cid,date:date,records:records}).then(function(){
-    toast('✅ حضور و غیاب ذخیره شد');loadAttStudents();
-  });
-}
-
-/* ═══ نظرسنجی ═══ */
-function initPolls(){loadClasses().then(function(){renderTabs('pollTabs','polls','loadPolls')})}
-function loadPolls(){
-  var cid=activeCls.polls;if(!cid)return;
-  api('GET','/api/polls?classId='+cid).then(function(list){
-    list=list||[];
-    var el=$('pollList');
-    if(!list.length){el.innerHTML='<div class="empty"><span class="e-ic">📊</span>نظرسنجی ندارید</div>';return}
-    el.innerHTML=list.map(function(p){
-      var total=(p.results||[]).reduce(function(a,x){return a+x.count},0);
-      return '<div class="card" style="background:var(--bg2);margin-bottom:12px">'+
-      '<div style="font-size:.98rem;font-weight:800;margin-bottom:14px">'+escHtml(p.question)+'</div>'+
-      p.options.map(function(o,i){
-        var cnt=(p.results&&p.results[i])?p.results[i].count:0;
-        var pct=total?Math.round(cnt/total*100):0;
-        return '<div class="poll-opt"><span class="lb">'+escHtml(o)+'</span>'+
-        '<div class="pbar"><div class="pfill" style="width:'+pct+'%"></div></div>'+
-        '<span class="pcnt">'+faNum(cnt)+' ('+faNum(pct)+'٪)</span></div>';
-      }).join('')+
-      '<div style="font-size:.72rem;color:var(--muted);margin-top:10px">🗳️ '+faNum(total)+' رأی ثبت شده</div></div>';
-    }).join('');
-  });
-}
-function openAddPoll(){$('pollQ').value='';$('pollOpts').value='';$('moPoll').classList.add('open')}
-function savePoll(){
-  var q=$('pollQ').value.trim();
-  var opts=$('pollOpts').value.trim().split('\n').filter(function(x){return x.trim()});
-  if(!q||opts.length<2)return toast('سوال و حداقل ۲ گزینه لازم است','err');
-  api('POST','/api/polls',{classId:activeCls.polls,question:q,options:opts}).then(function(){
-    closeMo('moPoll');toast('✅ نظرسنجی ایجاد شد');loadPolls();
-  });
-}
-
-/* ═══ جلسات ═══ */
-function initSess(){loadClasses().then(function(){renderTabs('sessTabs','sessions','loadSess')})}
-function loadSess(){
-  var cid=activeCls.sessions;if(!cid)return;
-  api('GET','/api/sessions?classId='+cid).then(function(list){
-    list=list||[];
-    var el=$('sessList');
-    if(!list.length){el.innerHTML='<div class="empty"><span class="e-ic">🎥</span>هنوز جلسه‌ای برگزار نشده</div>';return}
-    el.innerHTML=list.map(function(s){
-      return '<div class="item"'+(s.active?' style="border-color:rgba(255,107,129,.35);background:rgba(255,107,129,.04)"':'')+'>'+
-      '<div class="ic" style="background:'+(s.active?'rgba(255,107,129,.15)':'var(--card2)')+'">'+(s.active?'🔴':'🎥')+'</div>'+
-      '<div class="bd"><b>'+escHtml(s.title)+'</b>'+
-      '<div class="ft"><span>🕐 '+new Date(s.startedAt).toLocaleString('fa-IR')+'</span>'+
-      (s.active?'<span class="badge b-red">زنده</span>':'<span class="badge b-off">پایان‌یافته</span>')+'</div></div>'+
-      '<div class="acts">'+
-      (s.active?'<button class="btn btn-sm btn-red" onclick="location.href=\'/classroom?id='+s.id+'\'">🎥 ورود به کلاس</button>':'')+
-      (s.meetLink?'<a href="'+escHtml(s.meetLink)+'" target="_blank" class="btn btn-sm btn-ghost">📹 ویدیو</a>':'')+
-      '</div></div>';
-    }).join('');
-  });
-}
-function openStartSession(){$('sessTitle').value='';$('sessLink').value='';$('moSession').classList.add('open')}
-function startSession(){
-  var title=$('sessTitle').value.trim()||'جلسه کلاسی';
-  api('POST','/api/sessions',{classId:activeCls.sessions,title:title,meetLink:$('sessLink').value.trim()}).then(function(data){
-    if(data&&data.id){closeMo('moSession');location.href='/classroom?id='+data.id}
-    else toast('خطا در ایجاد جلسه','err');
-  });
-}
-
-/* ═══ تحلیل ═══ */
-function initAnalytics(){loadClasses().then(function(){renderTabs('anTabs','analytics','loadAnalytics')})}
-function loadAnalytics(){
-  var cid=activeCls.analytics;if(!cid)return;
-  api('GET','/api/classes/'+cid+'/analytics').then(function(data){
-    if(!data||data.error){
-      $('riskCard').style.display='none';
-      $('trendAvg').textContent='';
-      drawTrend([]);
-      $('cmpList').innerHTML='<div class="empty">داده‌ای موجود نیست</div>';
-      return;
-    }
-    analyticsData=data;
-    var risk=data.atRisk||[];
-    $('riskCard').style.display=risk.length?'block':'none';
-    $('riskList').innerHTML=risk.map(function(r){
-      return '<div class="risk-item">'+
-      '<div class="av" style="background:'+avColor(r.name)+'">'+escHtml(r.name[0])+'</div>'+
-      '<div style="flex:1"><b style="font-size:.86rem">'+escHtml(r.name)+'</b>'+
-      '<div style="font-size:.72rem;color:var(--muted)">'+escHtml(r.reason||'افت نمرات اخیر')+'</div></div>'+
-      '<span class="badge b-red">میانگین '+faNum(r.avg)+'٪</span></div>';
-    }).join('');
-    drawTrend(data.trend||[]);
-    var stu=data.students||[];
-    $('cmpList').innerHTML=stu.length?stu.map(function(s){
-      var pct=s.avg||0;
-      var col=pct>=70?'var(--green)':pct>=40?'var(--yellow)':'var(--red)';
-      return '<div class="cmp-row">'+
-      '<div class="av" style="width:30px;height:30px;font-size:.68rem;background:'+avColor(s.name)+'">'+escHtml(s.name[0])+'</div>'+
-      '<span style="font-size:.82rem;min-width:90px">'+escHtml(s.name)+'</span>'+
-      '<div class="pbar" style="flex:1"><div class="pfill" style="width:'+pct+'%;background:'+col+'"></div></div>'+
-      '<b style="font-size:.8rem;min-width:44px;text-align:left">'+faNum(pct)+'٪</b></div>';
-    }).join(''):'<div class="empty">داده‌ای موجود نیست</div>';
-    api('GET','/api/quizzes?classId='+cid).then(function(qzList){
-      qzList=qzList||[];
-      $('iaQuiz').innerHTML='<option value="">یک آزمون انتخاب کنید</option>'+qzList.map(function(q){
-        return '<option value="'+q.id+'">'+escHtml(q.title)+'</option>';
-      }).join('');
-    });
-  });
-}
-function drawTrend(trend){
-  var cv=$('trendChart');if(!cv)return;
-  var dpr=devicePixelRatio||1,W=cv.parentElement.clientWidth||500,H=220;
-  cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';
-  var c=cv.getContext('2d');c.scale(dpr,dpr);c.clearRect(0,0,W,H);
-  if(!trend.length){
-    c.fillStyle='rgba(139,148,167,.7)';c.font='13px Vazirmatn';c.textAlign='center';
-    c.fillText('داده‌ای موجود نیست',W/2,H/2);return;
-  }
-  $('trendAvg').textContent='میانگین: '+faNum(Math.round(trend.reduce(function(a,t){return a+t.avg},0)/trend.length))+'٪';
-  var pad=36;
-  c.strokeStyle='rgba(255,255,255,.05)';
-  for(var i=0;i<=4;i++){
-    var y=H-30-(H-56)*i/4;
-    c.beginPath();c.moveTo(pad-14,y);c.lineTo(W-pad+14,y);c.stroke();
-    c.fillStyle='rgba(139,148,167,.7)';c.font='10px Vazirmatn';c.textAlign='right';
-    c.fillText(faNum(i*25)+'٪',pad-18,y+3);
-  }
-  var n=trend.length,gap=n>1?(W-pad*2)/(n-1):0;
-  var pts=trend.map(function(t,i){return {x:n>1?W-pad-gap*i:W/2,y:H-30-(t.avg/100)*(H-56)}});
-  var grad=c.createLinearGradient(0,0,0,H);
-  grad.addColorStop(0,'rgba(77,159,255,.35)');grad.addColorStop(1,'rgba(77,159,255,0)');
-  c.beginPath();c.moveTo(pts[0].x,H-30);
-  pts.forEach(function(p){c.lineTo(p.x,p.y)});
-  c.lineTo(pts[pts.length-1].x,H-30);c.closePath();c.fillStyle=grad;c.fill();
-  c.beginPath();pts.forEach(function(p,i){i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y)});
-  c.strokeStyle='#4d9fff';c.lineWidth=2.5;c.lineJoin='round';c.stroke();
-  pts.forEach(function(p,i){
-    c.beginPath();c.arc(p.x,p.y,4.5,0,7);c.fillStyle='#4d9fff';c.fill();
-    c.beginPath();c.arc(p.x,p.y,2,0,7);c.fillStyle='#fff';c.fill();
-    c.fillStyle='rgba(139,148,167,.85)';c.font='10px Vazirmatn';c.textAlign='center';
-    c.fillText(trend[i].label||trend[i].title||('#'+(i+1)),p.x,H-10);
-    c.fillStyle='#7cc0ff';c.font='bold 9px Vazirmatn';
-    c.fillText(faNum(trend[i].avg)+'٪',p.x,p.y-10);
-  });
-}
-function loadItemAnalysis(){
-  var qid=$('iaQuiz').value;
-  if(!qid){$('iaResult').innerHTML='<div class="empty" style="padding:24px"><span class="e-ic">🔬</span>یک آزمون انتخاب کنید</div>';return}
-  api('GET','/api/quizzes/'+qid+'/analysis').then(function(data){
-    if(!data||data.error){$('iaResult').innerHTML='<div class="empty" style="padding:24px"><span class="e-ic">📭</span>'+(data&&data.error?escHtml(data.error):'داده‌ای موجود نیست')+'</div>';return}
-    var items=data.items||[];
-    $('iaResult').innerHTML=items.map(function(it,i){
-      var pct=Math.round(it.correctPct!==undefined?it.correctPct:it.correct/(it.total||1)*100);
-      var diff=pct>=70?'آسان':pct>=40?'متوسط':'سخت';
-      var dcol=pct>=70?'var(--green)':pct>=40?'var(--yellow)':'var(--red)';
-      return '<div class="ia-row">'+
-      '<div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap">'+
-      '<b style="font-size:.84rem">سوال '+faNum(i+1)+' — '+escHtml(String(it.question||'').slice(0,70))+'</b>'+
-      '<span class="badge" style="color:'+dcol+';border:1px solid '+dcol+';background:transparent">'+diff+'</span></div>'+
-      '<div class="ia-bar">'+
-      '<div class="ia-seg" style="width:'+pct+'%;background:'+dcol+'"></div>'+
-      '<div class="ia-seg" style="width:'+(100-pct)+'%;background:rgba(255,107,129,.25)"></div></div>'+
-      '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:.7rem;color:var(--muted)">'+
-      '<span>✅ '+faNum(it.correct||0)+' از '+faNum(it.total||0)+'</span>'+
-      '<b style="color:'+dcol+'">'+faNum(pct)+'٪ موفقیت</b></div></div>';
-    }).join('')||'<div class="empty">داده‌ای موجود نیست</div>';
-  });
-}
-function downloadReport(){
-  var cid=activeCls.analytics;if(!cid)return;
-  var cls=myClasses.find(function(c){return c.id===cid});
-  var stu=analyticsData?analyticsData.students||[]:[];
-  var risk=analyticsData?analyticsData.atRisk||[]:[];
-  var w=window.open('','_blank');
-  w.document.write('<html dir="rtl"><head><meta charset="utf-8"><title>گزارش کلاس</title>'+
-  '<style>body{font-family:Tahoma;padding:30px;color:#111}h1{color:#1a5fb4}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #999;padding:9px;text-align:right;font-size:13px}th{background:#eef}</style></head><body>'+
-  '<h1>📋 گزارش کلاس: '+escHtml(cls?cls.name:'')+'</h1>'+
-  '<p>تاریخ: '+new Date().toLocaleDateString('fa-IR')+' — معلم: '+escHtml(user.name)+'</p>'+
-  (risk.length?'<p style="color:#c00">⚠️ هشدار افت تحصیلی: '+risk.map(function(r){return escHtml(r.name)}).join('، ')+'</p>':'')+
-  '<table><tr><th>دانش‌آموز</th><th>میانگین نمرات</th></tr>'+
-  (stu.map(function(s){return '<tr><td>'+escHtml(s.name)+'</td><td>'+faNum(s.avg||0)+'٪</td></tr>'}).join('')||'<tr><td colspan="2">داده‌ای موجود نیست</td></tr>')+
-  '</table></body></html>');
-  w.document.close();
-  setTimeout(function(){w.print()},400);
-}
-
-/* ═══ رتبه‌بندی ═══ */
-function initLb(){loadClasses().then(function(){renderTabs('lbTabs','leaderboard','loadLb')})}
-function loadLb(){
-  var cid=activeCls.leaderboard;if(!cid)return;
-  api('GET','/api/classes/'+cid+'/leaderboard').then(function(lb){
-    lb=lb||[];
-    var el=$('lbList');
-    if(!lb.length||lb.error){el.innerHTML='<div class="empty"><span class="e-ic">🏆</span>هنوز رتبه‌بندی‌ای موجود نیست</div>';}
-    else{
-      var medals=['🥇','🥈','🥉'];
-      el.innerHTML=lb.map(function(s,i){
-        var xp=s.totalXP||0;
-        var prog=Math.min(100,xp%100);
-        return '<div class="rank-row '+(i<3?'top'+(i+1):'')+'">'+
-        (i<3?'<div class="medal">'+medals[i]+'</div>':'<div class="rank-num">'+faNum(i+1)+'</div>')+
-        '<div class="av" style="background:'+avColor(s.name)+'">'+escHtml(s.name[0])+'</div>'+
-        '<div style="flex:1;min-width:0"><b style="font-size:.88rem">'+escHtml(s.name)+'</b>'+
-        '<div class="xp-bar" style="margin-top:5px"><div class="xp-fill" style="width:'+prog+'%"></div></div></div>'+
-        '<span class="badge b-pur">لِوِل '+faNum(s.level||1)+'</span>'+
-        '<b style="font-size:.82rem;min-width:60px;text-align:left">'+faNum(xp)+' XP</b></div>';
-      }).join('');
-    }
-    api('GET','/api/badge-defs').then(function(defs){
-      defs=defs||[];
-      $('badgeDefs').innerHTML=defs.length?defs.map(function(b){
-        return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px dashed var(--bd)">'+
-        '<span style="font-size:1.5rem">'+(b.icon||'🎖️')+'</span>'+
-        '<div><b style="font-size:.86rem">'+escHtml(b.name)+'</b>'+
-        '<div style="font-size:.72rem;color:var(--muted)">'+escHtml(b.description||'')+'</div></div></div>';
-      }).join(''):'<div class="empty" style="padding:20px">نشانی تعریف نشده</div>';
-    });
-  });
-}
-
-/* ═══ بانک سوال ═══ */
-function initBank(){loadBank()}
-function setBankType(t){
-  bankType=t;
-  ['mc','tf','fill','essay'].forEach(function(x){var b=$('btt-'+x);if(b)b.classList.toggle('on',x===t)});
-  $('bankMcFields').style.display=t==='mc'?'':'none';
-  $('bankSimpleAns').style.display=t==='mc'?'none':'';
-}
-function loadBank(){
-  api('GET','/api/question-bank').then(function(list){
-    bankCache=list||[];
-    var tags={};
-    bankCache.forEach(function(q){(q.tags||[]).forEach(function(t){tags[t]=1})});
-    var keys=Object.keys(tags);
-    var cur=$('bankTagFilter').value;
-    $('bankTagFilter').innerHTML='<option value="">همه برچسب‌ها</option>'+keys.map(function(t){
-      return '<option value="'+escHtml(t)+'">'+escHtml(t)+'</option>';
-    }).join('');
-    if(cur)$('bankTagFilter').value=cur;
-    renderBank();
-  });
-}
-function renderBank(){
-  var tag=$('bankTagFilter').value;
-  var list=bankCache.filter(function(q){return !tag||(q.tags||[]).indexOf(tag)>-1});
-  $('bankCount').textContent=faNum(list.length);
-  var el=$('bankList');
-  if(!list.length){el.innerHTML='<div class="empty"><span class="e-ic">🗂️</span>سوالی در بانک نیست</div>';return}
-  var TYPE={mc:['tb-mc','چهارگزینه‌ای'],tf:['tb-tf','درست/غلط'],fill:['tb-fill','جای خالی'],essay:['tb-essay','تشریحی']};
-  el.innerHTML=list.map(function(q){
-    var t=TYPE[q.type]||TYPE.mc;
-    return '<div class="qb-item">'+
-    '<div class="qb-head"><span class="qb-type-badge '+t[0]+'">'+t[1]+'</span>'+
-    (q.usageCount?'<span style="font-size:.72rem;color:var(--muted)">🔁 '+faNum(q.usageCount)+' بار استفاده</span>':'')+'</div>'+
-    '<div class="qb-q">'+escHtml(q.question)+'</div>'+
-    (q.options&&q.options.length?'<div style="font-size:.8rem;color:var(--muted);margin:4px 0">'+q.options.map(escHtml).join(' · ')+'</div>':'')+
-    '<div class="qb-ans">✅ '+escHtml(q.answer)+'</div>'+
-    ((q.tags||[]).length?'<div style="font-size:.7rem;color:var(--muted2);margin-top:5px">🏷️ '+q.tags.map(escHtml).join('، ')+'</div>':'')+
-    '<div style="margin-top:8px"><button class="btn btn-sm btn-danger" data-del="'+q.id+'">🗑️ حذف</button></div></div>';
-  }).join('');
-}
- $('bankList').addEventListener('click',function(e){
-  var b=e.target.closest('[data-del]');if(!b)return;
-  ask('این سوال از بانک حذف شود؟').then(function(yes){
-    if(!yes)return;
-    api('DELETE','/api/question-bank/'+b.dataset.del).then(function(){toast('🗑️ حذف شد');loadBank()});
-  });
-});
-function addToBank(){
-  var q=$('bankText').value.trim();
-  if(!q)return toast('متن سوال الزامی است','err');
-  var body={type:bankType,question:q,tags:$('bankTags').value.split(',').map(function(t){return t.trim()}).filter(Boolean)};
-  if(bankType==='mc'){
-    var opts=[$('bop1').value.trim(),$('bop2').value.trim(),$('bop3').value.trim(),$('bop4').value.trim()];
-    if(opts.some(function(o){return !o}))return toast('همه گزینه‌ها را پر کنید','err');
-    var ans=$('bankMcAns').value;if(!ans)return toast('پاسخ صحیح را انتخاب کنید','err');
-    var labels=['الف','ب','ج','د'];
-    body.options=opts.map(function(o,i){return labels[i]+') '+o});
-    body.answer=body.options[+ans-1];
-  }else{
-    var ans2=$('bankAns').value.trim();
-    if(!ans2)return toast('پاسخ صحیح الزامی است','err');
-    body.answer=ans2;
-  }
-  api('POST','/api/question-bank',body).then(function(res){
-    if(res&&res.error)return toast(res.error,'err');
-    $('bankText').value='';$('bankTags').value='';
-    ['bop1','bop2','bop3','bop4','bankAns'].forEach(function(id){$(id).value=''});
-    $('bankMcAns').value='';
-    toast('✅ سوال به بانک اضافه شد');loadBank();
-  });
-}
-
-/* ═══ تقویم ═══ */
-function initCal(){
-  api('GET','/api/teacher/calendar').then(function(events){
-    calEvents=events||[];
-    renderCal();
-  });
-}
-function calShift(d){calDate.setMonth(calDate.getMonth()+d);renderCal()}
-function calToday(){calDate=new Date();renderCal()}
-function renderCal(){
-  var y=calDate.getFullYear(),m=calDate.getMonth();
-  $('calLabel').textContent=calDate.toLocaleDateString('fa-IR',{month:'long',year:'numeric'});
-  var days=new Date(y,m+1,0).getDate();
-  var offset=(new Date(y,m,1).getDay()+1)%7;
-  var evMap={};
-  calEvents.forEach(function(e){(evMap[e.date]=evMap[e.date]||[]).push(e)});
-  var today=new Date().toISOString().slice(0,10);
-  var html=['ش','ی','د','س','چ','پ','ج'].map(function(d){return '<div class="cal-dow">'+d+'</div>'}).join('');
-  for(var i=0;i<offset;i++)html+='<div class="cal-cell other"></div>';
-  for(var d=1;d<=days;d++){
-    var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    var evs=evMap[ds]||[];
-    var clsMap={assignment:'a',quiz:'q',session:'s'};
-    var icMap={assignment:'📝',quiz:'📋',session:'🎥'};
-    html+='<div class="cal-cell '+(ds===today?'today':'')+'">'+
-    '<div class="cal-n">'+faNum(d)+'</div>'+
-    evs.slice(0,3).map(function(e){
-      return '<div class="cal-ev '+(clsMap[e.type]||'')+'" title="'+escHtml(e.title)+'">'+(icMap[e.type]||'📌')+' '+escHtml(e.title)+'</div>';
-    }).join('')+
-    (evs.length>3?'<div style="color:var(--muted2)">+'+faNum(evs.length-3)+'</div>':'')+
-    '</div>';
-  }
-  $('calGrid').innerHTML=html;
-}
-
-/* ═══ دانش‌آموزان ═══ */
-function initStu(){loadClasses().then(function(){renderTabs('stuTabs','students','loadStu')})}
-function loadStu(){
-  var cid=activeCls.students;if(!cid)return;
-  var cls=myClasses.find(function(c){return c.id===cid});
-  api('GET','/api/teacher/students').then(function(students){
-    students=students||[];
-    var inClass=students.filter(function(s){return cls&&(cls.studentIds||[]).indexOf(s.id)>-1});
-    var el=$('stuList');
-    if(!inClass.length){el.innerHTML='<div class="empty"><span class="e-ic">👥</span>این کلاس دانش‌آموز ندارد</div>';return}
-    el.innerHTML=inClass.map(function(s){
-      return '<div class="item" style="cursor:pointer" data-stu="'+s.id+'" data-name="'+escHtml(s.name)+'">'+
-      '<div class="av" style="background:'+avColor(s.name)+'">'+escHtml(s.name[0])+'</div>'+
-      '<div class="bd"><b>'+escHtml(s.name)+'</b><div class="ft"><span>👤 دانش‌آموز</span></div></div>'+
-      '<div class="acts"><button class="btn btn-sm btn-ghost">پروفایل ←</button></div></div>';
-    }).join('');
-  });
-}
- $('stuList').addEventListener('click',function(e){
-  var it=e.target.closest('[data-stu]');if(!it)return;
-  openStudentProfile(it.dataset.stu,it.dataset.name);
-});
-function openStudentProfile(id,name){
-  spStudent={id:id,name:name};
-  $('spTitle').textContent='پروفایل: '+name;
-  Promise.all([
-    api('GET','/api/students/'+id+'/badges'),
-    api('GET','/api/students/'+id+'/performance').catch(function(){return null}),
-    api('GET','/api/teacher/students/'+id+'/notes')
-  ]).then(function(res){
-    var badges=res[0]||[],perf=res[1],notes=res[2]||[];
-    spNotesCache=notes;
-    $('spStats').innerHTML=
-    '<div class="sp-stat"><b style="color:var(--pri)">'+(perf&&perf.avgScore!=null?faNum(perf.avgScore)+'٪':'—')+'</b><span>میانگین نمرات</span></div>'+
-    '<div class="sp-stat"><b style="color:var(--purple)">'+faNum(perf?perf.quizzesTaken||0:0)+'</b><span>آزمون داده</span></div>'+
-    '<div class="sp-stat"><b style="color:var(--yellow)">'+faNum(badges.length)+'</b><span>نشان کسب‌شده</span></div>';
-    $('spBadges').innerHTML=badges.length
-      ?'<div style="display:flex;gap:7px;flex-wrap:wrap">'+badges.map(function(b){
-        return '<span class="badge b-yel">'+(b.icon||'🎖️')+' '+escHtml(b.name)+'</span>';
-      }).join('')+'</div>'
-      :'<span style="font-size:.78rem;color:var(--muted)">هنوز نشانی ندارد</span>';
-    renderNotes();
-    $('moStudent').classList.add('open');
-  });
-}
-function renderNotes(){
-  $('spNotes').innerHTML=spNotesCache.length?spNotesCache.map(function(n,i){
-    return '<div class="note-item">📝 <span style="flex:1">'+escHtml(n.text)+'</span>'+
-    '<span style="font-size:.62rem;color:var(--muted2)">'+(n.createdAt?new Date(n.createdAt).toLocaleDateString('fa-IR'):'')+'</span>'+
-    '<button class="rm" data-rm="'+i+'">✕</button></div>';
-  }).join(''):'<div style="font-size:.78rem;color:var(--muted);text-align:center;padding:12px">یادداشتی ندارید</div>';
-}
- $('spNotes').addEventListener('click',function(e){
-  var b=e.target.closest('[data-rm]');if(!b)return;
-  var idx=+b.dataset.rm;
-  if(spStudent)api('DELETE','/api/teacher/students/'+spStudent.id+'/notes',{index:idx}).then(function(){
-    spNotesCache.splice(idx,1);renderNotes();
-  });
-});
-function addNote(){
-  var t=$('spNewNote').value.trim();
-  if(!t||!spStudent)return;
-  api('POST','/api/teacher/students/'+spStudent.id+'/notes',{text:t}).then(function(res){
-    spNotesCache.push(res&&res.note?res.note:{text:t,createdAt:new Date().toISOString()});
-    $('spNewNote').value='';
-    renderNotes();toast('📝 یادداشت اضافه شد');
-  });
-}
-
-/* ═══ کامند پالت ═══ */
-var CMDS=[
-  {ic:'📊',l:'داشبورد',k:'dash',run:function(){show('dash')}},
-  {ic:'📚',l:'درس‌ها',k:'lesson',run:function(){show('lessons')}},
-  {ic:'📝',l:'تکالیف',k:'asg',run:function(){show('assignments')}},
-  {ic:'📋',l:'آزمون‌ها',k:'quiz',run:function(){show('quizzes')}},
-  {ic:'✅',l:'حضور و غیاب',k:'att',run:function(){show('attendance')}},
-  {ic:'📊',l:'نظرسنجی',k:'poll',run:function(){show('polls')}},
-  {ic:'🎥',l:'کلاس مجازی',k:'session',run:function(){show('sessions')}},
-  {ic:'📈',l:'تحلیل و آمار',k:'an',run:function(){show('analytics')}},
-  {ic:'🏆',l:'رتبه‌بندی',k:'lb',run:function(){show('leaderboard')}},
-  {ic:'🗂️',l:'بانک سوال',k:'bank',run:function(){show('bank')}},
-  {ic:'📅',l:'تقویم',k:'cal',run:function(){show('calendar')}},
-  {ic:'👤',l:'دانش‌آموزان',k:'stu',run:function(){show('students')}},
-  {ic:'💬',l:'پیام‌رسان',k:'chat',run:function(){goChat()}},
-  {ic:'📋',l:'سازنده آزمون (صفحه جدید)',k:'builder',run:function(){location.href='/quizbuilder'}},
-  {ic:'👤',l:'پروفایل من',k:'profile',run:function(){location.href='/profile'}},
-  {ic:'🎨',l:'تغییر تم روشن/تاریک',k:'theme',run:function(){toggleTheme()}},
-  {ic:'🚪',l:'خروج از حساب',k:'logout',run:function(){logout()}}
-];
-var cmdIdx=0,cmdFiltered=CMDS;
-function openCmdk(){$('cmdk').classList.add('open');$('cmdInput').value='';renderCmd('');setTimeout(function(){$('cmdInput').focus()},40)}
-function renderCmd(q){
-  cmdFiltered=CMDS.filter(function(c){return c.l.indexOf(q)>-1||c.k.indexOf(q.toLowerCase())>-1});
-  cmdIdx=0;
-  $('cmdList').innerHTML=cmdFiltered.length?cmdFiltered.map(function(c,i){
-    return '<div class="cmd-item'+(i===0?' sel':'')+'" data-i="'+i+'"><span class="ic">'+c.ic+'</span><span>'+c.l+'</span></div>';
-  }).join(''):'<div class="cmd-empty">موردی یافت نشد 🤷</div>';
-}
- $('cmdInput').addEventListener('input',function(e){renderCmd(e.target.value)});
- $('cmdList').addEventListener('click',function(e){
-  var it=e.target.closest('.cmd-item');if(!it)return;
-  cmdFiltered[+it.dataset.i].run();$('cmdk').classList.remove('open');
-});
-document.addEventListener('keydown',function(e){
-  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCmdk()}
-  if(!$('cmdk').classList.contains('open'))return;
-  if(e.key==='Escape')$('cmdk').classList.remove('open');
-  if(e.key==='Enter'&&cmdFiltered[cmdIdx]){cmdFiltered[cmdIdx].run();$('cmdk').classList.remove('open')}
-  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
-    e.preventDefault();
-    cmdIdx=(cmdIdx+(e.key==='ArrowDown'?1:-1)+cmdFiltered.length)%cmdFiltered.length;
-    var items=document.querySelectorAll('.cmd-item');
-    items.forEach(function(el,i){el.classList.toggle('sel',i===cmdIdx)});
-    if(items[cmdIdx])items[cmdIdx].scrollIntoView({block:'nearest'});
-  }
-});
- $('cmdk').addEventListener('click',function(e){if(e.target.id==='cmdk')$('cmdk').classList.remove('open')});
-
-/* ─── شروع ─── */
-loadDash();
-</script>
-<script src="/ai-widget.js" defer></script>
+<script src="/path/to/your/script.js"></script>
 </body>
 </html>
